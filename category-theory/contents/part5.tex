@@ -1,0 +1,1013 @@
+\section{Limits}
+
+As noted in the example of universal property, we can unify all the special ``construction'' under the term of limit. To do this we have to define what the diagram is, formally. After we have done with formulating the limit, we are going to look into its properties, and then end this section with some more facts on specific constructions.
+
+\subsection{Defining Limit}
+
+\begin{definition}{\textbf{(Constant Diagram)}}
+    Given a category $\textbf{C}$ with object $X$, and small category $\textbf{J}$, we define \textit{constant diagram} at $X$ to be a diagram indexed by $\textbf{J}$ being the functor $X:\textbf{J}\rightarrow\textbf{C}$, where:
+    \begin{itemize}
+        \item All objects of $\textbf{J}$ are assigned to object $X$
+        \item All morphism of $\textbf{J}$, they are assigned to identity morphism $\operatorname{id}_X$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}{\textbf{(Cone/Co-Cone)}}
+    Given a small category $\textbf{J}$ with a category $\textbf{C}$ with object $X$, let $F:\textbf{J}\rightarrow\textbf{C}$ be the diagram, then:
+    \begin{itemize}
+        \item A \textit{cone} over $F$ with tips $X$ is a natural transformation from the constant diagram at $X$ to functor $F$.
+        \item A \textit{co-cone} with bottom $X$ is a natural transformation from the functor $F$ to constant diagram at $X$.
+    \end{itemize}
+    Explicitly, for each object $J$ of $\textbf{J}$, we have the component $\alpha_J:X\rightarrow FJ$ such that for any morphism $m:J\rightarrow J'$, we have, following commutative diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwxLCJGSiJdLFsyLDEsIkZKJyJdLFsxLDAsIlgiXSxbMCwxLCJGbSIsMl0sWzIsMCwiXFxhbHBoYV9KIiwyXSxbMiwxLCJcXGFscGhhX3tKJ30iXV0=
+    \begin{tikzcd}
+        & X \\
+        FJ && {FJ'}
+        \arrow["Fm"', from=2-1, to=2-3]
+        \arrow["{\alpha_J}"', from=1-2, to=2-1]
+        \arrow["{\alpha_{J'}}", from=1-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Functor of a Cone/Co-Cone)}}
+    Given a diagram $F:\textbf{J}\rightarrow\textbf{C}$ be the diagram, in which we construct the \textit{pre-sheaf of cone} $\operatorname{Cone}(-,F):\textbf{C}^\text{op}\rightarrow\textbf{Set}$ as:
+    \begin{itemize}
+        \item Given object $X$ of $\textbf{C}$, it maps the set of cones $\operatorname{Cone}(X,F)$ over $F$ with tip $X$
+        \item Given the map $f:X\rightarrow Y$, we have the function $\operatorname{Cone}(Y,F)\rightarrow\operatorname{Cone}(X,F)$ such that:
+        \begin{itemize}
+            \item Given a cone $\alpha:Y\Rightarrow F$ with components $\alpha_J:Y\rightarrow FJ$ for each object $J$ of $\textbf{J}$
+            \item We have $\alpha\circ f:X\Rightarrow F$ in which its components are defined as $(\alpha\circ f)_J:=\alpha_J\circ f$
+        \end{itemize}
+    \end{itemize}
+    The functor $\operatorname{Cone}(F,-):\textbf{C}\rightarrow\textbf{Set}$ is defined in similar manners, and is called \textit{co-cone}
+\end{definition}
+
+With the cone defined, we can used the pattern from remark \ref{remark:universal-prop} i.e finding the object that \textit{represents} the cone/co-cone itself i.e universal property. This leads to the notion of limit.
+
+\begin{definition}{\textbf{(Limit/Co-Limit)}}
+    Given the diagram $F:\textbf{J}\rightarrow\textbf{C}$ be the diagram:
+    \begin{itemize}
+        \item A \textit{limit} of $F$, if it exists, is an object $\lim F$ of $\textbf{C}$ representing a pre-sheaf $\operatorname{Cone}(-,F):\textbf{C}^\text{op}\rightarrow\textbf{Set}$ with its universal property.
+        \item A \textit{co-limit} of $F$, if it exists, is an object $\operatorname{colim} F$ of $\textbf{C}$ representing a functor $\operatorname{Cone}(F, -):\textbf{C}^\text{op}\rightarrow\textbf{Set}$ with its universal property.
+    \end{itemize}
+\end{definition}
+
+With this notion of cone/co-cone, we can see that one can specify any ``shape'' of it that we want, for example, spanning like a product ($\operatorname{Hom}_\textbf{C}(-,Z)\Rightarrow\operatorname{Hom}_\textbf{C}(-,X)\times\operatorname{Hom}_\textbf{C}(-,Y)$) or more.
+
+\begin{remark}
+    To recap on the interpretation of limit, we have the following natural isomorphism:
+    \begin{equation*}
+        \gamma:\operatorname{Hom}_\textbf{C}(-, \lim F) \Rightarrow \operatorname{Cone}(-, F)
+    \end{equation*}
+    With the following diagram, given a unique map $g:X\to\lim F$, the naturality condition will gives us (LHS diagram) together with the commutative diagram of the limit in $\textbf{C}$
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFxcbGltIEYsXFxsaW0gRikiXSxbMCwyLCJcXG9wZXJhdG9ybmFtZXtDb25lfShcXGxpbSBGLCBGKSJdLFsyLDIsIlxcb3BlcmF0b3JuYW1le0NvbmV9KFgsIEYpIl0sWzIsMCwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShYLCBcXGxpbSBGKSJdLFs1LDAsIlgiXSxbNSwxLCJcXGxpbSBGIl0sWzQsMiwiRkoiXSxbNiwyLCJGSiciXSxbMywyLCJcXGNvbmciXSxbMCwxLCJcXGNvbmciLDJdLFsxLDIsIlxcb3BlcmF0b3JuYW1le0NvbmV9KC0sXFxsaW0gRilbZ10iLDJdLFswLDMsIigtXFxjaXJjIGcpIl0sWzAsMSwiXFxnYW1tYV97XFxsaW0gRn0iXSxbMywyLCJcXGdhbW1hX1giLDJdLFs1LDYsIlxcYWxwaGFfSiJdLFs1LDcsIlxcYWxwaGFfe0onfSIsMl0sWzYsNywiRm0iLDJdLFs0LDYsIlxcYmV0YV9qIiwyXSxbNCw3LCJcXGJldGFfe2onfSJdLFs0LDUsImciLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        {\operatorname{Hom}_\textbf{C}(\lim F,\lim F)} && {\operatorname{Hom}_\textbf{C}(X, \lim F)} &&& X \\
+        &&&&& {\lim F} \\
+        {\operatorname{Cone}(\lim F, F)} && {\operatorname{Cone}(X, F)} && FJ && {FJ'}
+        \arrow["\cong", from=1-3, to=3-3]
+        \arrow["\cong"', from=1-1, to=3-1]
+        \arrow["{\operatorname{Cone}(-,\lim F)[g]}"', from=3-1, to=3-3]
+        \arrow["{(-\circ g)}", from=1-1, to=1-3]
+        \arrow["{\gamma_{\lim F}}", from=1-1, to=3-1]
+        \arrow["{\gamma_X}"', from=1-3, to=3-3]
+        \arrow["{\alpha_J}", from=2-6, to=3-5]
+        \arrow["{\alpha_{J'}}"', from=2-6, to=3-7]
+        \arrow["Fm"', from=3-5, to=3-7]
+        \arrow["{\beta_j}"', from=1-6, to=3-5]
+        \arrow["{\beta_{j'}}", from=1-6, to=3-7]
+        \arrow["g"', dashed, from=1-6, to=2-6]
+    \end{tikzcd}
+    \end{equation*}
+
+    Note that the morphism lifted by the cone functor is defined (and just like $(-\circ f)\times(-\circ f)$ above), and required to be such that $\alpha_J\circ g=\beta_J$. 
+\end{remark}
+
+By the immediate application of Yoneda lemma, we have that:
+
+\begin{proposition}
+    Limit and co-limit are unqiue up to isomorphism (if they exists).
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    Assume that there are 2 limit of diagram $F$ i.e $\lim F_1$ and $\lim F_2$ i.e:
+    \begin{equation*}
+        % https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KC0sXFxsaW0gRl8xKSJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oLSxcXGxpbSBGXzIpIl0sWzEsMSwiXFxvcGVyYXRvcm5hbWV7Q29uZX0oLSwgRikiXSxbMCwyLCJcXGNvbmciLDIseyJsZXZlbCI6Mn1dLFsxLDIsIlxcY29uZyIsMCx7ImxldmVsIjoyfV1d
+        \begin{tikzcd}
+            {\operatorname{Hom}_\textbf{C}(-,\lim F_1)} && {\operatorname{Hom}_\textbf{C}(-,\lim F_2)} \\
+            & {\operatorname{Cone}(-, F)}
+            \arrow["\cong"', Rightarrow, from=1-1, to=2-2]
+            \arrow["\cong", Rightarrow, from=1-3, to=2-2]
+        \end{tikzcd}
+    \end{equation*}
+    Then we see that there is a natural isomorphism between $\operatorname{Hom}_\textbf{C}(-,\lim F_1)\Rightarrow\operatorname{Hom}_\textbf{C}(-,\lim F_2)$ by the corollary \ref{coro:iso-hom-functor-iso-represent} we have that $\lim F_1\cong\lim F_2$
+\end{proof}
+\end{dem}
+
+\begin{definition}{\textbf{(Complete Category)}}
+    A catagory $\textbf{C}$ is called \textit{complete} if every diagram in $\textbf{C}$ has limit. Similary, it is \textit{co-complete} if every diagram in $\textbf{C}$ has a colimit.
+\end{definition}
+
+Given the complete category, one can explicitly construct the limits. Let's consider the case of $\textbf{Set}$.
+
+\begin{remark}{\textbf{(Construction of Limits in $\textbf{Set}$)}}
+    Given the diagram $D:\textbf{J}\rightarrow\textbf{Set}$, and assume $\textbf{J}$ to be small (the objects form a set). We will start with the cartesian product of all sets in diagram $\textbf{D}$: $P:= \prod_{I\in\operatorname{Obj}(\textbf{J})}DI$. We have the projection map of $\pi_I:P\to DI$ for each object $I$ of $\textbf{J}$. However, with morphism $m:I\rightarrow I'$, we add need constrain to the product set so that the diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMSwwLCJQIl0sWzAsMSwiREkiXSxbMiwxLCJESSciXSxbMSwyLCJEbSIsMl0sWzAsMSwiXFxwaV97SX0iLDJdLFswLDIsIlxccGlfe0knfSJdXQ==
+    \begin{tikzcd}
+        & P \\
+        DI && {DI'}
+        \arrow["Dm"', from=2-1, to=2-3]
+        \arrow["{\pi_{I}}"', from=1-2, to=2-1]
+        \arrow["{\pi_{I'}}", from=1-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    Given $p\in P$, we required to have $Dm(\pi_I(p))=\pi_{I'}(p)$. If $p$ satisfies the constrain for morphism $m$, we say $p\in S_m$. This should be applied to all morphism i.e we have:
+    \begin{equation*}
+        S := \bigcap_{m\in\operatorname{Morp}(\mathbf{J})}S_m
+    \end{equation*}
+    This $S$ is indeed a limit over the diagram $D$, following the lemma below.
+\end{remark}
+
+\begin{lemma}
+    The object $S$ defined above with map $S\to DI$ as:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJTIl0sWzEsMCwiUCJdLFsyLDAsIkRJIl0sWzAsMSwiaSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzEsMiwiXFxwaV9JIl1d
+    \begin{tikzcd}
+        S & P & DI
+        \arrow["i", hook, from=1-1, to=1-2]
+        \arrow["{\pi_I}", from=1-2, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    where $i:S\rightarrow P$ is the inclusion, is a limit over the diagram $D$.
+\end{lemma}
+
+\begin{dem}
+\begin{proof}
+    To show that $S$ is a limit, we need to show that there is a natural isomorphism between the functor: $\operatorname{Hom}_\textbf{Set}(-,S)\Rightarrow \operatorname{Cone}(-,D)$. Considering its component, given a set $A$, we have $\operatorname{Hom}_\textbf{Set}(A,S)\to \operatorname{Cone}(A,D)$. Let's show that it is a bijection.
+
+    \textbf{(Surjectivity):} Let a cone be $\alpha:A\Rightarrow D$, we note that by definition there is an arrow $\alpha_I:A\to DI$ for all $I\in\operatorname{Obj}(\textbf{J})$. By the universal property of the product there is a function $f:A\to P$ such that $\alpha_I=\pi_I\circ f$.
+    
+    However, for $\alpha$ to be a natural transformation, we required for any $a\in A$, we have $Dm(\pi_I(f(a)))=\pi_{I'}(f(a))$ for any $m\in\operatorname{Morp}(\textbf{J})$, or in other words $f(a)\in S$. Thus $f$ can only restricted to $f:A\to S$. Thus for any $\alpha\in\operatorname{Cone}(A,D)$, its component $\alpha_I$ has the form of $\pi_I\circ f$.
+
+
+    \textbf{(Injectivity):} Given the fact that $\alpha=\alpha'$ with associated $f,f'\in\operatorname{Hom}_\textbf{Set}(A, S)$, that is for every object $I\in \operatorname{Obj}(\textbf{J})$, we have $\pi_J\circ f=\pi_J\circ f'$. That is the output of $f$ and $f'$ for every entry of the output are the same. Thus, $f=f'$, as needed.
+    
+    Finally, the naturality condition are authomatically satisfied since the component of $\alpha$ at $I$ is equal to $\pi_I\circ f$. 
+\end{proof}
+\end{dem}
+
+Therefore, this leads to the following theorem:
+
+\begin{theorem}
+    The category $\textbf{Set}$ is complete.
+\end{theorem}
+
+\begin{proposition}{\textbf{(Functoriality of Limit)}}
+    \label{prop:limit-functoriality}
+    Given a diagram $F:\textbf{J}\to\textbf{C}$ and a natural transformation $\alpha:F\Rightarrow F'$, then we can define the morphism $\alpha_{\lim}:\lim F\to\lim\alpha(F)$ in $\textbf{C}$ via the universal property as:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMSwxLCJcXGxpbSBGIl0sWzAsMiwiRkoiXSxbMiwyLCJGSiciXSxbMywwLCJcXGxpbVxcYWxwaGEoRikiXSxbMiwxLCJGJ0oiXSxbNCwxLCJGJ0onIl0sWzAsMV0sWzAsMl0sWzEsMiwiRm0iLDFdLFswLDMsIlxcYWxwaGFfe1xcbGltfSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxLDQsIlxcYWxwaGFfSiIsMV0sWzIsNSwiXFxhbHBoYV97Sid9IiwxXSxbNCw1LCJGJ20iLDFdLFszLDRdLFszLDVdXQ==
+    \begin{tikzcd}
+        &&& {\lim\alpha(F)} \\
+        & {\lim F} & {F'J} && {F'J'} \\
+        FJ && {FJ'}
+        \arrow[from=1-4, to=2-3]
+        \arrow[from=1-4, to=2-5]
+        \arrow["{\alpha_{\lim}}", dashed, from=2-2, to=1-4]
+        \arrow[from=2-2, to=3-1]
+        \arrow[from=2-2, to=3-3]
+        \arrow["{F'm}"{description}, from=2-3, to=2-5]
+        \arrow["{\alpha_J}"{description}, from=3-1, to=2-3]
+        \arrow["Fm"{description}, from=3-1, to=3-3]
+        \arrow["{\alpha_{J'}}"{description}, from=3-3, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+    Then we can see that: $\lim (\beta\circ\alpha)(F)=\beta_{\lim}\circ\alpha_{\lim}(\lim F)$ and $\lim(\operatorname{id} F)=\lim F$, thus the limit can be seen as functorial. Recall that we can see limit as functor with type signature of $\lim:[\textbf{J},\textbf{C}]\to\textbf{C}$.
+\end{proposition}
+\begin{proof}
+    Following functoriality of (Co)Ends shown in proposition \ref{prop:functoriality-of-ends}, as limits can be described by ends. In a nutshell, the equality between composition is due to the uniqueness of universal properties.
+\end{proof}
+
+\subsection{Continuous Functors}
+
+\begin{definition}{\textbf{(Continuity)}}
+    Given a functor $F:\textbf{C}\rightarrow\textbf{C}^\prime$, it is called continuous if it preserves all limits that exists in $\textbf{C}$ i.e every diagram $D$ in $\textbf{C}$, where its limit $\lim D$ exists, then $\lim FD$ exists in $\textbf{C}'$ and: 
+
+    \begin{equation*}
+        \lim FD\cong F(\lim D)
+    \end{equation*}
+\end{definition}
+
+Note also that the functor in general doesn't preserve the property of mono or epi or generally any other universal property, hence the need of continuity.
+
+\begin{remark}
+    Suppose $F$ is continuous, then by Yoneda lemma, we also have that 
+    \begin{equation*}
+        \operatorname{Hom}_\textbf{C}(-,F\lim D)\cong\operatorname{Hom}_\textbf{C}(-,\lim FD)\cong\operatorname{Cone}(-, FD)
+    \end{equation*}
+    Thus $F\lim D$ is also a limit of the diagram $FD$. One can also proof the propositions below by showing that $,F\lim D$ is actually a limit (or construct the isomorphism directly).
+\end{remark}
+
+\begin{proposition}
+    Given a functor $F:\textbf{C}\rightarrow\textbf{C}{^\prime}$ that preserves the limit of diagram $D:\textbf{J}\rightarrow\textbf{C}$, and functor $G$ be functor that is naturally isomorphic to $F$, then $G$ also preserve limit of diagram $D$.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    We let $\alpha:F\Rightarrow G$ be the natural isomorphism between $F$ and $G$. We want to show that $\lim GD\cong G(\lim D)$. We will also denote the isomorphism $f:\lim F(\lim D)\xrightarrow{\cong}FD$. 
+    
+    We will claim that there is an isomorphism between $\lim FD$ and $\lim GD$. To do this, we consider similar technique to show the isomorphism between products and using the fact that $\alpha$ is natural isomorphism, as shown in the LHS diagram.
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTMsWzQsMSwiRlxcbGltIEQiXSxbNCwyLCJcXGxpbSBGRCJdLFs2LDIsIlxcbGltIEdEIl0sWzYsMSwiR1xcbGltIEQiXSxbMCwxLCJGREkiXSxbMSwwLCJcXGxpbSBGRCJdLFsxLDEsIlxcbGltIEdEIl0sWzEsMiwiXFxsaW0gRkQiXSxbMCwzLCJGREkiXSxbMCwyLCJHREkiXSxbMiwxLCJGREknIl0sWzIsMiwiR0RJJyJdLFsyLDMsIkZESSciXSxbMCwzLCJcXGFscGhhX3tcXGxpbSBEfSJdLFswLDMsIlxcY29uZyIsMl0sWzEsMiwiayIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxLDIsIlxcY29uZyIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDIsImgiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwxLCJmIiwyXSxbMCwxLCJcXGNvbmciXSxbNSw2LCJrIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzUsNCwiXFxiZXRhX0kiLDJdLFs1LDEwLCJcXGJldGFfe0knfSJdLFs2LDksIlxccGhpX0kiXSxbNiwxMSwiXFxwaGlfe0knfSIsMl0sWzYsNywiayciLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNyw4LCJcXGJldGFfe0l9Il0sWzcsMTIsIlxcYmV0YV97SSd9IiwyXSxbOSw4LCJcXGFscGhhX3tESX1eey0xfSIsMl0sWzEwLDExLCJcXGFscGhhX3tESX1eey0xfSJdLFsxMSwxMiwiXFxhbHBoYV97REknfV57LTF9Il0sWzQsOSwiXFxhbHBoYV97REl9IiwyXV0=
+    \begin{tikzcd}
+        & {\lim FD} \\
+        FDI & {\lim GD} & {FDI'} && {F\lim D} && {G\lim D} \\
+        GDI & {\lim FD} & {GDI'} && {\lim FD} && {\lim GD} \\
+        FDI && {FDI'}
+        \arrow["{\alpha_{\lim D}}", from=2-5, to=2-7]
+        \arrow["\cong"', from=2-5, to=2-7]
+        \arrow["k"', dashed, from=3-5, to=3-7]
+        \arrow["\cong", dashed, from=3-5, to=3-7]
+        \arrow["h", dashed, from=2-7, to=3-7]
+        \arrow["f"', from=2-5, to=3-5]
+        \arrow["\cong", from=2-5, to=3-5]
+        \arrow["k", dashed, from=1-2, to=2-2]
+        \arrow["{\beta_I}"', from=1-2, to=2-1]
+        \arrow["{\beta_{I'}}", from=1-2, to=2-3]
+        \arrow["{\phi_I}", from=2-2, to=3-1]
+        \arrow["{\phi_{I'}}"', from=2-2, to=3-3]
+        \arrow["{k'}", dashed, from=2-2, to=3-2]
+        \arrow["{\beta_{I}}", from=3-2, to=4-1]
+        \arrow["{\beta_{I'}}"', from=3-2, to=4-3]
+        \arrow["{\alpha_{DI}^{-1}}"', from=3-1, to=4-1]
+        \arrow["{\alpha_{DI}^{-1}}", from=2-3, to=3-3]
+        \arrow["{\alpha_{DI'}^{-1}}", from=3-3, to=4-3]
+        \arrow["{\alpha_{DI}}"', from=2-1, to=3-1]
+    \end{tikzcd}
+    \end{equation*}
+    We can see that $k$ and $k'$ are invere of each other, thus $k$ is an isomorphism. Finally, since there is an isomorphism from $\alpha_{\lim D}:F\lim D\to G\lim D$, from lemma \ref{lemma:morph-from-isos}, we can find a isomorphism $h:G\lim D\to \lim GD$, as shown in RHS diagram.
+\end{proof}
+\end{dem}
+
+
+\begin{proposition}
+    Given a functor $F:\textbf{C}\rightarrow\textbf{D}$ that indicates the equvialent of categories, we can also show that $F$ is continuous.
+    \checkproof Check the proof again, or simplify them.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    We want to show that $F\lim D\cong \lim FD$. Let's start with the obvious map between $F\lim D\to \lim FD$, which follows from the universal property of $\lim FD$ (as shown in the LHS diagram)
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJGXFxsaW0gRCJdLFsxLDEsIlxcbGltIEZEIl0sWzAsMiwiRkRJIl0sWzIsMiwiRkRJJyJdLFsxLDIsIlxcYmV0YV9JIl0sWzEsMywiXFxiZXRhX3tJJ30iLDJdLFswLDEsImYiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwyLCJGXFxhbHBoYV9JIiwyLHsiY3VydmUiOjJ9XSxbMCwzLCJGXFxhbHBoYV97SSd9IiwwLHsiY3VydmUiOi0yfV0sWzIsMywiRkRtIiwyXV0=
+    \begin{tikzcd}
+        & {F\lim D} \\
+        & {\lim FD} \\
+        FDI && {FDI'}
+        \arrow["{\beta_I}", from=2-2, to=3-1]
+        \arrow["{\beta_{I'}}"', from=2-2, to=3-3]
+        \arrow["f", dashed, from=1-2, to=2-2]
+        \arrow["{F\alpha_I}"', curve={height=12pt}, from=1-2, to=3-1]
+        \arrow["{F\alpha_{I'}}", curve={height=-12pt}, from=1-2, to=3-3]
+        \arrow["FDm"', from=3-1, to=3-3]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNCxbMCwyLCJESSJdLFsxLDEsIlxcbGltIEQiXSxbMiwyLCJESSciXSxbMSwwLCJBIl0sWzEsMCwiXFxhbHBoYV9JIiwyXSxbMCwyLCJEbSIsMl0sWzMsMCwiXFxwaGlfSSIsMix7ImN1cnZlIjoyfV0sWzMsMSwiaCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxLDIsIlxcYWxwaGFfe0knfSJdLFszLDIsIlxccGhpX3tJJ30iLDAseyJjdXJ2ZSI6LTJ9XV0=
+    \begin{tikzcd}
+        & A \\
+        & {\lim D} \\
+        DI && {DI'}
+        \arrow["{\alpha_I}"', from=2-2, to=3-1]
+        \arrow["Dm"', from=3-1, to=3-3]
+        \arrow["{\phi_I}"', curve={height=12pt}, from=1-2, to=3-1]
+        \arrow["h", dashed, from=1-2, to=2-2]
+        \arrow["{\alpha_{I'}}", from=2-2, to=3-3]
+        \arrow["{\phi_{I'}}", curve={height=-12pt}, from=1-2, to=3-3]
+    \end{tikzcd}
+    \end{equation*}
+    where $\alpha_I$ is part of universal property of $\lim D$. Since $F$ is essentially surjective, there is object $A$ of $\textbf{C}$ such that $g:FA\xrightarrow{\cong}\lim FD$. Then we can consider the component of natural transformation to be $\gamma_I = \beta_I\circ g$ and so on, for each $I$ of $\textbf{J}$. Since $F$ is fully faithful, there is $\phi_I$ such that $F\phi_I=\gamma_I$. We will use $\phi_I$ to consturct the map $h:A\to \lim D$ via universal property (see RHS).
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwzLCJGREkiXSxbMSwxLCJGXFxsaW0gRCJdLFsyLDMsIkZESSciXSxbMSwyLCJcXGxpbSBGRCJdLFsxLDAsIlxcbGltIEZEIl0sWzEsMCwiRlxcYWxwaGFfSSIsMSx7ImN1cnZlIjoyfV0sWzAsMiwiRkRtIiwyXSxbMSwyLCJGXFxhbHBoYV97SSd9IiwxLHsiY3VydmUiOi0yfV0sWzEsMywiZiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDAsIlxcYmV0YV9JIl0sWzMsMiwiXFxiZXRhX3tJJ30iLDJdLFs0LDAsIlxcYmV0YV97SX0iLDIseyJjdXJ2ZSI6M31dLFs0LDIsIlxcYmV0YV97SSd9IiwwLHsiY3VydmUiOi0zfV0sWzQsMSwiRmhcXGNpcmMgZ157LTF9IiwxXV0=
+    \begin{tikzcd}
+        & {\lim FD} \\
+        & {F\lim D} \\
+        & {\lim FD} \\
+        FDI && {FDI'}
+        \arrow["{F\alpha_I}"{description}, curve={height=12pt}, from=2-2, to=4-1]
+        \arrow["FDm"', from=4-1, to=4-3]
+        \arrow["{F\alpha_{I'}}"{description}, curve={height=-12pt}, from=2-2, to=4-3]
+        \arrow["f", dashed, from=2-2, to=3-2]
+        \arrow["{\beta_I}", from=3-2, to=4-1]
+        \arrow["{\beta_{I'}}"', from=3-2, to=4-3]
+        \arrow["{\beta_{I}}"', curve={height=18pt}, from=1-2, to=4-1]
+        \arrow["{\beta_{I'}}", curve={height=-18pt}, from=1-2, to=4-3]
+        \arrow["{Fh\circ g^{-1}}"{description}, from=1-2, to=2-2]
+    \end{tikzcd}\qquad \quad
+    % https://q.uiver.app/#q=WzAsNSxbMCwzLCJGREkiXSxbMSwyLCJGXFxsaW0gRCJdLFsyLDMsIkZESSciXSxbMSwwLCJcXGxpbSBGRCJdLFsxLDEsIkZBIl0sWzEsMCwiRlxcYWxwaGFfSSIsMSx7ImN1cnZlIjoxfV0sWzAsMiwiRkRtIiwyXSxbMSwyLCJGXFxhbHBoYV97SSd9IiwxLHsiY3VydmUiOi0xfV0sWzMsMCwiXFxiZXRhX3tJfSIsMix7ImN1cnZlIjozfV0sWzMsMiwiXFxiZXRhX3tJJ30iLDAseyJjdXJ2ZSI6LTN9XSxbNCwwLCJcXGJldGFfSVxcY2lyYyBnIiwxLHsiY3VydmUiOjJ9XSxbNCwxLCJGaCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDIsIlxcYmV0YV97SSd9XFxjaXJjIGciLDEseyJjdXJ2ZSI6LTJ9XSxbMyw0LCJnXnstMX0iLDFdXQ==
+    \begin{tikzcd}
+        & {\lim FD} \\
+        & FA \\
+        & {F\lim D} \\
+        FDI && {FDI'}
+        \arrow["{F\alpha_I}"{description}, curve={height=6pt}, from=3-2, to=4-1]
+        \arrow["FDm"', from=4-1, to=4-3]
+        \arrow["{F\alpha_{I'}}"{description}, curve={height=-6pt}, from=3-2, to=4-3]
+        \arrow["{\beta_{I}}"', curve={height=18pt}, from=1-2, to=4-1]
+        \arrow["{\beta_{I'}}", curve={height=-18pt}, from=1-2, to=4-3]
+        \arrow["{\beta_I\circ g}"{description}, curve={height=12pt}, from=2-2, to=4-1]
+        \arrow["Fh", dashed, from=2-2, to=3-2]
+        \arrow["{\beta_{I'}\circ g}"{description}, curve={height=-12pt}, from=2-2, to=4-3]
+        \arrow["{g^{-1}}"{description}, from=1-2, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    Note that the diagram above all arrows commutes. Thus we have that $f\circ(Fh\circ g^{-1})=\operatorname{id}_{\lim FD}$. And the other direction can be proven in similar manners. Thus, we have shown that $f$ is an isomorphism.
+\end{proof}
+\end{dem}
+
+\begin{theorem}
+    \label{thm:rep-functor-continuous}
+    Representable functors are continuous
+\end{theorem}
+\begin{dem}
+\begin{proof}
+    We note that the action are given to be $(Dm\circ-):\operatorname{Hom}_\textbf{C}(X,DI)\to\operatorname{Hom}_\textbf{C}(X,DI')$. Then, we can consider the following diagram (and we have used the notation from the construction of limit in a $\textbf{Set}$):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFgsREkpIl0sWzIsMSwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShYLERJJykiXSxbMSwwLCJcXGxpbVxcYmlnKFxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oWCxELSlcXGJpZykiXSxbMCwxLCIoRG1cXGNpcmMtKSIsMl0sWzIsMCwiXFxwaV9JIiwyXSxbMiwxLCJcXHBpX3tJJ30iXV0=
+    \begin{tikzcd}
+        & {\lim\big(\operatorname{Hom}_\textbf{C}(X,D-)\big)} \\
+        {\operatorname{Hom}_\textbf{C}(X,DI)} && {\operatorname{Hom}_\textbf{C}(X,DI')}
+        \arrow["{\pi_I}"', from=1-2, to=2-1]
+        \arrow["{\pi_{I'}}", from=1-2, to=2-3]
+        \arrow["{(Dm\circ-)}"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    where we note that $\lim\big(\operatorname{Hom}_\textbf{C}(X,D-)\big)\subseteq \prod_{I\in\operatorname{Obj}(\textbf{J})}\operatorname{Hom}_\textbf{C}(X,DI)$ such that for an element $\alpha$ of the limit (displayed below) 
+    \begin{equation*}
+        \alpha=(f_I:X\to DI)_{I\in\operatorname{Obj}(\textbf{J})}\in \lim\big(\operatorname{Hom}_\textbf{C}(X,D-)\big)
+    \end{equation*}
+    Being the tuple of functions $X\to DI$ such that $Dm\circ\pi_I(\alpha)=\pi_{I'}(\alpha)$, or $Dm\circ f_I=f_{I'}$, where $\pi_I(\alpha)=f_I$ and $\pi_{I'}(\alpha)=f_I'$ as $\pi_I,\pi_{I'}$ are the projection of the product. Observe that this $\alpha$ acts like the natural transformation between the constant functor $X$ and diagram $D$ i.e it is a cone. 
+    
+    On the other hand, we can change an element of cone to be the element in the $\lim\big(\operatorname{Hom}_\textbf{C}(X,D-)\big)$ by ``bundle'' all of its compoent into a tuple. And the commutative condition is still satisifed (as it is simply the naturality condition). Thus we have:
+    \begin{equation*}
+        \lim\big(\operatorname{Hom}_\textbf{C}(X,D-)\big) \cong \operatorname{Cone}(X,D)\cong \operatorname{Hom}_\textbf{C}(X, \lim D)
+    \end{equation*}
+\end{proof}
+\end{dem}
+
+\begin{corollary}
+    Given representable pre-sheaf $P:\textbf{C}^\text{op}\rightarrow\textbf{Set}$, then $P$ turns co-limit to limit i.e with diagram $D:\textbf{J}\rightarrow\textbf{C}$ that has colimit, then limit of $P\circ D$ exists and: 
+    \begin{equation*}
+        \lim P\circ D = P(\operatorname{colim}D)
+    \end{equation*}
+\end{corollary}
+
+\subsection{Instances of Limit}
+
+Let's consider various instances of limit that we have consider in the sections above, starting with the simpliest one:
+
+\begin{definition}{\textbf{(Initial/Terminal Object)}}
+    We start with the empty category $\textbf{O}$, which is small. Consider the empty diagram $E:\textbf{O}\rightarrow\textbf{C}$ i.e:
+    \begin{equation*}
+    \end{equation*}
+    The cone (and co-cone) over this diagram is just an object $X$ with an identity morphism of $X$. Now, we have that the limit and co-limit are given to be:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzEsMCwiXFxsaW0gRiJdLFszLDAsIlxcb3BlcmF0b3JuYW1le2NvbGltfUYiXSxbNCwwLCJYIl0sWzAsMSwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzIsMywiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+    \begin{tikzcd}
+        X & {\lim F} && {\operatorname{colim}F} & X
+        \arrow[dashed, from=1-1, to=1-2]
+        \arrow[dashed, from=1-4, to=1-5]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+Then we have:
+
+\begin{definition}{\textbf{(Categorical Product)}}
+    From definition \ref{def:cat-prod}, we can define the \textit{product} (or \textit{co-product}) to be the limit (or co-limit) of the discrete diagram $F$: 
+    \begin{equation*}
+        A \qquad \quad B
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Equalizer/Co-Equalizer)}}
+    The notion of \textit{equalizer} (or \textit{coequalizer}) is the limit (or co-limit) of the digram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMixbMCwwLCJBIl0sWzEsMCwiQiJdLFswLDEsImYiLDAseyJvZmZzZXQiOi0xfV0sWzAsMSwiZyIsMix7Im9mZnNldCI6MX1dXQ==
+    \begin{tikzcd}
+        A & B
+        \arrow["f", shift left, from=1-1, to=1-2]
+        \arrow["g"', shift right, from=1-1, to=1-2]
+    \end{tikzcd}
+    \end{equation*}
+    In which, we have the following commutative diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMSwxLCJBIl0sWzIsMSwiQiJdLFsxLDAsIlxcbGltIEYiXSxbMCwxLCJYIl0sWzQsMSwiQSJdLFs1LDEsIkIiXSxbNiwwLCJcXG9wZXJhdG9ybmFtZXtjb2xpbX1GIl0sWzYsMSwiWSJdLFswLDEsImciLDIseyJvZmZzZXQiOjF9XSxbMCwxLCJmIiwwLHsib2Zmc2V0IjotMX1dLFsyLDAsIm0iXSxbMywwLCJwIiwyXSxbMywyLCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCw1LCJnIiwyLHsib2Zmc2V0IjoxfV0sWzQsNSwiZiIsMCx7Im9mZnNldCI6LTF9XSxbNSw3LCJxIiwyXSxbNiw3LCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSw2LCJuIl1d
+    \begin{tikzcd}
+        & {\lim F} &&&&& {\operatorname{colim}F} \\
+        X & A & B && A & B & Y
+        \arrow["g"', shift right, from=2-2, to=2-3]
+        \arrow["f", shift left, from=2-2, to=2-3]
+        \arrow["m", from=1-2, to=2-2]
+        \arrow["p"', from=2-1, to=2-2]
+        \arrow[dashed, from=2-1, to=1-2]
+        \arrow["g"', shift right, from=2-5, to=2-6]
+        \arrow["f", shift left, from=2-5, to=2-6]
+        \arrow["q"', from=2-6, to=2-7]
+        \arrow[dashed, from=1-7, to=2-7]
+        \arrow["n", from=2-6, to=1-7]
+    \end{tikzcd}
+    \end{equation*}
+    Note that we have ignore the map $p':X\rightarrow B$ on the LHS diagram because, by definition of the cone: $f\circ p=p'=g\circ p$ (on the limit's diagram on the LHS), $p'$ is just a composition.
+\end{definition}
+
+\begin{proposition}
+    Given the definiton of equalizer above, we can show that the universal map $m:\lim F\rightarrow A$ is necessary mono.
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    Given any function $a:Y\to\lim F$ and $b:Y\to\lim F$ for any object $Y$, by the universal property, for every $a$, there is a \textit{unique} $a\circ m:Y\to A$. Therefore, if $a\circ m=b\circ m$ then $a=b$. Thus $m$ is mono.
+\end{proof}
+\end{dem}
+
+This also gives us the dual statement:
+
+\begin{proposition}
+    Given the definition of coequalizer above, we can show that the universal map $e:B\rightarrow\operatorname{colim}F$ is necessary epi.
+\end{proposition}
+
+\begin{remark}{\textbf{(Equalizer in $\textbf{Set}$)}}
+    With our common tradition, we can consider the role of equalizer in the context of $\textbf{Set}$. Before we doing that, from the commutative diagram, we can see that given $p:X\to A$ we have $f\circ p=g\circ p$. Note that we can't claim that $f=g$ as $p$ doesn't have to be an epi.
+
+    Let $X$ being the intial object $1$, and note that since $m$ can be shown to be monomorphism or injective in $\textbf{Set}$ by proposition \ref{prop:mono-iff-injective}. Thus, one can treat $\lim F\subseteq A$. Thus we can define it to be:
+
+    \begin{equation*}
+        \lim F = \big\{ a\in A : f(a) = g(a) \big\}
+    \end{equation*}
+    
+    As the intial object $1$ requires to to every element in $\lim F$, and $A$. In other words, the equalizer $\lim F$ is the largetest subset of $A$ that $f$ and $g$ agree.
+\end{remark}
+
+\begin{remark}{\textbf{(Co-Equalizer in $\textbf{Set}$)}}
+    By definition, given $a\in A$, we have that $n(f(a))=n(g(a))$, where $n$ is the universal map. Observe that $\operatorname{colim} F$ acts akin to set of equivalence classes over the set $B$, where $n$ being the surjective function (proposition \ref{prop:epi-iff-surjective}) that maps each element into an equivalent class:
+
+    \begin{itemize}
+        \item Let's try to define an relation within $B$ first, we denote $b\sim b'$ iff $b=f(a)$ and $b'=g(a)$ for some $a\in A$. Furthermore, we can extends this relation into an smallest equivalence relation that contains the relation (intersect of all equivalence classes that contaisn this relation). Thus, $\operatorname{colim} F=B/\sim$.
+        \item That is because, for any $Y$ with $q:B\to Y$, we are required that for any $a\in A$, we have $q(f(a))=q(g(a))$ thus $q$ shouldn't distinguish between $b=f(a)$ and $b'=g(a)$ i.e $q$ should based on the equivalence classes defined above. And the bear minimum of being able to (non-)distinguish follows from definition of $\operatorname{colim} F$, hence the universal property. 
+    \end{itemize}
+\end{remark}
+
+\begin{definition}{\textbf{(Pullback/Pushout)}}
+    The notion of pullback (or pushout) is the limit (or co-limit) of the diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMSwwLCJBIl0sWzEsMSwiQyJdLFswLDEsIkIiXSxbMywwLCJBIl0sWzQsMCwiQiJdLFszLDEsIkMiXSxbMiwxLCJnIiwyXSxbMCwxLCJmIl0sWzMsNSwiZyIsMl0sWzMsNCwiZiJdXQ==
+    \begin{tikzcd}
+        & A && A & B \\
+        B & C && C
+        \arrow["g"', from=2-1, to=2-2]
+        \arrow["f", from=1-2, to=2-2]
+        \arrow["g"', from=1-4, to=2-4]
+        \arrow["f", from=1-4, to=1-5]
+    \end{tikzcd}
+    \end{equation*}
+    We have the following cone (or co-cone) with the following commutative diagram as:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzIsMSwiQSJdLFsyLDIsIkMiXSxbMSwyLCJCIl0sWzQsMCwiQSJdLFs1LDAsIkIiXSxbNCwxLCJDIl0sWzEsMSwiXFxsaW0gRiJdLFswLDAsIlgiXSxbNSwxLCJcXG9wZXJhdG9ybmFtZXtjb2xpbX0gRiJdLFs2LDIsIlkiXSxbMiwxLCJnIiwyXSxbMCwxLCJmIl0sWzMsNSwiZyIsMl0sWzMsNCwiZiJdLFs2LDAsImZeKmciXSxbNiwyLCJnXipmIiwyXSxbNiwxLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNyw2LCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNywyLCJxIiwxLHsiY3VydmUiOjJ9XSxbNywwLCJwIiwwLHsiY3VydmUiOi0yfV0sWzUsOCwiZ14qZiIsMl0sWzQsOCwiZl4qZyJdLFs4LDksIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs1LDksIiIsMCx7ImN1cnZlIjoyfV0sWzQsOSwiIiwwLHsiY3VydmUiOi0yfV0sWzgsMywiIiwwLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+    \begin{tikzcd}
+        X &&&& A & B \\
+        & {\lim F} & A && C & {\operatorname{colim} F} \\
+        & B & C &&&& Y
+        \arrow["g"', from=3-2, to=3-3]
+        \arrow["f", from=2-3, to=3-3]
+        \arrow["g"', from=1-5, to=2-5]
+        \arrow["f", from=1-5, to=1-6]
+        \arrow["{f^*g}", from=2-2, to=2-3]
+        \arrow["{g^*f}"', from=2-2, to=3-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow[dashed, from=1-1, to=2-2]
+        \arrow["q"{description}, curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["p", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["{g^*f}"', from=2-5, to=2-6]
+        \arrow["{f^*g}", from=1-6, to=2-6]
+        \arrow[dashed, from=2-6, to=3-7]
+        \arrow[curve={height=12pt}, from=2-5, to=3-7]
+        \arrow[curve={height=-12pt}, from=1-6, to=3-7]
+        \arrow["\lrcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-6, to=1-5]
+    \end{tikzcd}
+    \end{equation*}
+    Note that the pullback can be denoted as $A\times_CB$. On the other hand, the pushout $B\sqcup_AC$. The symbol of the corner also denote it is the pullback and pushout. 
+\end{definition}
+
+\subsection{All about Pullback}
+
+\todo Add references. We will consider the fact that pullback diagram was quite ubiquitous. Let's start with a re-definition of monomorphism and epimorphism:
+
+\begin{remark}{\textbf{(Mono/Epi in Pullback/Pushout)}}
+    \label{remark:mono-pullback}
+    Given a morphism $f:A\to B$, $f$ is monomorphism (or epimorphism) if the left (or right) diagram is a pullback (or pushout)
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMSwwLCJBIl0sWzEsMSwiQyJdLFswLDEsIkEiXSxbMywwLCJBIl0sWzQsMCwiQiJdLFszLDEsIkIiXSxbMCwwLCJBIl0sWzQsMSwiQiJdLFsyLDEsImYiLDJdLFswLDEsImYiXSxbMyw1LCJmIiwyXSxbMyw0LCJmIl0sWzYsMCwiXFxvcGVyYXRvcm5hbWV7aWR9X0EiXSxbNiwyLCJcXG9wZXJhdG9ybmFtZXtpZH1fQSIsMl0sWzYsMSwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzUsNywiXFxvcGVyYXRvcm5hbWV7aWR9X0IiLDJdLFs0LDcsIlxcb3BlcmF0b3JuYW1le2lkfV9CIl0sWzcsMywiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lci1pbnZlcnNlIn19XV0=
+    \begin{tikzcd}
+        A & A && A & B \\
+        A & C && B & B
+        \arrow["f"', from=2-1, to=2-2]
+        \arrow["f", from=1-2, to=2-2]
+        \arrow["f"', from=1-4, to=2-4]
+        \arrow["f", from=1-4, to=1-5]
+        \arrow["{\operatorname{id}_A}", from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_A}"', from=1-1, to=2-1]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+        \arrow["{\operatorname{id}_B}"', from=2-4, to=2-5]
+        \arrow["{\operatorname{id}_B}", from=1-5, to=2-5]
+        \arrow["\ulcorner"{anchor=center, pos=0.125, rotate=180}, draw=none, from=2-5, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+    For the pullback case, we can see that the commutativity forces $p:X\to A$ and $q:X\to A$ to be same function, if we were to have a diagram being commute. Thus satisfies the original definition of monomorphism. Please recall that the limit here requires \textit{both} the map $\operatorname{id}_A:A\to A$ and the object $A$ itself. 
+\end{remark}
+
+\begin{remark}{\textbf{(Product as Pullback)}}
+    Given objects $X$ and $Y$ their product can be defined via a pullback as their product as $X\times Y\cong X\times_1Y$.
+\end{remark}
+
+We will now consider how the pullback preserves the isomorphism and identity, in the following sense.
+
+\begin{proposition}
+    The pullback of an isomorphism along any morphis is an isomorphism. That is given the diagram $D$ with an isomorphism $f_1:A\to C$ and arbitrary morphism $g_1:B\to C$, then their pullback:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJBIl0sWzEsMSwiQyJdLFswLDEsIkIiXSxbMCwwLCJcXGxpbSBEIl0sWzIsMSwiZ18xIiwyXSxbMywwLCJnXzIiXSxbMywyLCJmXzIiLDJdLFszLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFswLDEsImZfMSJdLFszLDIsIlxcY29uZyJdLFswLDEsIlxcY29uZyIsMl1d
+    \begin{tikzcd}
+        {\lim D} & A \\
+        B & C
+        \arrow["{g_1}"', from=2-1, to=2-2]
+        \arrow["{g_2}", from=1-1, to=1-2]
+        \arrow["{f_2}"', from=1-1, to=2-1]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+        \arrow["{f_1}", from=1-2, to=2-2]
+        \arrow["\cong", from=1-1, to=2-1]
+        \arrow["\cong"', from=1-2, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    gives us morphism $f_2:\lim D\to B$, which is isomorphism.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    We have to find the inverse of $f_2$ to show that it is isomorphic. Using the universal property, we can define a cone with a tip of $B$ and the map: $\operatorname{id}_B:B\to B$ and $f^{-1}_1\circ g_1:B\to A$ (as $f$ is invertible). Note that it is clear that the cone commutes i.e $f_1\circ f^{-1}_1\circ g_1=g_1\circ\operatorname{id}_B$. And so, there would be a unique map $f':B\to\lim D$, see red diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMiwxLCJBIl0sWzIsMiwiQyJdLFsxLDEsIlxcbGltIEQiXSxbMCwwLCJCIl0sWzEsMiwiQiJdLFsyLDAsImdfMiJdLFsyLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFswLDEsImZfMSJdLFswLDEsIlxcY29uZyIsMl0sWzMsMCwiZl8xXnstMX1cXGNpcmMgZ18xIiwxLHsiY3VydmUiOi0yfV0sWzQsMSwiZ18xIiwyXSxbMiw0LCJmXzIiLDJdLFszLDQsIlxcb3BlcmF0b3JuYW1le2lkfV9CIiwxLHsiY3VydmUiOjJ9XSxbMywyLCJmJyIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        B \\
+        & {\lim D} & A \\
+        & B & C
+        \arrow["{g_2}", from=2-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["{f_1}", from=2-3, to=3-3]
+        \arrow["\cong"', from=2-3, to=3-3]
+        \arrow["{f_1^{-1}\circ g_1}"{description}, curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["{g_1}"', from=3-2, to=3-3]
+        \arrow["{f_2}"', from=2-2, to=3-2]
+        \arrow["{\operatorname{id}_B}"{description}, curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["{f'}"{description}, dashed, from=1-1, to=2-2]
+    \end{tikzcd}
+    \qquad \quad 
+    % https://q.uiver.app/#q=WzAsNSxbMiwxLCJBIl0sWzIsMiwiQyJdLFsxLDEsIlxcbGltIEQiXSxbMSwyLCJCIl0sWzAsMCwiXFxsaW0gRCJdLFsyLDAsImdfMiJdLFsyLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFswLDEsImZfMSJdLFswLDEsIlxcY29uZyIsMl0sWzMsMSwiZ18xIiwyXSxbMiwzLCJmXzIiLDJdLFs0LDAsImZfMV57LTF9XFxjaXJjIGdfMVxcY2lyYyBmXzIiLDAseyJjdXJ2ZSI6LTJ9XSxbNCwzLCJmXzIiLDIseyJjdXJ2ZSI6Mn1dLFs0LDIsImYnXFxjaXJjIGZfMiIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        {\lim D} \\
+        & {\lim D} & A \\
+        & B & C
+        \arrow["{g_2}", from=2-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["{f_1}", from=2-3, to=3-3]
+        \arrow["\cong"', from=2-3, to=3-3]
+        \arrow["{g_1}"', from=3-2, to=3-3]
+        \arrow["{f_2}"', from=2-2, to=3-2]
+        \arrow["{f_1^{-1}\circ g_1\circ f_2}", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["{f_2}"', curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["{f'\circ f_2}"{description}, dashed, from=1-1, to=2-2]
+    \end{tikzcd}
+    \qquad \quad 
+    % https://q.uiver.app/#q=WzAsNixbMywyLCJBIl0sWzMsMywiQyJdLFsyLDIsIlxcbGltIEQiXSxbMSwxLCJCIl0sWzIsMywiQiJdLFswLDAsIlxcbGltIEQiXSxbMiwwLCJnXzIiXSxbMiwxLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMCwxLCJmXzEiXSxbMCwxLCJcXGNvbmciLDJdLFszLDAsImZfMV57LTF9XFxjaXJjIGdfMSIsMSx7ImN1cnZlIjotMiwiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwxLCJnXzEiLDJdLFsyLDQsImZfMiIsMl0sWzMsNCwiXFxvcGVyYXRvcm5hbWV7aWR9X0IiLDEseyJjdXJ2ZSI6MiwiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMywyLCJmJyIsMSx7ImNvbG91ciI6WzAsNjAsNjBdLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19LFswLDYwLDYwLDFdXSxbNSwzLCJmXzIiLDEseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbNSwwLCJnXzIiLDAseyJjdXJ2ZSI6LTMsImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs1LDQsImZfMiIsMix7ImN1cnZlIjozLCJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXV0=
+    \end{equation*}
+    By the way we define, we have $f_2\circ f'=\operatorname{id}_B$. We then use the same trick to get RHS diagram, where we note that $f_1^{-1}\circ g_1\circ f_2=g_2$ (thus the diagram all commute) and so $f'\circ f_2=\operatorname{id}_{\lim D}$ as constructed from a cone whose edge are $g_2$ and $f_2$.
+\end{proof}
+\end{dem}
+
+\begin{proposition}
+    \label{prop:identity-pullback}
+    The pullback of an identity along any morphism $g_1:B\to C$ is an identity. Then we have the following pullback (on the LHS).
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJBIl0sWzEsMSwiQSJdLFswLDAsIkIiXSxbMCwxLCJCIl0sWzIsMCwiZyJdLFsyLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFszLDEsImciLDJdLFsyLDMsIiIsMix7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzAsMSwiIiwwLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+    \begin{tikzcd}
+        B & A \\
+        B & A
+        \arrow["g", from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+        \arrow["g"', from=2-1, to=2-2]
+        \arrow[Rightarrow, no head, from=1-1, to=2-1]
+        \arrow[Rightarrow, no head, from=1-2, to=2-2]
+    \end{tikzcd}
+    \qquad \quad 
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJBIl0sWzEsMSwiQSJdLFswLDAsIlxcbGltIEQiXSxbMCwxLCJCIl0sWzIsMCwiZyciXSxbMiwxLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMywxLCJnIiwyXSxbMiwzLCJmXzIiLDJdLFswLDEsIiIsMCx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV1d
+    \begin{tikzcd}
+        {\lim D} & A \\
+        B & A
+        \arrow["{g'}", from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+        \arrow["g"', from=2-1, to=2-2]
+        \arrow["{f_2}"', from=1-1, to=2-1]
+        \arrow[Rightarrow, no head, from=1-2, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    \textbf{Warning}, we are only required to show that the LHS diagram is a pullback, but we note that there can be another pullback given by the RHS diagram where $\lim D\ne B$ only $\lim D\cong B$ since $\operatorname{id}_A$ can be consider to be an isomorphism too.
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    Given any object $C$, we have the following diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMiwxLCJBIl0sWzIsMiwiQSJdLFsxLDEsIkIiXSxbMSwyLCJCIl0sWzAsMCwiQyJdLFsyLDAsImciXSxbMiwxLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMywxLCJnIiwyXSxbMiwzLCIiLDIseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFswLDEsIiIsMCx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzQsMiwiaCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDAsImdcXGNpcmMgaCIsMCx7ImN1cnZlIjotMn1dLFs0LDMsImgiLDIseyJjdXJ2ZSI6Mn1dXQ==
+    \begin{tikzcd}
+        C \\
+        & B & A \\
+        & B & A
+        \arrow["g", from=2-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["g"', from=3-2, to=3-3]
+        \arrow[Rightarrow, no head, from=2-2, to=3-2]
+        \arrow[Rightarrow, no head, from=2-3, to=3-3]
+        \arrow["h"{description}, dashed, from=1-1, to=2-2]
+        \arrow["{g\circ h}", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["h"', curve={height=12pt}, from=1-1, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    The $C\to A$ can be derived from the commutativity of the cone, thus everyhing is specified by the map $C\to B$ uniquely, as needed.
+\end{proof}
+\end{dem}
+
+Now, we consider the 2 pullback diagram together, and show that there is no ambiguity in doing so. 
+
+\begin{proposition}
+    Given the following commutative diagram, suppose that $(B, C, B', C')$ square are pullback:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJBIl0sWzEsMCwiQiJdLFsyLDAsIkMiXSxbMCwxLCJBJyJdLFsxLDEsIkInIl0sWzIsMSwiQyciXSxbMiw1LCJjIl0sWzEsMiwiZyJdLFs0LDUsImcnIiwyXSxbMSw0LCJiIiwyXSxbMCwzLCJhIiwyXSxbMyw0LCJmJyIsMl0sWzAsMSwiZiJdLFsxLDUsIiIsMCx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+    \begin{tikzcd}
+        A & B & C \\
+        {A'} & {B'} & {C'}
+        \arrow["c", from=1-3, to=2-3]
+        \arrow["g", from=1-2, to=1-3]
+        \arrow["{g'}"', from=2-2, to=2-3]
+        \arrow["b"', from=1-2, to=2-2]
+        \arrow["a"', from=1-1, to=2-1]
+        \arrow["{f'}"', from=2-1, to=2-2]
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    Then $(A, B, A', B')$ square is a pullback iff $(A, C, A', C')$ rectangle is a pullback.
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    $\boldsymbol{(\implies)}$ If $(A, B, A', B')$ is a pullback, then is if we consider arbitrary object $X$ in $\textbf{C}$ with the morphism $h:X\to A$, then we got 2 commutes diagrams:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMSwiQSJdLFsyLDEsIkIiXSxbNSwxLCJDIl0sWzEsMiwiQSciXSxbMiwyLCJCJyJdLFs1LDIsIkMnIl0sWzAsMCwiWCJdLFs0LDEsIkIiXSxbNCwyLCJCJyJdLFszLDAsIlgiXSxbMiw1LCJjIl0sWzEsNCwiYiJdLFswLDMsImEiLDJdLFszLDQsImYnIiwyXSxbMCwxLCJmIl0sWzYsMCwiaCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDQsIiIsMCx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFs2LDMsInAiLDIseyJjdXJ2ZSI6Mn1dLFs2LDEsInEiLDAseyJjdXJ2ZSI6LTJ9XSxbNyw1LCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNywyLCJnIl0sWzgsNSwiZyciLDJdLFs3LDgsImIiLDJdLFs5LDcsInEiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbOSw4LCJxXzEiLDIseyJjdXJ2ZSI6Mn1dLFs5LDIsInFfMiIsMCx7ImN1cnZlIjotMn1dXQ==
+    \begin{tikzcd}
+        X &&& X \\
+        & A & B && B & C \\
+        & {A'} & {B'} && {B'} & {C'}
+        \arrow["c", from=2-6, to=3-6]
+        \arrow["b", from=2-3, to=3-3]
+        \arrow["a"', from=2-2, to=3-2]
+        \arrow["{f'}"', from=3-2, to=3-3]
+        \arrow["f", from=2-2, to=2-3]
+        \arrow["h"{description}, dashed, from=1-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["p"', curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["q", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-5, to=3-6]
+        \arrow["g", from=2-5, to=2-6]
+        \arrow["{g'}"', from=3-5, to=3-6]
+        \arrow["b"', from=2-5, to=3-5]
+        \arrow["q", dashed, from=1-4, to=2-5]
+        \arrow["{q_1}"', curve={height=12pt}, from=1-4, to=3-5]
+        \arrow["{q_2}", curve={height=-12pt}, from=1-4, to=2-6]
+    \end{tikzcd}
+    \end{equation*}
+    That is $h$ induces the 2 unique arrows $q:X\to B$ and $p:X\to A'$ from pullback square $(A, B, A', B')$, especially the former, where $q$ will also induces 2 more unique arrow $q_2:X\to C$ and $q_1:X\to B$ , since the square $(B, C, B', C')$ is a pullback. It is clear that given a unique $h$, we will get a unique $q_2$. Furthermore, we have the following equalities:
+    \begin{equation*}
+    \begin{aligned}
+        f'\circ p = f'\circ a \circ h = b\circ f\circ h = b\circ q = q_1
+    \end{aligned}
+    \end{equation*}
+    Thus $q_1$ and $p$ are actually ``coherence'', so we can define an unique pair of morphism $(p, q_2)$ to be assigned to $h$ and vice versa i.e universal property. Thus $(A, C, A', C')$ is a pullback.
+
+    $\boldsymbol{(\impliedby)}$ If $(A, C, A', C')$ is a pullback, then if we consider arbitrary object $X$ in $\textbf{C}$ with morphism $h:X\to X$, then we got 2 commutative diagrams:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMSwiQSJdLFsyLDEsIkMiXSxbMSwyLCJBJyJdLFsyLDIsIkMnIl0sWzAsMCwiWCJdLFs1LDEsIkIiXSxbNSwyLCJCJyJdLFs2LDEsIkMiXSxbNiwyLCJDJyJdLFs0LDAsIlgiXSxbMSwzLCJjIl0sWzAsMiwiYSIsMl0sWzIsMywiZydcXGNpcmMgZiciLDJdLFswLDEsImdcXGNpcmMgZiJdLFs0LDAsImgiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwzLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCwyLCJxXzEiLDIseyJjdXJ2ZSI6Mn1dLFs0LDEsInFfMiIsMCx7ImN1cnZlIjotMn1dLFs2LDgsImcnIiwyXSxbNSw2LCJiIiwyXSxbNyw4LCJjIl0sWzUsNywiZyJdLFs5LDcsInFfMiIsMCx7ImN1cnZlIjotMn1dLFs5LDYsImYnXFxjaXJjIHFfMSIsMix7ImN1cnZlIjoyfV0sWzksNSwicSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        X &&&& X \\
+        & A & C &&& B & C \\
+        & {A'} & {C'} &&& {B'} & {C'}
+        \arrow["c", from=2-3, to=3-3]
+        \arrow["a"', from=2-2, to=3-2]
+        \arrow["{g'\circ f'}"', from=3-2, to=3-3]
+        \arrow["{g\circ f}", from=2-2, to=2-3]
+        \arrow["h"{description}, dashed, from=1-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["{q_1}"', curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["{q_2}", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["{g'}"', from=3-6, to=3-7]
+        \arrow["b"', from=2-6, to=3-6]
+        \arrow["c", from=2-7, to=3-7]
+        \arrow["g", from=2-6, to=2-7]
+        \arrow["{q_2}", curve={height=-12pt}, from=1-5, to=2-7]
+        \arrow["{f'\circ q_1}"', curve={height=12pt}, from=1-5, to=3-6]
+        \arrow["q", dashed, from=1-5, to=2-6]
+    \end{tikzcd}
+    \end{equation*}
+    That is $h$ induces 2 arrows $q_1:X\to A'$ and $q_2:X\to C$ from pullback square $(A, C, A', C')$. Then, we can create 1 more arrow $q_1\circ f':X\to B'$ which, together with $q_2$, we are able to induce a unqiue arrow $q:X\to B$ via pullback square $(B, C, B', C')$. First, we note that: $g\circ q = q_2 = g\circ f\circ h$. Let's consider, the alternative pullback diagram of $(B, C, B', C')$, on LHS 
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMSwiQiJdLFsxLDIsIkInIl0sWzIsMSwiQyJdLFsyLDIsIkMnIl0sWzAsMCwiWCJdLFs0LDAsIlgiXSxbNSwxLCJBIl0sWzUsMiwiQSciXSxbNiwxLCJCIl0sWzYsMiwiQiciXSxbMSwzLCJnJyIsMl0sWzAsMSwiYiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzIsMywiYyJdLFswLDIsImciXSxbNCwyLCJxXzIiLDAseyJjdXJ2ZSI6LTJ9XSxbNCwxLCJmJ1xcY2lyYyBxXzEiLDIseyJjdXJ2ZSI6MiwiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCwwLCJmXFxjaXJjIGgiLDEseyJjb2xvdXIiOlswLDYwLDYwXSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fSxbMCw2MCw2MCwxXV0sWzcsOSwiZiciLDJdLFs2LDcsImEiLDJdLFs4LDksImIiXSxbNiw4LCJmIl0sWzUsOCwicSIsMCx7ImN1cnZlIjotMiwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzUsNywicV8xIiwyLHsiY3VydmUiOjJ9XSxbNSw2LCJoIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMywiIiwwLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+    \begin{tikzcd}
+        X &&&& X \\
+        & B & C &&& A & B \\
+        & {B'} & {C'} &&& {A'} & {B'}
+        \arrow["{g'}"', from=3-2, to=3-3]
+        \arrow["b"', color={rgb,255:red,214;green,92;blue,92}, from=2-2, to=3-2]
+        \arrow["c", from=2-3, to=3-3]
+        \arrow["g", from=2-2, to=2-3]
+        \arrow["{q_2}", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["{f'\circ q_1}"', color={rgb,255:red,214;green,92;blue,92}, curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["{f\circ h}"{description}, color={rgb,255:red,214;green,92;blue,92}, dashed, from=1-1, to=2-2]
+        \arrow["{f'}"', from=3-6, to=3-7]
+        \arrow["a"', from=2-6, to=3-6]
+        \arrow["b", from=2-7, to=3-7]
+        \arrow["f", from=2-6, to=2-7]
+        \arrow["q", curve={height=-12pt}, dashed, from=1-5, to=2-7]
+        \arrow["{q_1}"', curve={height=12pt}, from=1-5, to=3-6]
+        \arrow["h"{description}, dashed, from=1-5, to=2-6]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+    \end{tikzcd}
+    \end{equation*}
+    We can show that the area highlighted in red commtues: $b\circ f\circ h = f'\circ a \circ h = f'\circ q_1$. Thus, $f\circ h$ also corresponds to a pair of arrows $(q_2, f'\circ q_1)$ just like $q$. Therefore, $f\circ h=q$ or the RHS diagram commutes. Thus, we have a unique pair of arrows $(q, q_1)$ given any $h:X\to A$ i.e a pullback of $(A, B, A', B')$, as needed.
+\end{proof}
+\end{dem}
+
+\begin{proposition}
+    Consider the following pullback diagram 
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJBJyJdLFsxLDAsIkEiXSxbMCwxLCJCJyJdLFsxLDEsIkIiXSxbMSwzLCJmIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibW9ubyJ9fX1dLFswLDIsImYnIiwyXSxbMCwxLCJnIl0sWzIsMywiaCIsMl0sWzAsMywiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+    \begin{tikzcd}
+        {A'} & A \\
+        {B'} & B
+        \arrow["f", tail, from=1-2, to=2-2]
+        \arrow["{f'}"', from=1-1, to=2-1]
+        \arrow["g", from=1-1, to=1-2]
+        \arrow["h"', from=2-1, to=2-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    If $f$ is a monomorphism, then $f'$ is also a monomorphism.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    From remark \ref{remark:mono-pullback}, we want to proof that the left square of the LHS diagram is a pullback:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTYsWzcsMCwiQSciLFsxMzksMjMsNDEsMV1dLFs4LDAsIkEiXSxbNywxLCJBJyIsWzEzOSwyMyw0MSwxXV0sWzksMSwiQiIsWzI0MCw2MCw2MCwxXV0sWzgsMSwiQSJdLFs5LDAsIkEiLFsyNDAsNjAsNjAsMV1dLFswLDAsIkEnIl0sWzEsMCwiQSciXSxbMSwxLCJCJyJdLFsyLDEsIkIiXSxbMiwwLCJBIl0sWzAsMSwiQSciXSxbNCwwLCJBJyJdLFs0LDEsIkEnIl0sWzUsMCwiQSJdLFs1LDEsIkIiXSxbMCwxLCJnIiwwLHsiY29sb3VyIjpbMTM5LDIzLDQxXX0sWzEzOSwyMyw0MSwxXV0sWzIsNCwiZyIsMix7ImNvbG91ciI6WzEzOSwyMyw0MV19LFsxMzksMjMsNDEsMV1dLFs0LDMsImYiLDIseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbNSwzLCJmIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzEsNSwiXFxvcGVyYXRvcm5hbWV7aWR9X0EiLDAseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMSw0LCIiLDEseyJjb2xvdXIiOlswLDYwLDYwXX1dLFs2LDExLCJcXG9wZXJhdG9ybmFtZXtpZH1fe0EnfSIsMl0sWzcsOCwiZiciLDJdLFs3LDEwLCJnIl0sWzcsOSwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzgsOSwiaCIsMl0sWzExLDgsImYnIiwyXSxbMTAsOSwiZiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1vbm8ifX19XSxbNiw3LCJcXG9wZXJhdG9ybmFtZXtpZH1fe0EnfSJdLFsxNCwxNSwiZiJdLFsxMiwxNCwiZyJdLFsxMywxNSwiaFxcY2lyYyBmJyIsMl0sWzEyLDEzLCIiLDIseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFswLDIsIiIsMix7ImxldmVsIjoyLCJjb2xvdXIiOlsxMzksMjMsNDFdLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzAsNCwiIiwwLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzEsMywiIiwwLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+    \begin{tikzcd}
+        {A'} & {A'} & A && {A'} & A && \textcolor{rgb,255:red,81;green,129;blue,96}{A'} & A & \textcolor{rgb,255:red,92;green,92;blue,214}{A} \\
+        {A'} & {B'} & B && {A'} & B && \textcolor{rgb,255:red,81;green,129;blue,96}{A'} & A & \textcolor{rgb,255:red,92;green,92;blue,214}{B}
+        \arrow["g", color={rgb,255:red,81;green,129;blue,96}, from=1-8, to=1-9]
+        \arrow["g"', color={rgb,255:red,81;green,129;blue,96}, from=2-8, to=2-9]
+        \arrow["f"', color={rgb,255:red,92;green,92;blue,214}, from=2-9, to=2-10]
+        \arrow["f", color={rgb,255:red,92;green,92;blue,214}, from=1-10, to=2-10]
+        \arrow["{\operatorname{id}_A}", color={rgb,255:red,92;green,92;blue,214}, from=1-9, to=1-10]
+        \arrow[color={rgb,255:red,214;green,92;blue,92}, from=1-9, to=2-9]
+        \arrow["{\operatorname{id}_{A'}}"', from=1-1, to=2-1]
+        \arrow["{f'}"', from=1-2, to=2-2]
+        \arrow["g", from=1-2, to=1-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-2, to=2-3]
+        \arrow["h"', from=2-2, to=2-3]
+        \arrow["{f'}"', from=2-1, to=2-2]
+        \arrow["f", tail, from=1-3, to=2-3]
+        \arrow["{\operatorname{id}_{A'}}", from=1-1, to=1-2]
+        \arrow["f", from=1-6, to=2-6]
+        \arrow["g", from=1-5, to=1-6]
+        \arrow["{h\circ f'}"', from=2-5, to=2-6]
+        \arrow[Rightarrow, no head, from=1-5, to=2-5]
+        \arrow[color={rgb,255:red,81;green,129;blue,96}, Rightarrow, no head, from=1-8, to=2-8]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-8, to=2-9]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-9, to=2-10]
+    \end{tikzcd}
+    \end{equation*}
+    Using the proposition above, it would be suffices to proof that the middle diagram is a pullback. We first notice that $h\circ f' = f\circ g$, and so we can ``extends'' the diagram to be, the diagram on the right. 
+    
+    If we have the {\color{rgb,255:red,214;green,92;blue,92} red arrow} to be an identity arrow, then the {\color{rgb,255:red,92;green,92;blue,214} blue square} is a pullback as $f$ is an monomorphism, while the {\color{rgb,255:red,81;green,129;blue,96} green square} is a pullback as shown in proposition \ref{prop:identity-pullback}. Thus by proposition above, the square $(A', A, A', B)$ is a pullback as needed.
+\end{proof}
+\end{dem}
+
+\begin{definition}{\textbf{(Kernel Pair)}}
+    Given the morphism $f:X\rightarrow Y$, we have the pullback of:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYXFx0aW1lc19ZIFgiXSxbMSwwLCJYIl0sWzAsMSwiWCJdLFsxLDEsIlkiXSxbMSwzLCJmIl0sWzIsMywiZiIsMl0sWzAsMl0sWzAsMV0sWzAsMywiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+    \begin{tikzcd}
+        {X\times_Y X} & X \\
+        X & Y
+        \arrow["f", from=1-2, to=2-2]
+        \arrow["f"', from=2-1, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    This gives us the universal map $X\times_YX\rightarrow X$, which are parallel maps and called \textit{kernel pair} of $f$. 
+\end{definition}
+
+\begin{proposition}
+    The morphism $f$ (as defined above) is mono iff those maps coincides and $X\times_YX\cong X$.
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    $\boldsymbol{(\implies):}$ If $f$ is mono, then the map $a,b:X\times_Y X\to X$ are the same because $f\circ a=f\circ b$ by the commutativity and by the definition of monomorphism. Let's consider the isomorphism, we have the following 2 commutative diagrams:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMSwxLCJYXFx0aW1lc19ZIFgiXSxbMiwxLCJYIl0sWzEsMiwiWCJdLFsyLDIsIlkiXSxbMCwwLCJYIl0sWzEsMywiZiJdLFsyLDMsImYiLDJdLFswLDIsImEiLDJdLFswLDEsImEiXSxbMCwzLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbNCwwLCJoIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzQsMSwiXFxvcGVyYXRvcm5hbWV7aWR9X1giLDEseyJjdXJ2ZSI6LTJ9XSxbNCwyLCJcXG9wZXJhdG9ybmFtZXtpZH1fWCIsMSx7ImN1cnZlIjoyfV1d
+    \begin{tikzcd}
+        X \\
+        & {X\times_Y X} & X \\
+        & X & Y
+        \arrow["f", from=2-3, to=3-3]
+        \arrow["f"', from=3-2, to=3-3]
+        \arrow["a"', from=2-2, to=3-2]
+        \arrow["a", from=2-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["h"{description}, dashed, from=1-1, to=2-2]
+        \arrow["{\operatorname{id}_X}"{description}, curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["{\operatorname{id}_X}"{description}, curve={height=12pt}, from=1-1, to=3-2]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNSxbMSwxLCJYXFx0aW1lc19ZIFgiXSxbMiwxLCJYIl0sWzEsMiwiWCJdLFsyLDIsIlkiXSxbMCwwLCJYXFx0aW1lc19ZIFgiXSxbMSwzLCJmIl0sWzIsMywiZiIsMl0sWzAsMiwiYSIsMl0sWzAsMSwiYSJdLFswLDMsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFs0LDAsImhcXGNpcmMgYSIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDEsImEiLDEseyJjdXJ2ZSI6LTJ9XSxbNCwyLCJhIiwxLHsiY3VydmUiOjJ9XV0=
+    \begin{tikzcd}
+        {X\times_Y X} \\
+        & {X\times_Y X} & X \\
+        & X & Y
+        \arrow["f", from=2-3, to=3-3]
+        \arrow["f"', from=3-2, to=3-3]
+        \arrow["a"', from=2-2, to=3-2]
+        \arrow["a", from=2-2, to=2-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["{h\circ a}"{description}, dashed, from=1-1, to=2-2]
+        \arrow["a"{description}, curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["a"{description}, curve={height=12pt}, from=1-1, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    where in LHS diagram, the unique morphism $h$ derives from the cone of edge $(\operatorname{id}_X, \operatorname{id}_X)$ and $a\circ h=\operatorname{id}_X$. On the other hand, we can see that $h\circ a=\operatorname{id}_{X\times_Y X}$ due to universal property.
+\end{proof}
+\end{dem}
+
+This is where the name "kernel" comes from, where $f$ is trivial iff $f$ is mono. To see this in more details, with the example of category of $\textbf{Set}$, we have:
+
+\begin{proposition}
+    Given the function $m:X\rightarrow Y$ and consider the kernel pair $f,g:X\times_YX\rightarrow X$, we define the relation $\sim$ (similar to that above), for $x,x'\in X$, where $x\sim x'$ if given $p\in X\times_YX$ such that $f(p)=x$ and $g(p)=x'$. We can also show that:
+    \begin{multicols}{2}
+    \begin{itemize}
+        \item $\sim$ is an equivalence relation
+        \item $x\sim x'$ iff $m(x)=m(x')$ that is $\sim$ is the partition induced by $m$ whenever $m$ is surjective.
+        \item If there exists $p\in X\times_YX$ such that $f(p)=x$ and $g(p)=x'$, then $p$ is unique.
+    \end{itemize}
+    \columnbreak
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJYIl0sWzEsMSwiWSJdLFswLDEsIlgiXSxbMCwwLCJYXFx0aW1lc19ZIFgiXSxbMiwxLCJtIiwyXSxbMCwxLCJtIl0sWzMsMiwiZiIsMl0sWzMsMCwiZyJdLFszLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+    \begin{tikzcd}
+        {X\times_Y X} & X \\
+        X & Y
+        \arrow["m"', from=2-1, to=2-2]
+        \arrow["m", from=1-2, to=2-2]
+        \arrow["f"', from=1-1, to=2-1]
+        \arrow["g", from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    \end{multicols}
+    Note that the right diagram shows the relationship between the kernel pairs.
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    \textbf{(Part 1):}
+    \textit{(Reflexive):} $x\sim x$ because suppose we are given $1$ together with the cone edge of $x:1\to X$ picking the same element.  Note that the diagram as a whole has to commute i.e $m(x)=m(x)$ too (see the LHS diagram), then this induces the unique element $p:1\to X\times_YX$ such that $f(p)=x=g(p)$
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTUsWzYsMSwiWCJdLFs2LDIsIlkiXSxbNSwyLCJYIl0sWzUsMSwiWFxcdGltZXNfWSBYIl0sWzQsMCwiMSJdLFs5LDEsIlhcXHRpbWVzX1kgWCJdLFsxMCwxLCJYIl0sWzEwLDIsIlkiXSxbOSwyLCJYIl0sWzgsMCwiMSJdLFswLDAsIjEiXSxbMSwxLCJYXFx0aW1lc19ZIFgiXSxbMSwyLCJYIl0sWzIsMiwiWSJdLFsyLDEsIlgiXSxbMiwxLCJtIiwyXSxbMCwxLCJtIl0sWzMsMiwiZiIsMl0sWzMsMCwiZyJdLFszLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFs0LDAsIngnIiwwLHsiY3VydmUiOi0yfV0sWzQsMywiaCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDIsIngiLDIseyJjdXJ2ZSI6Mn1dLFs1LDgsImYiLDJdLFs1LDYsImciXSxbNiw3LCJtIl0sWzksNSwiaCciLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbOSw2LCJ4IiwwLHsiY3VydmUiOi0yfV0sWzksOCwieCciLDIseyJjdXJ2ZSI6Mn1dLFsxMCwxMSwicCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxMCwxNCwieCIsMCx7ImN1cnZlIjotMn1dLFsxMCwxMiwieCIsMix7ImN1cnZlIjoyfV0sWzExLDEyLCJmIiwyXSxbMTEsMTQsImciXSxbMTIsMTMsIm0iLDJdLFsxNCwxMywibSJdLFs4LDcsIm0iLDJdXQ==
+    \begin{tikzcd}
+        1 &&&& 1 &&&& 1 \\
+        & {X\times_Y X} & X &&& {X\times_Y X} & X &&& {X\times_Y X} & X \\
+        & X & Y &&& X & Y &&& X & Y
+        \arrow["m"', from=3-6, to=3-7]
+        \arrow["m", from=2-7, to=3-7]
+        \arrow["f"', from=2-6, to=3-6]
+        \arrow["g", from=2-6, to=2-7]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-6, to=3-7]
+        \arrow["{x'}", curve={height=-12pt}, from=1-5, to=2-7]
+        \arrow["h"{description}, dashed, from=1-5, to=2-6]
+        \arrow["x"', curve={height=12pt}, from=1-5, to=3-6]
+        \arrow["f"', from=2-10, to=3-10]
+        \arrow["g", from=2-10, to=2-11]
+        \arrow["m", from=2-11, to=3-11]
+        \arrow["{h'}"{description}, dashed, from=1-9, to=2-10]
+        \arrow["x", curve={height=-12pt}, from=1-9, to=2-11]
+        \arrow["{x'}"', curve={height=12pt}, from=1-9, to=3-10]
+        \arrow["p"{description}, dashed, from=1-1, to=2-2]
+        \arrow["x", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["x"', curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["f"', from=2-2, to=3-2]
+        \arrow["g", from=2-2, to=2-3]
+        \arrow["m"', from=3-2, to=3-3]
+        \arrow["m", from=2-3, to=3-3]
+        \arrow["m"', from=3-10, to=3-11]
+    \end{tikzcd}
+    \end{equation*}
+    \textit{(Symmetric):} If $x\sim x'$, then let $h$ be element such that $f(h)=x$ and $g(h)=x'$ i.e the middle diagram above commutes. By the fact that $m(x')=m(x)$ (not all pair of $x$ and $x'$ will work), we can swap the arrow $x$ and $x'$ place, which will leads to a unique arrow $h':1\to X\times_YX$, in which $f(h')=x'$ and $g(h')=x$, as shown in the RHS diagram above. Thus $x'\sim x$ as needed.
+
+    \textit{(Transiviity):} Assume that $a\sim b$ and $b\sim c$, then, by the observation above, we have $m(a)=m(b)=m(c)$ so we can have arrows $a:1\to X$ and $c:1\to X$ as edge of the cone (and its commutes!), which induces $k:1\to X\times_YX$ such that $a=f(k)$ and $c=g(k)$.
+
+    \textbf{(Part 2):} With the observation that we had i.e the requirement that $m(x)=m(x')$ to be the cone commutes, this part is already shown. 
+
+    \textbf{(Part 3):} This follows directly from the universal propery of a pullback where we consider the \textit{unique} arrow $p:1\to X\times_YX$ inducing the arrow $x,x':1\to X$. Note that the condition $m(x)=m(x')$ is guaranteed by the universal proeprty.
+\end{proof}
+\end{dem}
+
+\begin{proposition}
+    Given a morphism $f:X\to Y$, which as a kernel pair, furthermore, assume that $f$ is a coequalizer of something (see RHS diagram). We can show that $f$ is also a coequalizer of its kernel pair. This is given in the following diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJYIl0sWzEsMSwiWSJdLFswLDEsIlgiXSxbMCwwLCJYXFx0aW1lc19ZIFgiXSxbMiwxLCJmIiwyXSxbMCwxLCJmIl0sWzMsMiwiYiIsMl0sWzMsMCwiYSJdLFszLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+    \begin{tikzcd}
+        {X\times_Y X} & X \\
+        X & Y
+        \arrow["f"', from=2-1, to=2-2]
+        \arrow["f", from=1-2, to=2-2]
+        \arrow["b"', from=1-1, to=2-1]
+        \arrow["a", from=1-1, to=1-2]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+    \end{tikzcd}\qquad \quad
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJBIl0sWzEsMCwiWCJdLFsyLDAsIlkiXSxbMCwxLCJjIiwwLHsib2Zmc2V0IjotMX1dLFswLDEsImMnIiwyLHsib2Zmc2V0IjoxfV0sWzEsMiwiZiJdXQ==
+    \begin{tikzcd}
+        A & X & Y
+        \arrow["c", shift left, from=1-1, to=1-2]
+        \arrow["{c'}"', shift right, from=1-1, to=1-2]
+        \arrow["f", from=1-2, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    First we note that $f\circ a= f\circ b$ by the commutativity of the pullback diagram, so $f$ \textit{could be} the candidate for the coequalizer of $a$ and $b$. We are interested in finding the unique arrow $a:Y\to A$ where we are given morphism $g:X\to A$. 
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJYXFx0aW1lc19ZIFgiXSxbMSwxLCJYIl0sWzIsMCwiWSJdLFsyLDEsIkEiXSxbMCwxLCJiIiwyLHsib2Zmc2V0IjoxfV0sWzAsMSwiYSIsMCx7Im9mZnNldCI6LTF9XSxbMSwyLCJmIl0sWzEsMywiZyIsMl0sWzIsMywiYSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        && Y \\
+        {X\times_Y X} & X & A
+        \arrow["b"', shift right, from=2-1, to=2-2]
+        \arrow["a", shift left, from=2-1, to=2-2]
+        \arrow["f", from=2-2, to=1-3]
+        \arrow["g"', from=2-2, to=2-3]
+        \arrow["a", dashed, from=1-3, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    To do this, we notice that we can find the unique arrow $h:A\to X\times_YX$ from the pullback $X\times_YX$, which is valid because $f\circ c=f\circ c'$. This si given in the LHS diagram. Furthermore, we notice further that $c$ is factorized by unique $h$, and so we are given the RHS diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMiwyLCJZIl0sWzIsMSwiWCJdLFsxLDEsIlhcXHRpbWVzX1kgWCJdLFsxLDIsIlgiXSxbMCwwLCJBIl0sWzMsMCwiZiIsMl0sWzEsMCwiZiJdLFsyLDAsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dLFsyLDEsImEiXSxbNCwxLCJjIiwwLHsiY3VydmUiOi0yfV0sWzIsMywiYiIsMl0sWzQsMiwiaCIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDMsImMnIiwyLHsiY3VydmUiOjJ9XV0=
+    \begin{tikzcd}
+        A \\
+        & {X\times_Y X} & X \\
+        & X & Y
+        \arrow["f"', from=3-2, to=3-3]
+        \arrow["f", from=2-3, to=3-3]
+        \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+        \arrow["a", from=2-2, to=2-3]
+        \arrow["c", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["b"', from=2-2, to=3-2]
+        \arrow["h"{description}, dashed, from=1-1, to=2-2]
+        \arrow["{c'}"', curve={height=12pt}, from=1-1, to=3-2]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNSxbMSwxLCJYXFx0aW1lc19ZIFgiXSxbMCwxLCJBIl0sWzMsMSwiQSJdLFszLDAsIlkiXSxbMiwxLCJYIl0sWzAsNCwiYSIsMCx7Im9mZnNldCI6LTF9XSxbMSw0LCJjIiwwLHsiY3VydmUiOi00fV0sWzEsNCwiYyciLDIseyJjdXJ2ZSI6NH1dLFs0LDIsImciLDJdLFszLDIsImEiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCwzLCJmIl0sWzAsNCwiYiIsMix7Im9mZnNldCI6MX1dLFsxLDAsImgiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        &&& Y \\
+        A & {X\times_Y X} & X & A
+        \arrow["a", shift left, from=2-2, to=2-3]
+        \arrow["c", curve={height=-24pt}, from=2-1, to=2-3]
+        \arrow["{c'}"', curve={height=24pt}, from=2-1, to=2-3]
+        \arrow["g"', from=2-3, to=2-4]
+        \arrow["a", dashed, from=1-4, to=2-4]
+        \arrow["f", from=2-3, to=1-4]
+        \arrow["b"', shift right, from=2-2, to=2-3]
+        \arrow["h"{description}, dashed, from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    with the same $g:X\to A$ and the unique arrow $a:Y\to A$, but created from the definition of coequalizer. Since $h$ is unique, given $c$ and $c'$, we thus shown that $f$ is the coequalizer of the kernel pair.
+\end{proof}
+\end{dem}

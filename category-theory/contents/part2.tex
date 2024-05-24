@@ -1,0 +1,625 @@
+\section{Categorical Construction}
+
+Back to the example on category of sets, we have see the way we can generalize the characterization of the object which is done solely on the relationship going in or out of this object. We will consider various special of objects that we can defined. Starting from the most basic. 
+
+
+\subsection{initial/Terminal Object}
+
+Now, let's try to generalize the other part, which is the notion of singleton set, so that it works in not just the $\textbf{Set}$ (but not all object) but some category in general.
+
+\begin{definition}{\textbf{(Initial and Terminal Objects)}} 
+	We will consider 2 kinds of objects that have the similar way of defining:
+	\begin{itemize}
+		\item Initial object, denoted $0$, is an object that have \textbf{unique} morphism from itself to every object (including itself). We see it as an object that expands toward all the other objects 
+		\item On the other hand, terminal object, denoted $1$, is an object that have \textbf{unique} morphism from every object to itself (including itself). We can see it as an object that all arrows converges.
+	\end{itemize}
+
+	We have the following illustration for this kind of objects:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsMTgsWzEsMSwiMCJdLFsxLDBdLFsyLDBdLFsyLDFdLFsyLDJdLFsxLDJdLFswLDJdLFswLDFdLFswLDBdLFs1LDEsIjEiXSxbNCwwXSxbNSwwXSxbNiwwXSxbNCwxXSxbNCwyXSxbNSwyXSxbNiwyXSxbNiwxXSxbMCwxXSxbMCwyXSxbMCwzXSxbMCw0XSxbMCw1XSxbMCw2XSxbMCw3XSxbMCw4XSxbMTAsOV0sWzExLDldLFsxMiw5XSxbMTMsOV0sWzE0LDldLFsxNSw5XSxbMTYsOV0sWzE3LDldXQ==
+	\begin{tikzcd}
+		{} & {} & {} && {} & {} & {} \\
+		{} & 0 & {} && {} & 1 & {} \\
+		{} & {} & {} && {} & {} & {}
+		\arrow[from=2-2, to=1-2]
+		\arrow[from=2-2, to=1-3]
+		\arrow[from=2-2, to=2-3]
+		\arrow[from=2-2, to=3-3]
+		\arrow[from=2-2, to=3-2]
+		\arrow[from=2-2, to=3-1]
+		\arrow[from=2-2, to=2-1]
+		\arrow[from=2-2, to=1-1]
+		\arrow[from=1-5, to=2-6]
+		\arrow[from=1-6, to=2-6]
+		\arrow[from=1-7, to=2-6]
+		\arrow[from=2-5, to=2-6]
+		\arrow[from=3-5, to=2-6]
+		\arrow[from=3-6, to=2-6]
+		\arrow[from=3-7, to=2-6]
+		\arrow[from=2-7, to=2-6]
+	\end{tikzcd}
+	\end{equation*}
+
+	Note that we can still have arrow coming into initial object or arrow coming out of terminal object, but it won't enjoy the special properties. 
+\end{definition}
+
+Please note that initial object and terminal object only exist in some particular category i.e there are category that doesn't have initial or terminal object (take discrete category\footnote{Category there is only identity morphism and no morphism between objects}, for example). $\textbf{Set}$ is one of them that has. Let's consider both kind of objects in category of $\textbf{Set}$. 
+
+\begin{remark}
+	In $\textbf{Set}$, an empty set $\emptyset$ is an initial object, and singleton set (which we denote collectively as $1$) is a terminal object:
+	
+	\begin{itemize}
+		\item Thus, in general, one can treat the selection of elements in the object $a$ using the morphism from a terminal object to $a$. Therefore, with $f:a\to b$, the notion $f(a)$ is actually a composition with arrow $a:1\to a$ i.e $f\circ a$
+		\item It may be quite clear from now that there can be ``multiple initial and terminal object, for example, in $\textbf{Set}$, the terminal objects are $\{1\}, \{2\}, \{\blacksquare\},\dots$. But we can show that it is unique \textit{up to isomorphism}. 
+	\end{itemize}
+\end{remark}
+
+% \begin{axiom}{\textbf{(Function Determined by its Effect\cite[Axiom 4]{leinster2014rethinking})}}
+\begin{axiom}{\textbf{(Function Determined by its Effect)}}
+\label{axiom:funct-effect}
+Given a set $X$ and $Y$ and functions $f,g:X\to Y$ if $f(x)=g(x)$ for all $x\in X$, we have $f=g$
+\end{axiom}
+
+\begin{proposition}
+	In $\textbf{Set}$, given the axiom \ref{axiom:funct-effect}, we can show that object $a$ is terminal object iff it is a singleton set, we will need additional axioms 
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+	To show that a singleton set is a terminal object, we note that if there are 2 function from any set $X$ to a singleton set $\{a\}$ i.e $f,g:X\to\{a\}$, then we see that for any objects $x\in X$ $f(x)=g(x)=a$, and so $f=g$. This means that there is an unique arrow going to a singleton set.
+	
+	On the other hand, terminal object is a singleton set because, there is only one arrow from a terminal object to terminal object (by definition).
+\end{proof}
+\end{dem}
+	
+	
+It is clear from proposition \ref{prop:iso-obj-in} and \ref{prop:iso-obj-out} that two initial or terminal objects are isomorphic to each others. Nonetheless, we can also proof this fact directly from the definition of it. Let's state the proposition and the proof.
+
+\begin{proposition}
+	A terminal (initial) object are unique up to isomorphism. In other words, given 2 objects $a$ and $a'$ both having a property of terminal (initial) object, then $a\cong a'$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+	We will provide the proof for terminal object only, but the proof for initial object is similar. We note that by definition, there is an unique arrow from $f : a\to a'$ and $g: a'\to a$:
+	\begin{itemize}
+		\item We see that when both of them are composed i.e $g\circ f:a\to a$ and $f\circ g:a'\to a'$, they will give rise to identities functions $\operatorname{id}_a$ and $\operatorname{id}_{a'}$
+		\item That is because identity is the \textit{only} morphism that maps both object to itself by the definition of the terminal objects.
+	\end{itemize}
+	Thus $f$ and $g$ are inverse of each other and $f$ is an isomorphism, as needed.
+\end{proof}
+\end{dem}
+
+Before we move on to other construction that are more complex than initial/terminal object, we want to point out that in category theory, instead of explicitly describe the object (set with only one element), we defines the particular relation of this particular object instead (\textit{unique} arrow \textit{from} every object to this object). The universal construction follows from this way of working. 
+
+\subsection{Product}
+
+Let's start with how we define the \textit{product} between two objects. If we remember well, given set $X$ and $Y$, one can define the cartesian product between them as:
+
+$$
+X\times Y = \big\{ (x, y) : x\in X \text{ and } y \in Y \big\}
+$$
+
+The intersting part of the cartesian product is that its element, one can recover the element of both sets via the projecton map $\pi_1:X\times Y\to X$ and $\pi_2:X\times Y\to Y$, where both $p_1((x', y'))=x'$ and $p_2((x',y'))=y'$. One can view cartesian product as total mixing of elements of $X$ and $Y$, while the projection perform a recovery.
+
+With this in mind, we can define a product in general as:
+
+\begin{definition}{\textbf{(Categortical Product)}}
+	\label{def:cat-prod}
+	The product between $a$ and $b$ in category $\textbf{C}$ is denoted as $a\times b$ together with morphism $p_1:a\times b\to a$ and $p_2:a\times b\to b$ i.e $(a\times b, p_1, p_2)$ such that given any object $x$ with arrow $f_1:x\to a$ and $f_2:x\to b$, there is unique arrow $h:x\to a\times b$ (and given unique $h$ there is unique pair of arrow) such that the following commutative diagram holds:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMSwwLCJ4Il0sWzEsMSwiYVxcdGltZXMgYiJdLFswLDEsImEiXSxbMiwxLCJiIl0sWzEsMiwicF8xIl0sWzEsMywicF8yIiwyXSxbMCwyLCJmXzEiLDJdLFswLDMsImZfMiJdLFswLDEsImgiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+	\begin{tikzcd}
+		& x \\
+		a & {a\times b} & b
+		\arrow["{p_1}", from=2-2, to=2-1]
+		\arrow["{p_2}"', from=2-2, to=2-3]
+		\arrow["{f_1}"', from=1-2, to=2-1]
+		\arrow["{f_2}", from=1-2, to=2-3]
+		\arrow["h"{description}, dashed, from=1-2, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+
+	This also means that $f_1=p_1\circ h$ and $f_2= p_2\circ h$ i.e we factorize $(x, f_1, f_2)$ through $(a\times b, p_1, p_2)$.
+\end{definition}
+
+Now, we can recover the cartesian product from the categorical product on $\textbf{Set}$ category.
+
+\begin{proposition}
+	Categortical product between $A$ and $B$ in $\textbf{Set}$ is the Cartesian product $A\times B$, and Cartesian product $A\times B$ is the categorical product.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+	Let's start with the first statement first. We can set the object $x$ with a terminal object $1$ (see the figure below). Recall that map from a terminal object selects an element of the target. 
+	
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMSwwLCIxIl0sWzEsMSwiQVxcdGltZXMgQiJdLFswLDEsIkEiXSxbMiwxLCJCIl0sWzEsMiwicF8xIl0sWzEsMywicF8yIiwyXSxbMCwyLCJmXzEiLDJdLFswLDMsImZfMiJdLFswLDEsImgiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+	\begin{tikzcd}
+		& 1 \\
+		A & {A\times B} & B
+		\arrow["{p_1}", from=2-2, to=2-1]
+		\arrow["{p_2}"', from=2-2, to=2-3]
+		\arrow["{f_1}"', from=1-2, to=2-1]
+		\arrow["{f_2}", from=1-2, to=2-3]
+		\arrow["h"{description}, dashed, from=1-2, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+	
+	Then, we can have the $f_1$ selects one object $a$ from $A$ and $f_2$ selects one object $b$ from $B$, then $h$, in order to enforce the uniqueness can be set to selecting a pair of $(a, b)$. Finally, by the commutativity, the map $p_1\circ h=p_1((a, b)):1\to A$ should select the same object as $f_1$ which is $a$. Thus $p_1$ is a projection of first element. The same can be shown with $p_2$. Thus, we have proven the first part.
+
+	To show that cartesian product is a categorical product, we will have to construct $h$ given $(f_1,f_2)$ and vice versa with any set $X$. Let's consider such construction:
+
+	\begin{itemize}
+		\item Given the function $f_1:X\to A$ and $f_2:X\to B$, then $h:X\to A\times B$ can be set to be $h(x)=(f_1(x), f_2(x))$
+		\item On the other hand, with a function $h$ one can use the commutativity to define both $f_1$ and $f_2$ i.e $f_1 = p_1\circ h$ and $f_2 = p_2\circ h$
+	\end{itemize}
+
+\end{proof}
+\end{dem}
+
+We will also show the power of this kind of definition i.e unique arrow from any object to categorical product, by proving that the product over terminal object, we got:
+
+\begin{proposition}
+	Given object $a$ in category $\textbf{C}$ that has terminal object $1$, we can show that $a\times 1\cong a$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+	We consider the following diagram:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMSwxLCJhXFx0aW1lcyAxIl0sWzAsMSwiYSJdLFsyLDEsIjEiXSxbMSwwLCJhIl0sWzAsMiwicF8yIiwyXSxbMCwxLCJwXzEiXSxbMywxLCJcXG9wZXJhdG9ybmFtZXtpZH1fYSIsMl0sWzMsMiwiIV9hIl0sWzMsMCwiaCIsMV1d
+	\begin{tikzcd}
+		& a \\
+		a & {a\times 1} & 1
+		\arrow["{p_2}"', from=2-2, to=2-3]
+		\arrow["{p_1}", from=2-2, to=2-1]
+		\arrow["{\operatorname{id}_a}"', from=1-2, to=2-1]
+		\arrow["{!_a}", from=1-2, to=2-3]
+		\arrow["h"{description}, from=1-2, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+
+	One can see clearly that $p_1\circ h=\operatorname{id}_a$, we are left to show that $h\circ p_1=\operatorname{id}_{a\times1}$. To do this, we have the following comparision diagram (every thing commutes):
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsOSxbMSwyLCJhXFx0aW1lcyAxIl0sWzAsMiwiYSJdLFsyLDIsIjEiXSxbMSwxLCJhIl0sWzUsMiwiYVxcdGltZXMgMSJdLFs0LDIsImEiXSxbNiwyLCIxIl0sWzUsMCwiYVxcdGltZXMgMSJdLFsxLDAsImFcXHRpbWVzIDEiXSxbMCwyLCJwXzIiLDJdLFswLDEsInBfMSJdLFszLDEsIlxcb3BlcmF0b3JuYW1le2lkfV9hIiwxLHsiY29sb3VyIjpbMCwwLDc4XX0sWzAsMCw3OCwxXV0sWzMsMiwiIV9hIiwxLHsiY29sb3VyIjpbMCwwLDc4XX0sWzAsMCw3OCwxXV0sWzMsMCwiaCIsMV0sWzQsNSwicF8xIl0sWzQsNiwicF8yIiwyXSxbNyw1LCJwXzEiLDJdLFs3LDQsIlxcb3BlcmF0b3JuYW1le2lkfV97YVxcdGltZXMxfSIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs3LDYsIiFfe2FcXHRpbWVzMX0iXSxbOCwzLCJwXzEiLDFdLFs4LDEsInBfMSIsMl0sWzgsMiwiIV97YVxcdGltZXMxfSJdXQ==
+	\begin{tikzcd}
+		& {a\times 1} &&&& {a\times 1} \\
+		& a \\
+		a & {a\times 1} & 1 && a & {a\times 1} & 1
+		\arrow["{p_2}"', from=3-2, to=3-3]
+		\arrow["{p_1}", from=3-2, to=3-1]
+		\arrow["{\operatorname{id}_a}"{description}, color={rgb,255:red,199;green,199;blue,199}, from=2-2, to=3-1]
+		\arrow["{!_a}"{description}, color={rgb,255:red,199;green,199;blue,199}, from=2-2, to=3-3]
+		\arrow["h"{description}, from=2-2, to=3-2]
+		\arrow["{p_1}", from=3-6, to=3-5]
+		\arrow["{p_2}"', from=3-6, to=3-7]
+		\arrow["{p_1}"', from=1-6, to=3-5]
+		\arrow["{\operatorname{id}_{a\times1}}"{description}, dashed, from=1-6, to=3-6]
+		\arrow["{!_{a\times1}}", from=1-6, to=3-7]
+		\arrow["{p_1}"{description}, from=1-2, to=2-2]
+		\arrow["{p_1}"', from=1-2, to=3-1]
+		\arrow["{!_{a\times1}}", from=1-2, to=3-3]
+	\end{tikzcd}
+	\end{equation*}
+
+	Please note that by definition of terminal object, $p_2=!_{a\times1}$ and it is unique (hence the $a\times1\to1$ on the right edge of LHS diagram is correct). Since the definition of product holds that there is a unique pair of arrows, we can see that $h\circ p_1=\operatorname{id}_{a\times1}$
+\end{proof}
+\end{dem}
+
+and we can also prove the commutativity of a categorical product. 
+
+\begin{proposition}
+	Given object $a$ and $b$ in category $\textbf{C}$, we can show that $a\times b\cong b\times a$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+	We consider the following diagrams:
+	
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsOCxbMSwwLCJiXFx0aW1lcyBhIl0sWzEsMSwiYVxcdGltZXMgYiJdLFswLDEsImEiXSxbMiwxLCJiIl0sWzUsMCwiYVxcdGltZXMgYiJdLFs1LDEsImJcXHRpbWVzIGEiXSxbNCwxLCJhIl0sWzYsMSwiYiJdLFsxLDIsInBfMSJdLFsxLDMsInBfMiIsMl0sWzAsMiwicF8yJyIsMl0sWzAsMywicCdfMSJdLFswLDEsImgiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSw3LCJwXzEnIiwyXSxbNSw2LCJwXzInIl0sWzQsNSwiaCciLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCw2LCJwXzEiLDJdLFs0LDcsInBfMiJdXQ==
+	\begin{tikzcd}
+		& {b\times a} &&&& {a\times b} \\
+		a & {a\times b} & b && a & {b\times a} & b
+		\arrow["{p_1}", from=2-2, to=2-1]
+		\arrow["{p_2}"', from=2-2, to=2-3]
+		\arrow["{p_2'}"', from=1-2, to=2-1]
+		\arrow["{p'_1}", from=1-2, to=2-3]
+		\arrow["h"{description}, dashed, from=1-2, to=2-2]
+		\arrow["{p_1'}"', from=2-6, to=2-7]
+		\arrow["{p_2'}", from=2-6, to=2-5]
+		\arrow["{h'}"{description}, dashed, from=1-6, to=2-6]
+		\arrow["{p_1}"', from=1-6, to=2-5]
+		\arrow["{p_2}", from=1-6, to=2-7]
+	\end{tikzcd}
+	\end{equation*}
+
+	We will claim that $h$ and $h'$ are inverse of each other i.e  $h'\circ h=\operatorname{id}_{b\times a}$ and $h\circ h'=\operatorname{id}_{a\times b}$, thus $h$ is isomorphism. To show this, we can stack diagram above up (to get the LHS version and it is clear that it commutes). 
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsOSxbMiwwLCJiXFx0aW1lcyBhIl0sWzIsMSwiYVxcdGltZXMgYiJdLFswLDIsImEiXSxbNCwyLCJiIl0sWzIsMiwiYlxcdGltZXMgYSJdLFs3LDIsImJcXHRpbWVzIGEiXSxbNiwyLCJiIl0sWzgsMiwiYSJdLFs3LDAsImJcXHRpbWVzIGEiXSxbMSwyLCJwXzEiLDEseyJjb2xvdXIiOlswLDAsNzhdfSxbMCwwLDc4LDFdXSxbMSwzLCJwXzIiLDEseyJjb2xvdXIiOlswLDAsNzhdfSxbMCwwLDc4LDFdXSxbMCwyLCJwXzInIiwxXSxbMCwzLCJwJ18xIiwxXSxbMCwxLCJoIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzQsMiwicF8yJyIsMV0sWzQsMywicF8xJyIsMV0sWzEsNCwiaCciLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbOCw1LCJcXG9wZXJhdG9ybmFtZXtpZH1fe2JcXHRpbWVzIGF9IiwxXSxbOCw2LCJwXzInIiwyXSxbOCw3LCJwXzEnIl0sWzUsNywicF8xJyIsMl0sWzUsNiwicF8yJyJdXQ==
+	\begin{tikzcd}
+		&& {b\times a} &&&&& {b\times a} \\
+		&& {a\times b} \\
+		a && {b\times a} && b && b & {b\times a} & a
+		\arrow["{p_1}"{description}, color={rgb,255:red,199;green,199;blue,199}, from=2-3, to=3-1]
+		\arrow["{p_2}"{description}, color={rgb,255:red,199;green,199;blue,199}, from=2-3, to=3-5]
+		\arrow["{p_2'}"{description}, from=1-3, to=3-1]
+		\arrow["{p'_1}"{description}, from=1-3, to=3-5]
+		\arrow["h"{description}, dashed, from=1-3, to=2-3]
+		\arrow["{p_2'}"{description}, from=3-3, to=3-1]
+		\arrow["{p_1'}"{description}, from=3-3, to=3-5]
+		\arrow["{h'}"{description}, dashed, from=2-3, to=3-3]
+		\arrow["{\operatorname{id}_{b\times a}}"{description}, from=1-8, to=3-8]
+		\arrow["{p_2'}"', from=1-8, to=3-7]
+		\arrow["{p_1'}", from=1-8, to=3-9]
+		\arrow["{p_1'}"', from=3-8, to=3-9]
+		\arrow["{p_2'}", from=3-8, to=3-7]
+	\end{tikzcd}
+	\end{equation*}
+
+	On the RHS, we have the obvious commutative diagram, but please note that by definition of categorical product (the universal construction), given a pair $(p_1',p_2')$, we have the \textit{unique} correspondance to the map $\operatorname{id}_{b\times a}$. Thus, $h'\circ h=\operatorname{id}_{b\times a}$ by the uniquenes. The proof that $h\circ h'=\operatorname{id}_{a\times b}$ follows in similar manners.
+
+\end{proof}
+\end{dem}
+
+Furthermore, we can show that categorical product is associative.
+
+\begin{proposition}
+	Given object $a,b$ and $c$ in category $\textbf{C}$, we can show that $a\times(b\times c)\cong(a\times b)\times c$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+	Let's start by defining the (canonical and unique) map $\alpha:a\times(b\times c)\to(a\times b)\times c$. This can be done by the following commutative diagram and univeral properties
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsOCxbMSwwLCJhXFx0aW1lcyhiXFx0aW1lcyBjKSJdLFsxLDEsIihhXFx0aW1lcyBiKVxcdGltZXMgYyJdLFswLDIsImFcXHRpbWVzIGIiXSxbMiwyLCJjIl0sWzUsMCwiYVxcdGltZXMoYlxcdGltZXMgYykiXSxbNSwxLCJhXFx0aW1lcyBiIl0sWzQsMiwiYSJdLFs2LDIsImIiXSxbMCwxLCJcXGFscGhhIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMiwiaCIsMix7ImN1cnZlIjoyfV0sWzAsMywicF8xXntiY31cXGNpcmMgcF57YSxiY31fMSIsMCx7ImN1cnZlIjotMn1dLFsxLDIsInBfMF57YWIsY30iXSxbMSwzLCJwXzFee2FiLGN9IiwyXSxbNCw1LCJoIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzQsNiwicF57YSxiY31fMCIsMix7ImN1cnZlIjoyfV0sWzQsNywicF57YmN9XzBcXGNpcmMgcF57YSxiY31fMSIsMCx7ImN1cnZlIjotMn1dLFs1LDYsInBee2FifV8wIl0sWzUsNywicF57YWJ9XzEiLDJdXQ==
+	\begin{tikzcd}
+		& {a\times(b\times c)} &&&& {a\times(b\times c)} \\
+		& {(a\times b)\times c} &&&& {a\times b} \\
+		{a\times b} && c && a && b
+		\arrow["\alpha", dashed, from=1-2, to=2-2]
+		\arrow["h"', curve={height=12pt}, from=1-2, to=3-1]
+		\arrow["{p_1^{bc}\circ p^{a,bc}_1}", curve={height=-12pt}, from=1-2, to=3-3]
+		\arrow["{p_0^{ab,c}}", from=2-2, to=3-1]
+		\arrow["{p_1^{ab,c}}"', from=2-2, to=3-3]
+		\arrow["h", dashed, from=1-6, to=2-6]
+		\arrow["{p^{a,bc}_0}"', curve={height=12pt}, from=1-6, to=3-5]
+		\arrow["{p^{bc}_0\circ p^{a,bc}_1}", curve={height=-12pt}, from=1-6, to=3-7]
+		\arrow["{p^{ab}_0}", from=2-6, to=3-5]
+		\arrow["{p^{ab}_1}"', from=2-6, to=3-7]
+	\end{tikzcd}
+	\end{equation*}
+	where $h:a\times(b\times c)\to a\times b$ is defined on the RHS. Similarly, the map $\beta:(a\times b)\times c\to a\times(b\times c)$, we have, the following commutative diagrams:
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsOCxbMSwwLCIoYVxcdGltZXMgYilcXHRpbWVzIGMiXSxbMSwxLCJhXFx0aW1lcyhiXFx0aW1lcyBjKSJdLFsyLDIsImJcXHRpbWVzIGMiXSxbMCwyLCJhIl0sWzUsMCwiKGFcXHRpbWVzIGIpXFx0aW1lcyBjIl0sWzUsMSwiYlxcdGltZXMgYyJdLFs0LDIsImIiXSxbNiwyLCJjIl0sWzEsMywicF8wXnthLGJjfSJdLFsxLDIsInBfMV57YSxiY30iLDJdLFswLDMsInBee2FifV8wXFxjaXJjIHBee2FiLGN9XzAiLDIseyJjdXJ2ZSI6Mn1dLFswLDEsIlxcYmV0YSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDIsImciLDAseyJjdXJ2ZSI6LTJ9XSxbNCw2LCJwXnthYn1fMVxcY2lyYyBwXnthYixjfV8wIiwyLHsiY3VydmUiOjJ9XSxbNCw3LCJwXnthYixjfV8xIiwwLHsiY3VydmUiOi0yfV0sWzUsNiwicF57YmN9XzAiXSxbNSw3LCJwXntiY31fMSIsMl0sWzQsNSwiZyIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+	\begin{tikzcd}
+		& {(a\times b)\times c} &&&& {(a\times b)\times c} \\
+		& {a\times(b\times c)} &&&& {b\times c} \\
+		a && {b\times c} && b && c
+		\arrow["{p_0^{a,bc}}", from=2-2, to=3-1]
+		\arrow["{p_1^{a,bc}}"', from=2-2, to=3-3]
+		\arrow["{p^{ab}_0\circ p^{ab,c}_0}"', curve={height=12pt}, from=1-2, to=3-1]
+		\arrow["\beta", dashed, from=1-2, to=2-2]
+		\arrow["g", curve={height=-12pt}, from=1-2, to=3-3]
+		\arrow["{p^{ab}_1\circ p^{ab,c}_0}"', curve={height=12pt}, from=1-6, to=3-5]
+		\arrow["{p^{ab,c}_1}", curve={height=-12pt}, from=1-6, to=3-7]
+		\arrow["{p^{bc}_0}", from=2-6, to=3-5]
+		\arrow["{p^{bc}_1}"', from=2-6, to=3-7]
+		\arrow["g", dashed, from=1-6, to=2-6]
+	\end{tikzcd}
+	\end{equation*}
+	We note that $p_0^{bc}\circ g=p^{ab}_1\circ p^{ab,c}_0$ (used on LHS) and $p^{ab,c}_1 = p_1^{bc}\circ g$ (used on RHS):
+	$$
+	\begin{aligned}
+		p_0^{bc}\circ g \circ \alpha &= p^{ab}_1\circ p^{ab,c}_0 \circ \alpha \\
+		&= p^{ab}_1\circ h = p^{bc}_0\circ p^{a,bc}_1
+	\end{aligned}
+	\qquad \quad
+	\begin{aligned}
+		p_1^{bc}\circ g \circ\alpha  &= p^{ab,c}_1 \circ \alpha  \\
+		  &= p_1^{bc}\circ p^{a,bc}_1\\
+	\end{aligned}
+	$$
+	together with folowing commutative diagram (we have proved by commutative in above equation):
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMSwwLCJhXFx0aW1lcyhiXFx0aW1lcyBjKSJdLFsxLDEsImJcXHRpbWVzIGMiXSxbMCwyLCJiIl0sWzIsMiwiYyJdLFsxLDIsInBee2JjfV8wIl0sWzEsMywicF57YmN9XzEiLDJdLFswLDMsIiBwXzFee2JjfVxcY2lyYyBwXnthLGJjfV8xIiwwLHsiY3VydmUiOi0yfV0sWzAsMiwicF57YmN9XzBcXGNpcmMgcF57YSxiY31fMSIsMix7ImN1cnZlIjoyfV0sWzAsMSwiZ1xcY2lyY1xcYWxwaGEiLDAseyJjdXJ2ZSI6LTEsInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDEsInBee2EsYmN9XzEiLDIseyJjdXJ2ZSI6MSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+	\begin{tikzcd}
+		& {a\times(b\times c)} \\
+		& {b\times c} \\
+		b && c
+		\arrow["{p^{bc}_0}", from=2-2, to=3-1]
+		\arrow["{p^{bc}_1}"', from=2-2, to=3-3]
+		\arrow["{ p_1^{bc}\circ p^{a,bc}_1}", curve={height=-12pt}, from=1-2, to=3-3]
+		\arrow["{p^{bc}_0\circ p^{a,bc}_1}"', curve={height=12pt}, from=1-2, to=3-1]
+		\arrow["g\circ\alpha", curve={height=-6pt}, dashed, from=1-2, to=2-2]
+		\arrow["{p^{a,bc}_1}"', curve={height=6pt}, dashed, from=1-2, to=2-2]
+	\end{tikzcd}\qquad \quad
+	% https://q.uiver.app/#q=WzAsNSxbMSwwLCJhXFx0aW1lcyhiXFx0aW1lcyBjKSJdLFsxLDEsIihhXFx0aW1lcyBiKVxcdGltZXMgYyJdLFsxLDIsImFcXHRpbWVzKGJcXHRpbWVzIGMpIl0sWzIsMiwiYlxcdGltZXMgYyJdLFswLDIsImEiXSxbMCwxLCJcXGFscGhhIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzEsMiwiXFxiZXRhIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzIsMywicF8xXnthLGJjfSIsMl0sWzIsNCwicF57YSxiY31fMCJdLFswLDQsInBee2EsYmN9XzAiLDIseyJjdXJ2ZSI6Mn1dLFswLDMsInBee2EsYmN9XzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMSw0LCJwXnthYn1fMFxcY2lyYyBwXnthYixjfV8wIiwxXSxbMSwzLCJnIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+	\begin{tikzcd}
+		& {a\times(b\times c)} \\
+		& {(a\times b)\times c} \\
+		a & {a\times(b\times c)} & {b\times c}
+		\arrow["\alpha", dashed, from=1-2, to=2-2]
+		\arrow["\beta", dashed, from=2-2, to=3-2]
+		\arrow["{p_1^{a,bc}}"', from=3-2, to=3-3]
+		\arrow["{p^{a,bc}_0}", from=3-2, to=3-1]
+		\arrow["{p^{a,bc}_0}"', curve={height=12pt}, from=1-2, to=3-1]
+		\arrow["{p^{a,bc}_1}", curve={height=-12pt}, from=1-2, to=3-3]
+		\arrow["{p^{ab}_0\circ p^{ab,c}_0}"{description}, from=2-2, to=3-1]
+		\arrow["g"{description}, dashed, from=2-2, to=3-3]
+	\end{tikzcd}
+	\end{equation*}
+	By the universal property of $b\times c$, we have that $g \circ \alpha=p^{a,bc}_1$. This mean that the right side of the diagram on RHS commutes. On the left side of RHS triangle, the triangle commutes because $p^{ab}_0\circ p^{ab,c}_0\circ\alpha = p^{ab}_0\circ h = p^{a,bc}_0$ and recall that $p^{ab}_0\circ p^{ab,c}_0 = p^{a,bc}_0\circ\beta$. Thus, by univeral properties $\beta\circ\alpha=\operatorname{id}_{a\times(b\times c)}$. Finally, The other cases of $\alpha\circ\beta=\operatorname{id}_{(a\times b)\times c}$ can be proved in simialr manners.
+\end{proof}
+\end{dem}
+
+We can see here that the categorical product actually \textit{looks like} a product on the natural number. Finally, we can consider the \textit{functoriality} of the product, in which the ``lifting'' of the morphism can be performed. (we will discuss the actual notion of functor in later section)
+
+\begin{definition}{\textbf{(Parallel Application of Product)}}
+	Given two morphisms $f:a\to a'$ and $g:b\to b'$, then we can construct the map $f\times g :a\times b\to a'\times b'$ based on these 2 function as follows:
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNixbMSwwLCJhXFx0aW1lcyBiIl0sWzEsMSwiYSdcXHRpbWVzIGInIl0sWzAsMiwiYSciXSxbMiwyLCJiJyJdLFsyLDEsImIiXSxbMCwxLCJhIl0sWzAsMSwiZlxcdGltZXMgZyIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxLDIsInBfMSciLDJdLFsxLDMsInBfMiciXSxbNSwyLCJmIiwyXSxbNCwzLCJnIl0sWzAsNSwicF8xIiwyXSxbMCw0LCJwXzIiXV0=
+	\begin{tikzcd}
+		& {a\times b} \\
+		a & {a'\times b'} & b \\
+		{a'} && {b'}
+		\arrow["{f\times g}"{description}, dashed, from=1-2, to=2-2]
+		\arrow["{p_1'}"', from=2-2, to=3-1]
+		\arrow["{p_2'}", from=2-2, to=3-3]
+		\arrow["f"', from=2-1, to=3-1]
+		\arrow["g", from=2-3, to=3-3]
+		\arrow["{p_1}"', from=1-2, to=2-1]
+		\arrow["{p_2}", from=1-2, to=2-3]
+	\end{tikzcd}
+	\end{equation*}
+\end{definition}
+
+Given the notion of product one can see the similarity between it and the way we define initial/terminal object above, which involves finding ``the'' object.
+
+\begin{remark}
+
+We would like to point out the common patterns that is starting to arise, whereby we define the categorical object by assigning a particular patterns ($a\leftarrow x\to b$ in product case) and find the best object that represents it:
+\begin{itemize}
+	\item The \textit{best} one is selected based on (if it exists) the fact that all candiidate objects (of a particular pattern) have a unique map to it.
+	\item In the terminal object case, there isn't a pattern, just a simple object.
+\end{itemize}
+
+This is called univeral construction. Please note that this can be formalized, but we will have to stay until very last part of this notes. Finally, due to the way it is constructed, every constructed objects will have the same arrow coming in and out, thus all objects that satisfies the construction will be isomorphic with each other.
+\end{remark}
+
+Now, we have been more familar with the categorical product and a rought way to construct a new objects. Let's explore 2 more.
+
+\subsection{Currying/Internal-Hom}
+
+This would be quite natural for programmer, where we will introduce the notion of currying, which is quite ubiquitous in functional programming languages. 
+
+\begin{definition}{\textbf{(Currying)}}
+Given the 2 argument function $f:X\times Y\to Z$, one can perform the currying, which will givs us $f':X\to (Y\to Z)$ and uncurrying is to reverse it. 
+\end{definition}
+
+Let's see how we can use it.
+
+\begin{remark}
+	Suppose we have $x\in X$ and $y\in Y$, then we can see that $f$ will map both of them to $z\in Z$ i.e $f(x,y)\mapsto z$, on the other hand, $f'$ can also do the same i.e $f'(x)(y)\mapsto z$ but it can also return a function, upon a partial application i.e $f'(x):y\to z$ is a function such that $y\mapsto f(x, y)$.
+
+	One can write the return of function $f'$ to be $X\to Z^Y$ in which $Z^Y$ is a special kind of object that represent the function from $Y\to Z$ i.e $\operatorname{Hom}_\textbf{Set}(X, Z^Y)\cong\operatorname{Hom}_\textbf{Set}((X,Y),Z)$ (we will see this later in the adjunction), and this is looking like we are taking a logarithm, hence the name exponential object. 
+	
+	Furthermore, given the object $B^A$, one might define an evaluation function $\varepsilon_{AB}:B^A\times A\to B$, such that:
+
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsMyxbMCwwLCIxXFx0aW1lczFcXGNvbmcxIl0sWzAsMSwiQl5BXFx0aW1lcyBBIl0sWzEsMSwiQiJdLFswLDEsIihmLCBhKSIsMl0sWzAsMiwiYiJdLFsxLDIsIlxcdmFyZXBzaWxvbl97QUJ9IiwyXV0=
+	\begin{tikzcd}
+		1\times1\cong1 \\
+		{B^A\times A} & B
+		\arrow["{(f, a)}"', from=1-1, to=2-1]
+		\arrow["b", from=1-1, to=2-2]
+		\arrow["{\varepsilon_{AB}}"', from=2-1, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+
+	That is we select a function with an element and we evaluation the function to get what we need i.e $f(a)=b$. This is what is called elimination rule.
+\end{remark}
+
+With the elimination rule ready, we can now define the universal construction. Again, we have a pattern of 
+
+\begin{definition}{\textbf{(Exponential Object)}} 
+	Given the object $a$,$b$, we have the pattern of $\_\times a\to b$. The exponential object is an object $b^a$ such that for any object $c$, with function $f:c\times a\to b$ the following diagram commutes:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsMyxbMCwxLCJiXmFcXHRpbWVzIGEiXSxbMSwxLCJiIl0sWzAsMCwiY1xcdGltZXMgYSJdLFsyLDAsImhcXHRpbWVzIFxcb3BlcmF0b3JuYW1le2lkfV9hIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMSwiXFx2YXJlcHNpbG9uIiwyXSxbMiwxLCJmIl1d
+	\begin{tikzcd}
+		{c\times a} \\
+		{b^a\times a} & b
+		\arrow["{h\times \operatorname{id}_a}"', dashed, from=1-1, to=2-1]
+		\arrow["\varepsilon"', from=2-1, to=2-2]
+		\arrow["f", from=1-1, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+
+	and, finally, there is an unique $h$ for every $f$ and vice versa (note that the function that represent the pattern for exponential object is the evaluation function $\varepsilon$).
+\end{definition}
+
+Now, the currying can be seen in the light of exponential object as:
+
+\begin{remark}
+	Consider the following diagram:
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsMyxbMCwxLCJiXmFcXHRpbWVzIGEiXSxbMSwxLCJiIl0sWzAsMCwiMVxcdGltZXMgYVxcY29uZyBhIl0sWzAsMSwiXFx2YXJlcHNpbG9uX3thYn0iLDJdLFsyLDEsImYiXSxbMiwwLCJoXFx0aW1lcyBcXG9wZXJhdG9ybmFtZXtpZH1fYSIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+	\begin{tikzcd}
+		{1\times a\cong a} \\
+		{b^a\times a} & b
+		\arrow["{\varepsilon_{ab}}"', from=2-1, to=2-2]
+		\arrow["f", from=1-1, to=2-2]
+		\arrow["{h\times \operatorname{id}_a}"', dashed, from=1-1, to=2-1]
+	\end{tikzcd}
+	\end{equation*}
+	We can clearly see that $h:1\to B^A$ can be seen as selecting the element in $B^A$ that is uniquely identified with a function $f:a\cong 1\times a\to b$, that is $h$ is the \textbf{curried} version of $f$.
+\end{remark}
+
+\subsection{Pullback}
+
+We will move into very important universal construction, which is the \textit{pullback}. The motivation of this is, again, coming from $\textbf{Set}$, where by, we will consider adding the condition/filtering to the set i.e given functions $f:A\to C$ and $g:B\to C$, we want to find the following set:
+
+$$
+\big\{ (a, b) \in A\times B : f(a) = g(b) \big\}
+$$
+
+The pattern that we are using are quite clear. With the usual construction of objects, we have the following definition.
+
+\begin{definition}{\textbf{(Pullback)}}
+	Given a category $\textbf{C}$, a pullback object is an object $p$ together with map $p_1:p\to a$ and $p_2:p\to b$, such that given an object $c$ and morphisms $f:a\to c$ and $g:b\to c$, and some object $q$ and morphism $q_1:q\to a$ and $q_2:q\to b$. The following diagram commutes:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNSxbMCwwLCJxIl0sWzEsMSwicCJdLFsxLDIsImIiXSxbMiwyLCJjIl0sWzIsMSwiYSJdLFswLDEsImgiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMSw0LCJwXzEiXSxbMiwzLCJnIiwyXSxbNCwzLCJmIl0sWzAsMiwicV8yIiwyLHsiY3VydmUiOjJ9XSxbMCw0LCJxXzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMSwyLCJwXzIiLDJdLFsxLDMsIiIsMCx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+	\begin{tikzcd}
+		q \\
+		& p & a \\
+		& b & c
+		\arrow["h", dashed, from=1-1, to=2-2]
+		\arrow["{p_1}", from=2-2, to=2-3]
+		\arrow["g"', from=3-2, to=3-3]
+		\arrow["f", from=2-3, to=3-3]
+		\arrow["{q_2}"', curve={height=12pt}, from=1-1, to=3-2]
+		\arrow["{q_1}", curve={height=-12pt}, from=1-1, to=2-3]
+		\arrow["{p_2}"', from=2-2, to=3-2]
+		\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+	\end{tikzcd}
+	\end{equation*}
+
+	With the function $h:x\to p$ is unique to the the morphisms $(q_1,q_2)$, and vice versa. Furthermore, we note that we also requires a morphism from $p\to c$ but due to the commutativity condition, we can write it implicitly. The $\lrcorner$ denotes that the object $p$ is the pullback. 
+\end{definition}
+
+Again, as we have dealt in the product case, we can perform similar proof to show that the pullback is actually a conditioned product:
+
+\begin{itemize}
+	\item We can replace $q$ above with singleton set/terminal object $1$, and the conditioning of the elements follows from the commutativity, since it is required that $f\circ a=g\circ b$ where $a:1\to A$ and $b\to B$, which are the object selector. And, we can set $p_1$ and $p_2$ to be  the projectors defined in the same way as the product (thus allowing for factorization of $q_1=p_1\circ h$ and $q_2=p_2\circ h$)
+	\item On the other hand, the other direction is simply proved by the observation that the condition is the set is the same as commutativity i.e $f(a)=f\circ a$ and $g(b)=g\circ b$
+\end{itemize}
+
+The intersting fact about pullback is that it can stands in for multiple kinds of constructions that we are familar in $\textbf{Set}$, notably: intersection, product, inverse, and subset classifier. 
+
+\begin{definition}{\textbf{(Intersection)}}
+	Let's start with a simple case, given a set $A$ and $B$, we can define its intersection to be $A\cap B\cong\{(a, b)\in A\times B: a = b\}$, therefore, one can define the intersection as:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMCwwLCJBXFxjYXAgQiJdLFsxLDEsIkFcXGN1cCBCIl0sWzAsMSwiQSJdLFsxLDAsIkIiXSxbMCwyXSxbMCwzXSxbMywxLCJpX0IiXSxbMiwxLCJpX0EiLDJdLFswLDEsIiIsMSx7InN0eWxlIjp7Im5hbWUiOiJjb3JuZXIifX1dXQ==
+	\begin{tikzcd}
+		{A\cap B} & B \\
+		A & {A\cup B}
+		\arrow[from=1-1, to=2-1]
+		\arrow[from=1-1, to=1-2]
+		\arrow["{i_B}", from=1-2, to=2-2]
+		\arrow["{i_A}"', from=2-1, to=2-2]
+		\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+	
+	where the morphism $i_A:A\to A\cup B$ and $i_B:B\to A\cup B$ are the inclusion map to the union.
+\end{definition}
+
+\begin{remark}
+	We can recover the product from pullback by consider the following pullback diagram, in which we replace object $c$ with terminal object $1$:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNSxbMSwxLCJhXFx0aW1lcyBiIl0sWzEsMiwiYiJdLFsyLDIsIjEiXSxbMiwxLCJhIl0sWzAsMCwicSJdLFswLDMsInBfMSJdLFswLDEsInBfMiIsMl0sWzEsMiwiIV9iIiwyXSxbMywyLCIhX2EiXSxbNCwwLCJoIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzQsMSwicV8yIiwyLHsiY3VydmUiOjJ9XSxbNCwzLCJxXzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMCwyLCIiLDAseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+	\begin{tikzcd}
+		q \\
+		& {a\times b} & a \\
+		& b & 1
+		\arrow["{p_1}", from=2-2, to=2-3]
+		\arrow["{p_2}"', from=2-2, to=3-2]
+		\arrow["{!_b}"', from=3-2, to=3-3]
+		\arrow["{!_a}", from=2-3, to=3-3]
+		\arrow["h", dashed, from=1-1, to=2-2]
+		\arrow["{q_2}"', curve={height=12pt}, from=1-1, to=3-2]
+		\arrow["{q_1}", curve={height=-12pt}, from=1-1, to=2-3]
+		\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=2-2, to=3-3]
+	\end{tikzcd}
+	\end{equation*}
+	
+	Note that by definition, there is a unique morphism to a terminal object, therefore, $!_b\circ q_2=!_{a\times b} = !_a \circ q_1$ for any morphism $q$ and map $q_1:q\to a$ and $q_2:q\to b$ i.e any pair $(q,q_1,q_2)$ can be used to define $h$ without a restriction of commutativity.
+\end{remark}
+
+We can see that if we pick the right morphism or objects $c$, we will be able to derive many others objects. Let's do the inverse, first:
+
+\begin{definition}{\textbf{(Inverse)}}
+	Suppose we are given the function $f:B\to C$, we can usually, define the inverse as of $b\in B$ as $f^{-1}(c)=\{b\in B: f(b) = c\}$. With this definition and formulation of pullback, we can see that (as we select object $c$ by picking the map $1\to C$, and note that $B\times 1\cong B$):
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMCwwLCJmXnstMX0oYykiXSxbMCwxLCJCIl0sWzEsMSwiQyJdLFsxLDAsIjEiXSxbMCwzXSxbMCwxLCJqIiwyXSxbMSwyLCJmIiwyXSxbMywyLCJjIl0sWzAsMiwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV1d
+	\begin{tikzcd}
+		{f^{-1}(c)} & 1 \\
+		B & C
+		\arrow[from=1-1, to=1-2]
+		\arrow["j"', from=1-1, to=2-1]
+		\arrow["f"', from=2-1, to=2-2]
+		\arrow["c", from=1-2, to=2-2]
+		\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+
+	Note that this doesn't have to set, in order to define the notion of inverse (but not all categories will have this construction).
+
+\end{definition}
+
+We can see here that the notion of ``subset'' of $B$ arises when we set object $a$ to be the terminal object, and the function $j:f^{-1}(c)\hookrightarrow B$ can be seen as injective function as $f^{-1}(c)\subseteq B$. Finally, the condition itself ($f(a)=g(b)$), can be generalized to any kind of ``boolean'' condition by the following construction.
+
+
+\begin{definition}{\textbf{(Subset Classifier)}}
+	Suppose we are given an set of 2 elements $\Omega=\{0,1\}$, and a set $X$, one can define a characteristic function $\chi:X\to\Omega$ that assigns either $0$ or $1$ to the element of $X$ (i.e true or false value). Then we can have $A=\{ x\in X: \chi(x) \}$, by the following pullback
+	
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzAsMSwiWCJdLFsxLDEsIlxcT21lZ2EiXSxbMSwwLCIxIl0sWzAsM10sWzAsMSwiaiIsMl0sWzEsMiwiXFxjaGkiLDJdLFszLDIsInQiXSxbMCwyLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XV0=
+	\begin{tikzcd}
+		A & 1 \\
+		X & \Omega
+		\arrow[from=1-1, to=1-2]
+		\arrow["j"', from=1-1, to=2-1]
+		\arrow["\chi"', from=2-1, to=2-2]
+		\arrow["t", from=1-2, to=2-2]
+		\arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+	\end{tikzcd}
+	\end{equation*}
+	
+	Note that set the condition on the right part is a short hand for $\chi(x)=1$, so we can have $t:X\to \Omega$ being a function that selects an element $1$ ($t$ stands for true). 
+\end{definition}
+
+With this construction above, the subject can be defined in a slightly round about manners, in which we have $\chi(x)=1$ if $x\in A$ and $\chi(x)=0$ if $x\not\in A$. 
+
+\subsection{Natural Number}
+
+Finally, we will consider a construction of natural number (and various recursive objects). This part is a bit leaning toward programming. Normally, a natural number $\mathbb{N}$ can be easily defined recursively (inductively) as $(0, s:\mathbb{N}\to \mathbb{N})$, where the successor $s(n)=n+1$. Let's make it in categorical language
+
+\begin{remark}
+	We can define the number/element $0$ to be the map from a terminal object $0:1\to N$, while the successor map $s$ is $N\to N$. We can clearly see that number $1$ can be defined as $s\circ 0$ and $2$ can be defined a $s\circ s\circ 0$ and so on.
+\end{remark}
+
+With this, we have establishing the pattern that we are going to work on, whereby we have initialization i.e $\operatorname{init}$ in our case and $\operatorname{step}$ to move the object beyond. Now, we can have the natural number to be the one being universally constructed, as:
+
+% \begin{definition}{\textbf{(Natural Number System \cite{leinster2014rethinking})}}
+\begin{definition}{\textbf{(Natural Number System)}}
+	Given a category $\textbf{C}$, a natural number system consists of object $N$ and morphisms $z:1\to N$ and $s:N\to N$, such that for any object $a$ with morphisms $\operatorname{init}:0\to a$ and $\operatorname{step}:a\to a$, there is a unique arrow $h$, such that the following diagram commutes:
+
+	\begin{equation*}
+	% https://q.uiver.app/#q=WzAsNSxbMCwwLCIxIl0sWzEsMCwiTiJdLFsyLDAsIk4iXSxbMSwxLCJhIl0sWzIsMSwiYSJdLFswLDEsInoiXSxbMSwyLCJzIl0sWzAsMywiXFxvcGVyYXRvcm5hbWV7aW5pdH0iLDJdLFszLDQsIlxcb3BlcmF0b3JuYW1le3N0ZXB9IiwyXSxbMSwzLCJoIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzIsNCwiaCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+	\begin{tikzcd}
+		1 & N & N \\
+		& a & a
+		\arrow["z", from=1-1, to=1-2]
+		\arrow["s", from=1-2, to=1-3]
+		\arrow["{\operatorname{init}}"', from=1-1, to=2-2]
+		\arrow["{\operatorname{step}}"', from=2-2, to=2-3]
+		\arrow["h", dashed, from=1-2, to=2-2]
+		\arrow["h", dashed, from=1-3, to=2-3]
+	\end{tikzcd}
+	\end{equation*}
+	We note that by the commutativity, we got the condition: $\operatorname{step}\circ h=h\circ s$ and $\operatorname{init}=h\circ z$, this is akin to the induction principle, esepscially the first condition.
+\end{definition}
+

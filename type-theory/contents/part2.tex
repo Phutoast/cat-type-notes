@@ -1,0 +1,526 @@
+\subsection{Identity Type}
+
+
+\begin{remark}{(Some Notes on Identity)}
+    Given a type $A$, and 2 element $x,y:A$, $x=y$ should again be a type that depends on $x,y:A$. An element $p:x=y$ witness (identity) that $x$ and $y$ are equal elements of type $A$:
+    \begin{itemize}
+        \item There might be many element of type $x=y$, many identification of $x$ and $y$. And, since $x=y$ is itself a type, we can form the type $p=q$ for any 2 identification $p,q:x=y$. 
+        \item The situation is analogous to the situation in homotopy theory, where 2 points of a space can be connected by possible more than $1$ path. And, between any 2 path from $x$ to $y$, there is a space of homotopies between then and so on.
+    \end{itemize}
+\end{remark}
+
+\begin{definition}{\textbf{(Identity Type)}}
+    Given a type $A$ and let $a:A$, an identity type of $A$ at $a$ is an inductive family of types $a=_Ax$ indexed by $x:A$ for which the constructor is $\operatorname{refl}_a:a=_Aa$. The induction principle postulates that for any family of types $P(x, p)$ indexed by $x:A$ and $p:a=_Ax$ there is a function:
+    \begin{equation*}
+        \operatorname{ind-eq}_a : P(a, \operatorname{refl}_a)\rightarrow \Pi_{(x:A)}\Pi_{(p:a=_Ax)}P(x, p)
+    \end{equation*}
+    That satisfies the computation rule of $\operatorname{ind-eq}_a(u, a, \operatorname{refl}_a)\equiv u$, where $u:P(a,\operatorname{refl}_a)$. An element of type $a=_Ax$ is also called identification of $a$ with $x$ or path from $a$ to $x$.
+\end{definition}
+
+\begin{remark}{(Observation on The Definition)}
+    (1) We have a type $a=_Ax$ for any $x:A$, the constructor only provides an element $\text{refl}_a:a=_Aa$, identifying $a$ with itself. (2) The injunction principle shows that to prove something about all identification of of $a$ with some $x:A$, it suffices to proof an assertion about $\operatorname{refl}_a$ only.
+\end{remark}
+
+\begin{definition}{\textbf{(Formal Rule for Identity Type)}}
+    We have following formation, induction, elimination and computation rule given here:
+    \begin{equation*}
+    \begin{aligned}
+        \cfrac{\Gamma\vdash a:A}{\Gamma, x:A\vdash a=_Ax\type} &\qquad \quad \cfrac{\Gamma\vdash a:A}{\Gamma\vdash\operatorname{refl}_a:a=_Aa} \qquad \quad \cfrac{\Gamma\vdash a:A \qquad \Gamma, x:A, p:a=_Ax\vdash P(x, p)\operatorname{ Type}}{\Gamma\vdash\operatorname{ind-eq}_a : P(a, \operatorname{refl}_a)\rightarrow \Pi_{(x:A)}\Pi_{(p:a=_Ax)}P(x, p)} \\
+        &\cfrac{\Gamma\vdash a:A \qquad \Gamma, x:A, p:a=_Ax\vdash P(x, p)\operatorname{ Type}}{\Gamma\vdash\operatorname{ind-eq}_a(p, a, \operatorname{refl}_a)\equiv p:P(a, \operatorname{refl}_a)}
+    \end{aligned}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(Observation on Variable Type)}
+    It is also possible to form the identity type at a variable type $A$, rather than at an element. Since we can form the identity type in any context, we can form the identity type at variable $x:A$ as:
+    \begin{equation*}
+        \cfrac{\Gamma,x:A\vdash x:A}{\Gamma,x:A,y:A\vdash x=_Ay\type} \qquad \quad \cfrac{\Gamma, x:A\vdash x:A}{\Gamma, x:A\vdash \operatorname{refl}_x:x=_Ax}
+    \end{equation*}
+    Or we can index its constructor in which we have the following induction rule, see RHS. 
+\end{remark}
+
+Now we will show the groupoidal structure of types, that is we can define the concatenated and inverted operator, which corresponds to the transitivity and symmetry of the identity type.
+
+\begin{definition}{\textbf{(Concatenation Operation)}}
+    Let $A$ be a type. We define the concatenation operation, as:
+    \begin{equation*}
+        \operatorname{concat}:\Pi_{(x,y,z:A)}(x=y) \rightarrow\big( (y=z)\rightarrow (x=z) \big)
+    \end{equation*}
+    where we denote $p\bullet q$ for $\operatorname{concat}(p,q)$. 
+    
+    \textbf{(Construction):} We start with function, for any $a:A$, see LHS. Then, by induction principle, it is enough to construct them as:
+    \begin{equation*}
+        f(x) : \Pi_{(y:A)}(x=y) \rightarrow \Pi_{(z:A)}(y=z) \rightarrow (x=z) \qquad\rightsquigarrow\qquad f(x,x,\operatorname{refl}_x) : \Pi_{(z:A)}(x=z)\rightarrow (x=z)
+    \end{equation*}
+    On RHS, we can have $\lambda z.\operatorname{id}_{(x=z)}$. With the identity elimination, we can set $P(y,p)\equiv\Pi_{(z:A)}(y=z)\rightarrow (x=z)$ where $p:x=_Ay$, but this means that $P(x,\operatorname{refl}_x)\equiv\Pi_{(z:A)}(x=z)\rightarrow (x=z)$
+    \begin{equation*}
+    \begin{aligned}
+        &\operatorname{ind-eq}_x : P(x, \operatorname{refl}_x)\to\Pi_{y:A}\Pi_{p:x=_Ay}P(y, p) \\
+        f(x):=&\operatorname{ind-eq}_x(\lambda z.\operatorname{id}_{(x=z)}) : \Pi_{y:A}(x=y)\to\Pi_{(z:A)}(y=z)\rightarrow (x=z) \\
+    \end{aligned}
+    \end{equation*}
+    we use swap function for the third and forth variable of $f$, where $\operatorname{concat}_{x,y,z}(p,q) := f(x,y,p,z,q)$.
+\end{definition}
+
+\begin{remark}{(Trick with Identity Type)}
+    Note that by defining the only on the $\operatorname{refl}_x$, by the identity elimination, we can consider a more complex set of equality, for example $x=_Ay$ for any $y$ i.e $P(y, p)$. That is, we consider the behavior of the function on $\operatorname{refl}_x$ and then with that result, plug it to the $\operatorname{ind-eq}_x(\cdot)$ to get the desired function.
+
+    This is shown more clearly in different formulation of path induction (HoTT books showed that they are equal to each other):
+    \begin{equation*}
+        \operatorname{path-ind}:\Big(\Pi_{x:A}P(x,x,\operatorname{refl}_x)\Big)\rightarrow\Big(\Pi_{x,y:A}\Pi_{p:x=_Ay}P(x,y,p)\Big)
+    \end{equation*}
+\end{remark}
+
+
+
+\begin{definition}{\textbf{(Inverse)}}
+    Let $A$ be a type. We denote the inverse operation as:
+    \begin{equation*}
+        \operatorname{inv}:\Pi_{(x,y:A)}(x=y)\rightarrow(y=x)
+    \end{equation*}
+    
+    \textbf{(Construction):} We note that we have: $\operatorname{inv}(x, x, \operatorname{refl}_x) = \operatorname{refl}_x$. And so we can define $P(y,p)\equiv(y=x)$, then we have that $P(x,\operatorname{refl}_x)\equiv(x=x)$: $f(x):=\operatorname{ind-eq}_x(\operatorname{refl}_x) : \Pi_{y:A}(x=y)\to(y=x)$
+\end{definition}
+
+\begin{remark}{(Notes on Operation on Identification Type)}
+    The next question is whether the concatenation and inverting operations on identification behave as expected i.e Is concatenation of identification associative ? Does it satisfy the unit laws ? and Is inverse of an identification indeed a two-sided inverse ? 
+
+    For example, in the case of associativity, we want to compare $(p\bullet q)\bullet r$ with $p\bullet (q\bullet r)$, given $p:x=y,q:y=z$ and $r:z=w$ in a type $A$. The composition rule aren't strong enough to conclude that $(p\bullet q)\bullet r$ and $p\bullet(q\bullet r)$ are judgmentally equal
+\end{remark}
+
+Since both $(p\bullet q)\bullet r$ and $p\bullet(q\bullet r)$ are element of the same type i.e $x=w$. we ask the question where there is an identification of: $(p\bullet q)\bullet r = p\bullet (q\bullet r)$. And the answer is yes, as we have:
+
+\begin{definition}{\textbf{(Associator)}}
+    Let $A$ be a type and consider $3$ consecutive path as:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJ4Il0sWzEsMCwieSJdLFsyLDAsInoiXSxbMywwLCJ3Il0sWzAsMSwicCIsMCx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzIsMywiciIsMCx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzEsMiwicSIsMCx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV1d
+    \begin{tikzcd}
+        x & y & z & w
+        \arrow["p", Rightarrow, no head, from=1-1, to=1-2]
+        \arrow["q", Rightarrow, no head, from=1-2, to=1-3]
+        \arrow["r", Rightarrow, no head, from=1-3, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+    in $A$. We define the associator as $\operatorname{assoc}(p,q,r): (p \bullet q) \bullet r = p \bullet (q \bullet r)$. 
+    
+    \textbf{(Construction):} By the induction principle for identity types it suffices to show that:
+    \begin{equation*}
+        \Pi_{(z:A)}\Pi_{(q:x=z)}\Pi_{(w:A)}\Pi_{(r:z=w)} \  (\operatorname{refl}_x \bullet q)  \bullet r = \operatorname{refl}_x \bullet (q  \bullet r)
+    \end{equation*}
+    Note that by the definition of concatenation, we have that $\operatorname{refl}_x\bullet q\equiv q$, we have that: $\big( \operatorname{refl}_x\bullet q \big)\bullet r \equiv q\bullet r$. And same for $\operatorname{refl}_x \bullet (q  \bullet r)\equiv q\bullet r$, which we have that $\big( \operatorname{refl}_x\bullet q \big)\bullet r\equiv\operatorname{refl}_x \bullet (q  \bullet r)$. Then we can define the function above to be $\operatorname{assoc}(\operatorname{refl}_x,q,r):=\operatorname{refl}_{q\bullet r}$
+\end{definition}
+
+\begin{definition}{\textbf{(Unit Law Operation)}}
+    Given a type $A$, the left and right unit law operation which assigns for each $p:x=y$ as:
+    \begin{equation*}
+    \begin{aligned} 
+        &\operatorname{left-unit}(p): \operatorname{refl}_x\bullet p = p \qquad \quad \operatorname{right-unit}(p): p \bullet \operatorname{refl}_y = p \\ 
+    \end{aligned}
+    \end{equation*}
+    \textbf{(Construction):} It is suffices to construct:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{left-unit}(\operatorname{refl}_x) &: \operatorname{refl}_x \bullet\operatorname{refl}_x = \operatorname{refl}_x \\
+        \operatorname{right-unit}(\operatorname{refl}_x) &: \operatorname{refl}_x \bullet\operatorname{refl}_x = \operatorname{refl}_x 
+    \end{aligned}
+    \end{equation*}
+    Then we take $\operatorname{refl}_{\operatorname{refl}_x}$.
+\end{definition}
+
+\begin{definition}{\textbf{(Inverse Law Opeartion)}}
+    Given a type $A$, we can define left and right inverse law operation, where we have:
+    \begin{equation*}
+        \begin{aligned}
+        \operatorname{left-inp}(p) &: p^{-1}\bullet p = \operatorname{refl}_y \\
+        \operatorname{right-inp}(p) &: p\bullet p^{-1} = \operatorname{refl}_x \\
+        \end{aligned}
+    \end{equation*}
+    \textbf{(Construction):} It is suffices to construct as:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{left-inp}(\operatorname{refl}_x) &: \operatorname{refl}_x^{-1} \bullet \operatorname{refl}_x = \operatorname{refl}_x \\
+        \operatorname{right-inp}(\operatorname{refl}_x) &: \operatorname{refl}_x \bullet \operatorname{refl}_x^{-1} = \operatorname{refl}_x \\
+    \end{aligned}
+    \end{equation*}
+    Via the computation rule, we have that:
+    \begin{equation*}
+        \operatorname{refl}_x^{-1}\bullet\operatorname{refl}_x \equiv \operatorname{refl}_x\bullet\operatorname{refl}_x \equiv \operatorname{refl}_x \qquad \quad \operatorname{refl}_x\bullet\operatorname{refl}_x^{-1} \equiv \operatorname{refl}_x\bullet\operatorname{refl}_x \equiv \operatorname{refl}_x
+    \end{equation*}
+    And so we can define $\operatorname{left-inv}(\operatorname{refl}_x)\equiv\operatorname{refl}_{\operatorname{refl}_x}$ and $\operatorname{right-inv}(\operatorname{refl}_x)=\operatorname{refl}_{\operatorname{refl}_x}$
+\end{definition}
+
+Note that the differences between the unit law and the inverse law is the $P(x,p)$
+
+\begin{definition}{\textbf{(Distributive Inverse Concatenation)}}
+    The operation inverting identifications distributes over the concatenation operation that is we have:
+    \begin{equation*}
+        \operatorname{distributive-inv-concat}(p, q) : (p\bullet q)^{-1} = q^{-1}\bullet p^{-1}
+    \end{equation*}
+    for any $p:x=y$ and $q:y=z$.
+
+    \textbf{(Construction):} It is suffices to consider the construct as follows:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{distributive-inv-concat}(\operatorname{refl}_x, q): (\operatorname{refl}_x\bullet q)^{-1} = q^{-1}\bullet \operatorname{refl}_x^{-1}
+    \end{aligned}
+    \end{equation*}
+    In which by the computation rule, we have that:
+    \begin{equation*}
+        (\operatorname{refl}_x\bullet q)^{-1} \equiv (q)^{-1} \qquad \quad q^{-1}\bullet \operatorname{refl}_x^{-1} \equiv q^{-1}\bullet \operatorname{refl}_x \equiv q^{-1}
+    \end{equation*}
+    Thus, we have that $\operatorname{distributive-inv-concat}(\operatorname{refl}_x, q)=\operatorname{refl}_{\operatorname{inv}(q)}$
+\end{definition}
+
+\begin{definition}{\textbf{(Inverse Concatenation)}}
+    For any $p:x=y,q:y=z$ and $r:x=z$, construct the map:
+    \begin{equation*}
+    \begin{aligned}
+        &\operatorname{inv-con}(p,q,r) : (p\bullet q=r) \to (q=p^{-1}\bullet r) \\
+        &\operatorname{con-inv}(p,q,r) : (p\bullet q=r) \to (q=r\bullet p^{-1}) \\
+    \end{aligned}
+    \end{equation*}
+    \textbf{(Construction):} It is suffices to consider the construct as follows (together with the computation rule on the RHS as follows from inverse and concatenation):
+    \begin{equation*}
+    \begin{aligned}
+        &\operatorname{inv-con}(\operatorname{refl}_x,q,r) : (\operatorname{refl}_x\bullet q=r) \to (q=\operatorname{refl}_x^{-1}\bullet r)\equiv (q=r)\to(q=r) \\
+        &\operatorname{con-inv}(\operatorname{refl}_x,q,r) : (\operatorname{refl}_x\bullet q=r) \to (q=r\bullet \operatorname{refl}_x^{-1})\equiv(q=r)\to(q=r) \\
+    \end{aligned}
+    \end{equation*}
+    Then we can set $\operatorname{inv-con}(\operatorname{refl}_x,q,r)=\operatorname{id}_{q=r}$ and $\operatorname{con-inv}(\operatorname{refl}_x,q,r)=\operatorname{id}_{q=r}$.
+\end{definition}
+
+\subsection{Action on Path and Transport}
+
+\begin{remark}{(Action on Identifications of Functions)}
+    We can show that every function preserves identification. In other words, every function sends identified element to identified elements. This is a form of continuity for function in type theory. 
+\end{remark}
+
+\begin{definition}{\textbf{(Action on Path)}}
+    Let $f:A\rightarrow B$ be a map. We define the action of paths of $f$ as an operation, as the first one, and other more. With the construction happens on the RHS:
+    \begin{equation*}
+    \begin{aligned} 
+        \operatorname{ap}_f &: \Pi_{(x,y:A)} (x=y) \rightarrow \big(f(x)=f(y)\big) \\
+        \operatorname{ap-id}_A &: \Pi_{(x, y:A)}\Pi_{(p:x=y)} \ p = \operatorname{ap}_{\operatorname{id}_A}(p) \\ 
+        \operatorname{ap-comp}_A(f,g) &: \Pi_{(x, y:A)}\Pi_{(p:x=y)} \ \operatorname{ap}_g(\operatorname{ap}_f(p))  = \operatorname{ap}_{g\circ f}(p) \\ 
+    \end{aligned}
+    \qquad \qquad
+    \begin{aligned}
+        \operatorname{ap}_f(\operatorname{refl}_x)&:=\operatorname{refl}_{f(x)} \\
+        \operatorname{ap-id}_A(\operatorname{refl}_x)&:= \operatorname{refl}_{\operatorname{refl}_x} \\
+        \operatorname{ap-comp}_A( \operatorname{refl}_x)&:= \operatorname{refl}_{\operatorname{refl}_{g(f(x))}} 
+    \end{aligned}
+    \end{equation*}
+
+    \textbf{(Construction):} We derive $\operatorname{ap}_f$ by the induction principle of identity types, and the the rest follows.
+\end{definition}
+
+\begin{definition}{\textbf{(Identifications for Action of Path)}}
+    Let $f:A\rightarrow B$ be a map. Then there are identification, with the following construction on the RHS:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{ap-refl}(f, x) : \operatorname{ap}_f(\operatorname{refl}_x) &= \operatorname{refl}_{f(x)} \\
+        \operatorname{ap-inv}(f, p) : \operatorname{ap}_f(p^{-1}) &= \operatorname{ap}_f(p)^{-1} \\
+        \operatorname{ap-concat}(f, p, q) : \operatorname{ap}_f(p\bullet q) &= \operatorname{ap}_f(p) \bullet \operatorname{ap}_f(q)
+    \end{aligned}
+    \qquad \qquad
+    \begin{aligned}
+        \operatorname{ap-refl}(f, x) &\equiv \operatorname{refl}_{\operatorname{refl}_{f(x)}} \\
+        \operatorname{ap-inv}(f, \operatorname{refl}_x) &:= \operatorname{refl}_{\operatorname{refl}_{f(x)}} \\
+        \operatorname{ap-concat}(f, \operatorname{refl}_x, q) &:= \operatorname{refl}_{\operatorname{ap}_f(q)}
+    \end{aligned}
+    \end{equation*}
+
+    \textbf{(Construction):} The first one following from the computation rule of the action on path. For the second (LHS) and third (RHS) identification, we can see that, following from the computation rule:
+    \begin{equation*}
+    \begin{aligned}
+        &\operatorname{ap}_f(\operatorname{refl}^{-1}_x) \equiv \operatorname{ap}_f(\operatorname{refl}_x) \equiv \operatorname{refl}_{f(x)} \\
+        &\operatorname{ap}_f(\operatorname{refl}_x)^{-1} \equiv \operatorname{refl}_{f(x)}^{-1} \equiv \operatorname{refl}_{f(x)}
+    \end{aligned}
+    \qquad \quad
+    \begin{aligned}
+        &\operatorname{ap}_f(\operatorname{refl}_x\bullet q) \equiv \operatorname{ap}_f(q) \\
+        &\operatorname{ap}_f(\operatorname{refl}_x) \bullet \operatorname{ap}_f(q) \equiv \operatorname{refl}_{f(x)}  \bullet \operatorname{ap}_f(q) \equiv  \operatorname{ap}_f(q)
+    \end{aligned}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Transport)}}
+    Let $A$ be a type and let $B$ be a type family over $A$. The transport operation is defined as:
+    \begin{equation*}
+        \operatorname{tr}_B:\Pi_{(x,y:A)}(x=y) \rightarrow \big( B(x)\rightarrow B(y) \big)
+    \end{equation*}
+    where we construct $\operatorname{tr}_B(p)$ by as $\operatorname{tr}_B(\operatorname{refl}_x) := \operatorname{id}_{B(x)}$. 
+\end{definition}
+
+\begin{remark}{(Some Notes on Transport Function)}
+    Dependent type also come with an action on identification: the transport functions. Given an identification $p:x=y$ in the base type $A$, we can transport any element $b:B(x)$ to the fibre $B(y)$. 
+    \begin{itemize}
+        \item In type theory, we can't distinguish between identified elements $x$ and $y$ because for any type family $B$ over $A$ one obtains an element of $B(y)$ from the elements of $B(x)$. 
+    \end{itemize}
+\end{remark}
+
+\begin{remark}{(Some Application of Transport Function)}
+    We have the following scenario: consider the dependent function $f:\Pi_{(x:A)}B(x)$, with an identification $p:x=_Ay$, it doesn't make sense to directly compare $f(x):B(x)$ and $f(y):B(y)$. But we can transport $f(x)$ along $p$, to get element $\operatorname{tr}_B(p,f(x)):B(y)$. Then we can show that:
+\end{remark}
+
+\begin{definition}{\textbf{(Identification of Dependent Function)}}
+    Given a dependent function $f:\Pi_{(a:A)}B(a)$ and an identification $p:x=y$ in, we can construct an identification as:
+    \begin{equation*}
+        \operatorname{apd}_f(p):\operatorname{tr}_B(p,f(x)) = f(y)
+    \end{equation*}
+    where the construction is given as: $\operatorname{apd}_f(\operatorname{relf}_x) := \operatorname{refl}_{f(x)}$, where $\operatorname{tr}_B(\operatorname{relf}_x,f(x)) \equiv \operatorname{id}_{B(x)}f(x)\equiv f(x)$
+\end{definition}
+
+
+\begin{remark}{(Notes on Reflection Element)}
+    The identity type is an indices \textbf{family} of types. While the type $a=x$ is inductively generated by $\operatorname{refl}_a$, type $a=a$ isn't inductively generated by $\operatorname{refl}_a$. We can't use the inductive principle of identity type to show that $p=\operatorname{refl}_a$ for any $p:a=a$ because the end point of $p:a=a$ isn't free. 
+\end{remark}
+
+Therefore, it is interesting to see how the reflexivity identification is unique. Note that the identification works as follows: we identify an element $a$ by giving the endpoint $x$ with which we seek to identify $a$, and then given the identification $p:a=x$. Thus the pair $(a,\operatorname{refl}_a)$ is unique in the type of all pairs as: $(x, p):\Sigma_{(x:A)} a = x$ i.e
+
+\begin{proposition}
+    Consider an element $a:A$, then we can show that there is an identification, in the type $\Sigma_{x:A}a=x$ for every $y:\Sigma_{(x:A)}a=x$:
+    \begin{equation*}
+        (a,\operatorname{refl}_a) =y
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    By $\Sigma$-induction (as we set $g$ to be $\lambda y.(\operatorname{pr}_1(y), \operatorname{pr}_2(y))$), it suffices to show that there is an identification as: $(a,\operatorname{refl}_a) = \operatorname{pair}(x,p)$ for any $x:A$ and $p:a=x$. Then we can use the induction principle of identity types, where $(a,\operatorname{refl}_a) = (a,\operatorname{refl}_a)$, which is obtained by reflexivity.
+\end{proof}
+
+The proposition showed that, up to identification, there is only one element in $\Sigma$-type of the identity type. Such types are called contractible.
+
+\begin{definition}{\textbf{(Base Type Lift)}}
+    Let $B$ be a type family over $A$ and consider identification $p:a=x$ in $A$. For any $b:B(a)$ we have the identification of:
+    \begin{equation*}
+        \operatorname{lift}_B(p, b) : (a, b) = (x, \operatorname{tr}_B(p, b))
+    \end{equation*}
+    The identification $p:x=y$ in the base type $A$ lifts to an identification in $\Sigma_{(x:A)}B(x)$ for all element in $B(x)$ (analogous to the path lifting property). We consider $\operatorname{tr}_B(\operatorname{refl}_a, b)\equiv b$ and so $\operatorname{lift}_B(\operatorname{refl}_a, b):=\operatorname{refl}_{(a, b)}$, as needed.
+\end{definition}
+
+\begin{definition}{\textbf{(Mac Lane Pentagon)}}
+    {\color{purple} Given the four consecutive identifications, with the construction on the RHS, we have}
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCIoKHBcXGJ1bGxldCBxKVxcYnVsbGV0IHIpXFxidWxsZXQgcyJdLFsyLDAsIihwXFxidWxsZXQgcSlcXGJ1bGxldCAoclxcYnVsbGV0IHMpIl0sWzIsMSwicFxcYnVsbGV0IChxXFxidWxsZXQgKHJcXGJ1bGxldCBzKSkiXSxbMSwyLCJwXFxidWxsZXQgKChxXFxidWxsZXQgcilcXGJ1bGxldCBzKSJdLFswLDEsIihwXFxidWxsZXQgKHFcXGJ1bGxldCByKSlcXGJ1bGxldCBzIl0sWzAsMSwiXFxhbHBoYV80IiwwLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMCw0LCJcXGFscGhhXzEiLDIseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFs0LDMsIlxcYWxwaGFfMiIsMix7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzMsMiwiXFxhbHBoYV8zIiwyLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwyLCJcXGFscGhhXzUiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+    \begin{tikzcd}
+        {((p\bullet q)\bullet r)\bullet s} && {(p\bullet q)\bullet (r\bullet s)} \\
+        {(p\bullet (q\bullet r))\bullet s} && {p\bullet (q\bullet (r\bullet s))} \\
+        & {p\bullet ((q\bullet r)\bullet s)}
+        \arrow["{\alpha_4}", Rightarrow, no head, from=1-1, to=1-3]
+        \arrow["{\alpha_1}"', Rightarrow, no head, from=1-1, to=2-1]
+        \arrow["{\alpha_5}", Rightarrow, no head, from=1-3, to=2-3]
+        \arrow["{\alpha_2}"', Rightarrow, no head, from=2-1, to=3-2]
+        \arrow["{\alpha_3}"', Rightarrow, no head, from=3-2, to=2-3]
+    \end{tikzcd}
+    \qquad\quad
+    \begin{aligned}
+        &\alpha_1(p, q, r, \operatorname{relf}_x) := \operatorname{assoc}(p, q, r) \\
+        &\alpha_2(p, q, \operatorname{relf}_x, s) := \operatorname{assoc}(p, q, s) \\
+        &\alpha_3(\operatorname{relf}_x, q, r, s) := \operatorname{assoc}(q, r, s) \\
+        &\alpha_4(p, \operatorname{relf}_x, r, s) := \operatorname{assoc}(p, r, s) \\
+        &\alpha_5(p, q, r, \operatorname{relf}_x) := \operatorname{assoc}(p, q, r) \\
+    \end{aligned}
+    \end{equation*}
+    Then we can show that $(\alpha_1\bullet\alpha_2)\bullet\alpha_3=\alpha_4\bullet\alpha_5$. We are required to do double induction. Starting with assigning $\alpha_4\equiv\operatorname{relf}_{(p\bullet q)\bullet (r\bullet s)}$, then we have to show that:
+    \begin{equation*}
+    \begin{aligned}
+        &\big[(\alpha_1\bullet\alpha_2)\bullet\alpha_3\big](p, q, r, \operatorname{relf}_x)=\alpha_5(p, q, r, \operatorname{relf}_x) \\
+        \equiv&\operatorname{assoc}(p, q, r)=\operatorname{assoc}(p, q, r)
+    \end{aligned}
+    \end{equation*}
+    The second line follows from the observation that:  $\alpha_1$ behaves slightly difference as ``domain'' are now differences and thats all since $\alpha_2,\alpha_3$ doesn't make any changes as they are associator of $p,q,s$, and the witness on type on the RHS:
+    \begin{equation*}
+        (p\bullet q)\bullet (r\bullet \operatorname{refl}_x)\equiv (p\bullet q)\bullet r\xrightarrow{\operatorname{assoc}(p, q, r) }p\bullet (q\bullet r)
+        \qquad \quad
+        \operatorname{refl}_{\operatorname{ind-eq}(\operatorname{refl}_{\operatorname{assoc}(p, q, r)})}
+    \end{equation*}
+\end{definition}
+
+\subsection{Law of addition on $\mathbb{N}$}
+
+Now we have the have introduced the identity type, then we can proof the following identification:
+
+\begin{equation*}
+\begin{aligned}
+    0+n&=n \\
+    m+0&=m \\
+    \succnat(m)+n &= \succnat(m+n) \\
+\end{aligned}\qquad\quad
+\begin{aligned}
+    m+\succnat(n) &= \succnat(m+n) \\
+    (m+n)+k &= m+(n+k) \\
+    m+n &= n+m
+\end{aligned}
+\end{equation*}
+
+where we recall that the natural number can be defined as: $m+0\equiv m$ and $m+\succnat(n)\equiv\succnat(m+n)$. we will have to find way to apply these in our proof, as:
+
+\begin{proposition}
+    For any natural number $n$, there are identification:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{left-unit-law-add}_\mathbb{N}(n) &: 0 + n = n \\ 
+        \operatorname{right-unit-law-add}_\mathbb{N}(n) &: n + 0 = n \\ 
+    \end{aligned}
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    Note that the right-unit laws follows directly from the fact that $\operatorname{right-unit-law-add}_\mathbb{N}(n):=\operatorname{refl}_n$, as the rule on the natural number suggests. So, we are left with the left unit law. This can be done by induction on $n$:
+    \begin{itemize}
+        \item Base Case: This is simple we have that $\operatorname{left-unit-law-add}_\mathbb{N}(0):\operatorname{refl}_0$
+        \item Step Case: The IH is that we have an identification on $p:0+n=n$, then we want to show that $0 + \succnat(n)=\succnat(n)$, then we use the action on path
+        \begin{equation*}
+            \operatorname{ap}_{\succnat}(p) : 0 + \succnat(n) \equiv \succnat(0+n) = \succnat(n) \\
+        \end{equation*}
+        This means that the left unit law can be defined as: $\operatorname{left-unit-law-add}:\operatorname{ind}_\mathbb{N}(\operatorname{refl}_0, \lambda p.\operatorname{ap}_{\succnat}(p))$
+    \end{itemize}
+\end{proof}
+
+\begin{proposition}
+    For any natural number $n$ and $m$, there are identification as:
+    \begin{equation*}
+        \begin{aligned} 
+            \operatorname{left-successor-law-add}_\mathbb{N}(m,n) &: \succnat(m)+n = \succnat(m+n) \\ 
+            \operatorname{right-successor-law-add}_\mathbb{N}(m,n) &: m+\succnat(n)=\succnat(m+n) \\ \end{aligned}
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    The right successor law follows directly from the rule of natural number so we don't have to do anything more. On the other hand, we will do the induction on the second variable to define left successor law:
+    \begin{itemize}
+        \item Base Case, we have the following construction
+        \begin{equation*}
+            \operatorname{ap}_{\succnat}(\operatorname{right-unit-law-add}(m))\bullet \operatorname{inv}\big( \operatorname{right-unit-law-add}(\succnat(m)) \big): \succnat(m)+0 = \succnat(m+0)
+        \end{equation*}
+        where $\operatorname{ap}_{\succnat}(\operatorname{right-unit-law-add}(m)):\succnat(m+0)=\succnat(m)$ and $\operatorname{right-unit-law-add}(\succnat(m)):\succnat(m)+0=\succnat(m)$
+        \item Step Case: we assume that $p:\succnat(m)+n = \succnat(m+n)$ as the IH and we want to show that $\succnat(m)+\succnat(n) = \succnat(m+\succnat(n))$, we have that:
+        \begin{equation*}
+        \begin{aligned}
+            \succnat(m)+\succnat(n) &\equiv \succnat(\succnat(m)+n) \\
+            \operatorname{ap}_{\succnat}\big( \operatorname{right-successor-law-add}_\mathbb{N}(m,n) \big)&: \succnat\big(m+\succnat(n)\big)=\succnat\big(\succnat(m+n)\big) \\
+            \operatorname{inv}(\operatorname{ap}_{\succnat}(p))&: \succnat(\succnat(m+n)) = \succnat(\succnat(m)+n) \\
+            % \operatorname{ap}_{\succnat}\big( \operatorname{right-successor-law-add}_\mathbb{N}(m,n) \big)\bullet \operatorname{inv}(\operatorname{ap}_{\succnat}(p))&:  \succnat\big(m+\succnat(n)\big)= \succnat(\succnat(m)+n)  \\
+        \end{aligned}
+        \end{equation*}
+        Then we have that:
+        \begin{equation*}
+        \begin{aligned}
+            \operatorname{right-successor-law-add} : \operatorname{ind}\Big( &\operatorname{ap}_{\succnat}(\operatorname{right-unit-law-add}(m))\bullet \operatorname{inv}\big( \operatorname{right-unit-law-add}(\succnat(m)) \big), \\
+            &\lambda p. \operatorname{ap}_{\succnat}\big( \operatorname{right-successor-law-add}_\mathbb{N}(m,n) \big)\bullet \operatorname{inv}(\operatorname{ap}_{\succnat}(p)) \Big)
+        \end{aligned}
+        \end{equation*}
+    \end{itemize}
+\end{proof}
+
+\begin{proposition}
+    Addition on the natural number is associative, given 3 natural numbers $m,n$ and $k$. There is an identification of:
+    \begin{equation*}
+        \operatorname{associative-add}_\mathbb{N}(m,n,k) : (m+n)+k = m+(n+k)
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    We will consider the proving this as an induction on $k$, in which we have:
+    \begin{itemize}
+        \item Base Case: $(m+n)+0=m+n$ and $m+(n+0)=m+n$ following from the right unit law.
+        \item Step Case, We will assume that $p:(m+n)+k = m+(n+k)$ and will show that: $(m+n)+\succnat(k) = m+(n+\succnat(k))$, we have following equalities:
+        \begin{equation*}
+        \begin{aligned}
+            (m+n)+\succnat(k) &= \succnat((m+n)+k) = \succnat(m+(n+k)) \\
+            &= m + \succnat(n+k) = m + (n+\succnat(k))
+        \end{aligned}
+        \end{equation*}
+        Note that $\operatorname{ap}_{\succnat}(p):\succnat((m+n)+k) = \succnat(m+(n+k))$ is used for the second equality.
+    \end{itemize}
+\end{proof}
+
+\begin{proposition}
+    Addition on the natural number is commutative i.e for any 2 natural number $n$ and $m$ there is an identification of:
+    \begin{equation*}
+        \operatorname{commutative-add}_\mathbb{N}(m,n) : m+n=n+m
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    We will consider the induction on $m$, in which we have:
+    \begin{itemize}
+        \item Base Case: We simply have $0+n=n+0$, which is the unit law.
+        \item Step Case: We will assume that $m+n=n+m$ and then will show that $\succnat(m)+n=n+\succnat(m)$, this follows from the following equalities:
+        \begin{equation*}
+            \succnat(m)+n = \succnat(m+n) = \succnat(n+m) = n + \succnat(m)
+        \end{equation*}
+        A combination of left and right successor law, and in the middle we have used action on path $\operatorname{ap}_{\succnat}(p):\succnat(m+n) = \succnat(n+m)$
+    \end{itemize}
+\end{proof}
+
+\begin{proposition}
+    Before we proof the result of predecessor function and successor function, we can show that, for any natural number $n$:
+    \begin{equation*}
+        \operatorname{succ}_\mathbb{Z}(\operatorname{in-pos}(n))\equiv\operatorname{in-pos}(\succnat(n)) \qquad \quad \operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(n)) \equiv \operatorname{in-neg}(\succnat(k))
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    \textbf{(Part 1):} We will perform the induction on $n$, in which:
+    \begin{itemize}
+        \item Base Case: $\operatorname{succ}_\mathbb{Z}(\operatorname{in-pos}(0))\equiv\operatorname{in-pos}(\succnat(0))$, where 
+        \begin{equation*}
+        \begin{aligned}
+            \operatorname{succ}_\mathbb{Z}(\operatorname{in-pos}(0)) &\equiv \operatorname{succ}_\mathbb{Z}(1_\mathbb{Z})\equiv\operatorname{in-pos}(1_\mathbb{N}) \\
+            \operatorname{in-pos}(\operatorname{succ}_\mathbb{N}(0)) &\equiv\operatorname{in-pos}(1_\mathbb{N})
+        \end{aligned}
+        \end{equation*}
+        \item Step Case: We the rule that we have defined defined:
+        \begin{equation*}
+            \operatorname{succ}_\mathbb{Z}(\operatorname{in-pos}(\succnat(n)))\equiv\operatorname{in-pos}(\succnat(\succnat(n)))
+        \end{equation*}
+    \end{itemize}
+    \textbf{(Part 2):} Using the induction on $n$, we have:
+    \begin{itemize}
+        \item Base Case: $\operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(0_\mathbb{N}))\equiv\operatorname{in-neg}(\succnat(0_\mathbb{N}))$, where we have that:
+        \begin{equation*}
+        \begin{aligned}
+            \operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(0_\mathbb{N})) &\equiv \operatorname{pred}_\mathbb{Z}(-1_\mathbb{Z}) \\
+            \operatorname{in-neg}(\succnat(0_\mathbb{N})) &\equiv \operatorname{in-neg}(1_\mathbb{N})\equiv \operatorname{pred}_\mathbb{Z}(-1_\mathbb{Z})
+        \end{aligned}
+        \end{equation*}
+        \item Step Case: We the rule that we have defined defined:
+        \begin{equation*}
+            \operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(\succnat(n)))\equiv \operatorname{in-neg}(\succnat(\succnat(n)))
+        \end{equation*}
+    \end{itemize}
+\end{proof}
+
+\begin{proposition}
+    Given the predecessor defined in definition \ref{def:succ-pred-int}, we will show that: 
+    \begin{equation*}
+        \operatorname{succ}_\mathbb{Z}(\operatorname{pred}_\mathbb{Z}(k)) = k \qquad \quad \operatorname{pred}_\mathbb{Z}(\operatorname{succ}_\mathbb{Z}(k)) = k
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    \textbf{(Part 1):}
+    Let's start with the first one, where we will perform an induction on $k$, we have the following:
+    \begin{itemize}
+        \item Base Case: We have that $\operatorname{succ}_\mathbb{Z}(\operatorname{pred}_\mathbb{Z}(0_\mathbb{Z}))\equiv\operatorname{succ}_\mathbb{Z}(-1_\mathbb{Z})\equiv0_\mathbb{Z}$
+        \item Step Case: since there are 2 kinds of number (positive and negative), we have to consider them both, that is given $\operatorname{succ}_\mathbb{Z}(\operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(n)))=\operatorname{in-neg}(n)$ and $\operatorname{succ}_\mathbb{Z}(\operatorname{pred}_\mathbb{Z}(\operatorname{in-pos}(n)))=\operatorname{in-pos}(n)$, we have that:
+        \begin{equation*}
+        \begin{aligned}
+            \operatorname{succ}_\mathbb{Z}(\operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(\succnat(n)))) &\equiv \operatorname{succ}_\mathbb{Z}\big( \operatorname{in-neg}(\succnat(\succnat(n))) \big) \\
+            &\equiv \operatorname{in-neg}(\succnat(n)) \\ \\
+            \operatorname{succ}_\mathbb{Z}(\operatorname{pred}_\mathbb{Z}(\operatorname{in-pos}(\succnat(n)))) &\equiv \operatorname{succ}_\mathbb{Z}(\operatorname{in-pos}(n)) \\
+            &\equiv \operatorname{in-pos}(\succnat(n))
+        \end{aligned} \\
+        \end{equation*}
+        Note that for the last equation we have used the proposition above.
+    \end{itemize}
+    \textbf{(Part 2):} On the other hand, we will, similarly, perform the induction on $k$, which we have the following:
+    \begin{itemize}
+        \item Base Case: We have that $\operatorname{pred}_\mathbb{Z}(\operatorname{succ}_\mathbb{Z}(0_\mathbb{Z}))\equiv\operatorname{pred}_\mathbb{Z}(1_\mathbb{Z})\equiv 0_\mathbb{Z}$
+        \item Step Case: We have that:
+        \begin{equation*}
+        \begin{aligned}
+            \operatorname{pred}_\mathbb{Z}(\operatorname{succ}_\mathbb{Z}(\operatorname{in-neg}(\succnat(n)))) &\equiv \operatorname{pred}_\mathbb{Z}(\operatorname{in-neg}(n)) \\
+            &\equiv \operatorname{in-neg}(\succnat(n)) \\ \\
+            \operatorname{pred}_\mathbb{Z}(\operatorname{succ}_\mathbb{Z}(\operatorname{in-pos}(\succnat(n)))) &\equiv \operatorname{pred}_\mathbb{Z}(\operatorname{in-pos}(\succnat(\succnat(n)))) \\
+            &\equiv \operatorname{in-pos}(\succnat(n))
+        \end{aligned}
+        \end{equation*}
+        Note that for the last equation we have used the proposition above.
+    \end{itemize}
+\end{proof}

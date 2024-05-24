@@ -1,0 +1,174 @@
+This notes is an mashed up/expository of various books but mainly: \textit{Notes on Category Theory} by Paolo Perrone and \textit{The Dao of Functional Programming} by Bartosz Milewski.
+
+\section{Introduction}
+
+We shall start with the definition of category itself together with the common notations that will be used throughout.
+
+\begin{definition}{\textbf{(Category)}}
+    A category $\textbf{C}$ consists of a collection of objects and arrow/morphism between them. Furthermore, with object $a$ and object $b$, there can be a morphism $f:a\to b$ and if there is another morphism $g:b\to c$ to object $c$, then we can composed 2 morphisms together to get a new one, that is $g\circ f:a\to c$ (meaning that there is morphism from $a$ to $c$). The morphisms/compositions have the following properties
+    \begin{itemize}
+        \item There will always be an morphism from any object to itself and it is called identity morphism i.e given object $a$, its identity morphism is denoted as $\operatorname{id}_a:a\to a$, and have the following properties:
+        $$f\circ \operatorname{id}_a=\operatorname{id}_b\circ f = f$$
+        where $f:a\to b$
+        \item The composition is associative, that is, given $f:a\to b$, $g:b\to c$ and $h:c\to d$, then: $$h\circ(g\circ f)=(h\circ g)\circ f$$
+    \end{itemize}
+    Finally, one can also gather all the morphism between 2 objects into a set, which call it hom-set. It is denoted, for given objects $a$ and $b$, as $\operatorname{Hom}_\textbf{C}(a,b)$.
+\end{definition}
+
+Now, we also have important special kind of arrow that denotes the notion of ``equality'' in category theory sense (note that usually, we can't distinguish 2 objects beyond that).
+
+\begin{definition}{\textbf{(Isomorphism)}}
+    The morphism $f:a\to b$ is an isomorphism iff there is another morphism $f^{-1}:b\to a$ such that $$f^{-1}\circ f=\operatorname{id}_a\qquad\text{ and }\qquad f\circ f^{-1}=\operatorname{id}_b$$we call $f^{-1}$, inverse of $f$. Furthermore, if there is an isomorphism between objects $a$ and $b$, then we call them isomorphic and denote it as $a\cong b$
+\end{definition}
+
+\section{Relational Point of View}
+
+We will, then, move on the first result that illustrates the ``relational'' aspect of category theory, being the main strength of category theory. It is quite clear that category \textit{prohibits} the viewing of the inside of the object, that is we can only compare/inspect objects using an arrow. Let's start with the simplest example.
+
+\begin{remark}
+    Given the category of sets $\textbf{Set}$, where its object are all the sets (we will ignore the issue of Russell's paradox for now) and the morphisms between sets are function between sets. To see the elements of a set $A$, one can observe the following:
+    $$A\cong\operatorname{Hom}_\textbf{Set}(1, A)$$
+    where $1$ is a singleton set i.e set with only one element. With this, one can ``represent '' the elements of the set based on the set of morphism from singleton set.
+\end{remark}
+
+One can also view the remark above as the way object in category are characterized based on the relationship between each other, and we have used the singleton set $1$ to ``probe'' into the set. Let's consider this probing action in a more generalized manner. 
+
+\begin{definition}{\textbf{(Probing Actions/Neutrality Condition)}}
+	\label{def:prob-action-nat}
+    Let's consider the following diagram, where on the LHS, we consider the action of ``changing target'', while the RHS got to do with the ``changing the source'' (from $x$ to $y$ in both cases), highlighted in red
+    \begin{equation*}
+	% https://q.uiver.app/#q=WzAsNixbMCwxLCJBIl0sWzIsMSwiQiJdLFsxLDAsIlgiXSxbNCwwLCJYIl0sWzYsMCwiWSJdLFs1LDEsIkEiXSxbMCwxLCJmIiwyXSxbMiwwLCJoIiwyXSxbMiwxLCJoXFxjaXJjIGciXSxbNCw1LCJrXFxjaXJjIGciXSxbMyw1LCJrIiwyXSxbNCwzLCJnIiwyXSxbNyw4LCIoZlxcY2lyYyAtKSIsMix7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sImxldmVsIjoxLCJjb2xvdXIiOlswLDYwLDYwXSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fSxbMCw2MCw2MCwxXV0sWzEwLDksIigtXFxjaXJjIGcpIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfSwibGV2ZWwiOjEsImNvbG91ciI6WzAsNjAsNjBdLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19LFswLDYwLDYwLDFdXV0=
+	\begin{tikzcd}
+		& X &&& X && Y \\
+		A && B &&& A
+		\arrow[""{name=0, anchor=center, inner sep=0}, "h"', from=1-2, to=2-1]
+		\arrow[""{name=1, anchor=center, inner sep=0}, "{h\circ g}", from=1-2, to=2-3]
+		\arrow[""{name=2, anchor=center, inner sep=0}, "k"', from=1-5, to=2-6]
+		\arrow["g"', from=1-7, to=1-5]
+		\arrow[""{name=3, anchor=center, inner sep=0}, "{k\circ g}", from=1-7, to=2-6]
+		\arrow["f"', from=2-1, to=2-3]
+		\arrow["{(f\circ -)}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=6pt, shorten >=6pt, dashed, from=0, to=1]
+		\arrow["{(-\circ g)}", color={rgb,255:red,214;green,92;blue,92}, shorten <=6pt, shorten >=6pt, dashed, from=2, to=3]
+	\end{tikzcd}
+    \end{equation*}
+    Please be aware that these two diagram are independent of each other. We can see, here, that to change the target of viewing, we can perform the post-composition of the morphism between 2 targets to the probe. Similarly, the pre-composition is used to change the source.
+    
+    \paragraph{Neutrality:} Now, it wouldn't make sense if we are were to change the target and the source (LHS diagram below), and get different result from when we change the source and then target (RHS diagram below). (Reading from left to right):
+
+    \begin{equation*}
+	% https://q.uiver.app/#q=WzAsOCxbMCwxLCJBIl0sWzMsMSwiQiJdLFswLDAsIlgiXSxbNSwwLCJYIl0sWzgsMCwiWSJdLFs1LDEsIkEiXSxbMywwLCJZIl0sWzgsMSwiQiJdLFswLDEsImYiLDJdLFsyLDAsImgiLDJdLFsyLDEsImhcXGNpcmMgZiIsMV0sWzMsNSwiayIsMl0sWzQsNSwia1xcY2lyYyBnIiwxXSxbNiwxXSxbNCwzLCJnIiwyXSxbNiwyLCJnIiwyXSxbNSw3LCJmIiwyXSxbNCw3XSxbOSwxMCwiKGZcXGNpcmMgLSkiLDIseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dLFsxMCwxMywiKC1cXGNpcmMgZykiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dLFsxMiwxMSwiKC1cXGNpcmMgZykiLDIseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX0sWzAsNjAsNjAsMV1dLFsxMiwxNywiKGZcXGNpcmMtKSIsMix7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sImxldmVsIjoxLCJjb2xvdXIiOlswLDYwLDYwXSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fSxbMCw2MCw2MCwxXV1d
+	\begin{tikzcd}
+		X &&& Y && X &&& Y \\
+		A &&& B && A &&& B
+		\arrow[""{name=0, anchor=center, inner sep=0}, "h"', from=1-1, to=2-1]
+		\arrow[""{name=1, anchor=center, inner sep=0}, "{h\circ f}"{description}, from=1-1, to=2-4]
+		\arrow["g"', from=1-4, to=1-1]
+		\arrow[""{name=2, anchor=center, inner sep=0}, from=1-4, to=2-4]
+		\arrow[""{name=3, anchor=center, inner sep=0}, "k"', from=1-6, to=2-6]
+		\arrow["g"', from=1-9, to=1-6]
+		\arrow[""{name=4, anchor=center, inner sep=0}, "{k\circ g}"{description}, from=1-9, to=2-6]
+		\arrow[""{name=5, anchor=center, inner sep=0}, from=1-9, to=2-9]
+		\arrow["f"', from=2-1, to=2-4]
+		\arrow["f"', from=2-6, to=2-9]
+		\arrow["{(f\circ -)}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=0, to=1]
+		\arrow["{(-\circ g)}", color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=1, to=2]
+		\arrow["{(-\circ g)}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, tail reversed, no head, from=4, to=3]
+		\arrow["{(f\circ-)}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=4, to=5]
+	\end{tikzcd}
+    \end{equation*}
+    Therefore, we enforce the neutrality condition onto the probing action (the naming does make sense):
+    $$
+    (-\circ g)\circ(f\circ-) = (f\circ-)\circ(-\circ g)
+    $$
+       
+\end{definition}
+
+Now, we got a more general tool to inspect the relationship between objects. And so, we are ready to consider/proof the following result.
+
+\begin{proposition}
+	\label{prop:iso-obj-in}
+    Within category $\textbf{C}$, given a pair objects $a$ and $b$ and with any object $x$, we have an \textbf{naturally} isomorphic $\operatorname{Hom}_\textbf{C}(x, a)\cong\operatorname{Hom}_\textbf{C}(x, b)$ iff $a\cong b$. That is, if the arrow coming to both $a$ and $b$ are indistinguishable, then $a$ and $b$ are isomorphic.
+\end{proposition}
+
+This proposition is actually a special case of Yoneda lemma (which we will consider later), but the gist of it is that the object can be characterized based on the arrow coming in.
+
+\begin{dem}
+\begin{proof}
+
+$(\boldsymbol{\implies}):$ Let's call the map between $\operatorname{Hom}_\textbf{C}(x, a)$ and $\operatorname{Hom}_\textbf{C}(x, b)$ to be called $\alpha_x$. Let's explain what it means for $\alpha$ to be natural. We have that both change of source and target should be the same:
+
+\begin{equation*}
+% https://q.uiver.app/#q=WzAsOCxbMCwwLCJYIl0sWzMsMCwiWSJdLFswLDEsIkEiXSxbMywxLCJCIl0sWzUsMCwiWCJdLFs4LDAsIlkiXSxbNSwxLCJBIl0sWzgsMSwiQiJdLFswLDIsImgiLDJdLFswLDMsIlxcYWxwaGFfWChoKSIsMV0sWzEsMCwiZyIsMl0sWzQsNiwiaCIsMl0sWzUsNiwiaFxcY2lyYyBnIiwxXSxbNSw0LCJnIiwyXSxbNSw3XSxbMSwzXSxbOCw5LCJcXGFscGhhX1giLDIseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dLFsxMSwxMiwiKC1cXGNpcmMgZykiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dLFsxMiwxNCwiXFxhbHBoYV9ZIiwyLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfSwibGV2ZWwiOjEsImNvbG91ciI6WzAsNjAsNjBdLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19LFswLDYwLDYwLDFdXSxbOSwxNSwiKC1cXGNpcmMgZykiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dXQ==
+\begin{tikzcd}
+	X &&& Y && X &&& Y \\
+	A &&& B && A &&& B
+	\arrow[""{name=0, anchor=center, inner sep=0}, "h"', from=1-1, to=2-1]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\alpha_X(h)}"{description}, from=1-1, to=2-4]
+	\arrow["g"', from=1-4, to=1-1]
+	\arrow[""{name=2, anchor=center, inner sep=0}, from=1-4, to=2-4]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "h"', from=1-6, to=2-6]
+	\arrow["g"', from=1-9, to=1-6]
+	\arrow[""{name=4, anchor=center, inner sep=0}, "{h\circ g}"{description}, from=1-9, to=2-6]
+	\arrow[""{name=5, anchor=center, inner sep=0}, from=1-9, to=2-9]
+	\arrow["{\alpha_X}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=0, to=1]
+	\arrow["{(-\circ g)}", color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=1, to=2]
+	\arrow["{(-\circ g)}", color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=3, to=4]
+	\arrow["{\alpha_Y}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=10pt, shorten >=10pt, dashed, from=4, to=5]
+\end{tikzcd}
+\end{equation*}
+
+Or $\alpha_x(h)\circ g = \alpha_y(h\circ g)$. To show that $a\cong b$, we will have to find a map between $a$ and $b$ and its reverse. Let's start with a map $a\to b$, we can have:
+
+\begin{equation*}
+% https://q.uiver.app/#q=WzAsNixbMCwxLCJBIl0sWzAsMCwiQSJdLFsyLDEsIkIiXSxbNCwxLCJBIl0sWzYsMSwiQiJdLFs2LDAsIkIiXSxbMSwwLCJcXG9wZXJhdG9ybmFtZXtpZH1fQSIsMl0sWzEsMiwiXFxhbHBoYV9BKFxcb3BlcmF0b3JuYW1le2lkfV9BKSJdLFs1LDQsIlxcb3BlcmF0b3JuYW1le2lkfV9CIl0sWzUsMywiXFxhbHBoYV9CXnstMX0oXFxvcGVyYXRvcm5hbWV7aWR9X0IpIiwyXSxbOSw4LCJcXGFscGhhX0IiLDIseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dLFs2LDcsIlxcYWxwaGFfQSIsMix7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sImxldmVsIjoxLCJjb2xvdXIiOlswLDYwLDYwXSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fSxbMCw2MCw2MCwxXV1d
+\begin{tikzcd}
+	A &&&&&& B \\
+	A && B && A && B
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\operatorname{id}_A}"', from=1-1, to=2-1]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\alpha_A(\operatorname{id}_A)}", from=1-1, to=2-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{\alpha_B^{-1}(\operatorname{id}_B)}"', from=1-7, to=2-5]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{\operatorname{id}_B}", from=1-7, to=2-7]
+	\arrow["{\alpha_A}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=6pt, shorten >=6pt, dashed, from=0, to=1]
+	\arrow["{\alpha_B}"', color={rgb,255:red,214;green,92;blue,92}, shorten <=6pt, shorten >=6pt, dashed, from=2, to=3]
+\end{tikzcd}
+\end{equation*}
+
+that is $\alpha_a(\operatorname{id}_a):a\to b$, and its (candidate) inverse is $\alpha^{-1}_b(\operatorname{id}_b):b\to a$. To show that it is actually an inverse, we need to show that:
+
+$$
+\begin{aligned}
+\alpha_a(\operatorname{id}_a)\circ\alpha^{-1}_b(\operatorname{id}_b) &= \alpha_b(\operatorname{id}_a\circ\alpha^{-1}_b(\operatorname{id}_b)) \\
+&=  \alpha_b(\alpha^{-1}_b(\operatorname{id}_b)) = \operatorname{id}_b
+\end{aligned} \qquad \begin{aligned}
+\alpha^{-1}_b(\operatorname{id}_b)\circ\alpha_a(\operatorname{id}_a) &= \alpha_a^{-1}(\operatorname{id}_b\circ\alpha_a(\operatorname{id}_a)) \\
+&=  \alpha_a^{-1}(\alpha_a(\operatorname{id}_a)) = \operatorname{id}_a
+\end{aligned}
+$$
+
+where we have used the neutrality condition for both cases. Thus, we have shown that $a\cong b$
+
+\paragraph{$(\boldsymbol{\impliedby}):$} Let's assume that $a\cong b$ that is there is an isomorphism $f:a\xrightarrow{\cong} b$, we will have to construct the map $\alpha$, in which we aim to show that it is actually $(f\circ-)$. There are 2 things we have to check:
+
+\begin{itemize}
+    \item \textit{Neutrality:} It is clear that $(f\circ-)$ will satisfies the neutrality condition (which is by definition).
+    \item \textit{Isomorphism:} The inverse of this probing is $(f^{-1}\circ-)$, it is clear that 
+    $$
+    \begin{aligned}
+    (f^{-1}\circ-)\circ(f\circ-)=(f^{-1}\circ f\circ-)=(\operatorname{id}_a\circ-) \\
+    (f\circ-)\circ(f^{-1}\circ-)=(f\circ f^{-1}\circ-)=(\operatorname{id}_b\circ-)
+    \end{aligned}
+    $$
+    in which both of the results are clearly an identity on probing.
+\end{itemize}
+
+We can see that this is also consistent with the construction above $\alpha_a(\operatorname{id}_a)=f\circ\operatorname{id}_a=f$, and $f^{-1}$
+
+\end{proof}
+\end{dem}
+
+With very similar proof, in the next proposition, object can also be characterized based on arrow going out, and the result on isomorphism can be found as:
+
+\begin{proposition}
+	\label{prop:iso-obj-out}
+    Within category $\textbf{C}$, given a pair objects $a$ and $b$ and with any object $x$, we have an \textbf{naturally} isomorphic $\operatorname{Hom}_\textbf{C}(a, x)\cong\operatorname{Hom}_\textbf{C}(b, x)$ iff $a\cong b$. 
+\end{proposition}

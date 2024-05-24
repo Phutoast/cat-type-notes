@@ -1,0 +1,241 @@
+\section{Representables Functors/Yoneda}
+
+Since we have familiarize ourselves with functor and natural transformation, now we are going to use these formalism to state Yoneda lemma, which can be seen as a generalization of proposition \ref{prop:iso-obj-in}. But before we are doing that, let's consider a special type of functor call representable
+
+\begin{definition}{\textbf{(Representable Functors)}}
+    Given category $\textbf{C}$, with the functor $F:\textbf{C}\rightarrow\textbf{Set}$, this functor is called representable if it is naturally isomorphic to the functor $\operatorname{Hom}_\textbf{C}(S,-):\textbf{C}\rightarrow \textbf{Set}$ for some object $S$ (which is called representing object).
+
+    Note that if we have the functor $F:\textbf{C}^\text{op}\rightarrow\textbf{Set}$ with is naturally isomorphic to $\operatorname{Hom}_\textbf{C}(-, S):\textbf{C}\rightarrow \textbf{Set}$, then we have representable presheaf
+\end{definition}
+
+The motivation for Yoneda lemma can be stated as follows:
+
+\begin{remark}
+    Given our definition of representable functors, we have 2 further question (which would be answered by Yoneda results) as:
+    \begin{itemize}
+        \item Is the representing object unique ? 
+        \item With the definition of representation above, given objects $X$ and $Y$ of $\textbf{C}$, if $\operatorname{Hom}_\textbf{C}(S,X)$ is naturally isomorphic to $\operatorname{Hom}_\textbf{C}(S,Y)$, can we say that $X$ and $Y$ are isomorphic ? 
+    \end{itemize}
+    Again, the answer for the second question is already given, but only to a functor of $\operatorname{Hom}_\textbf{C}(-,S)$. We can stated a result for more general functors.
+\end{remark}
+
+\begin{lemma}{\textbf{(Yoneda Lemma)}}
+    With category $\textbf{C}$, an its object $X$ and presheaf $F:\textbf{C}^\text{op}\rightarrow\textbf{Set}$, then the map:
+    \begin{equation*}
+        \operatorname{yo}:\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), F \Big) \xrightarrow{\cong} FX
+    \end{equation*}
+    
+    assigning to natural transformation $\alpha:\operatorname{Hom}_\textbf{C}(-,X)\Rightarrow F$ an element $\alpha_X(\operatorname{id}_X)\in FX$. The assignment is bijective and it is natural both in $X$ and $F$.
+    \checkproof Check the opposite direction again.
+\end{lemma}
+
+\begin{dem}
+\begin{proof}
+
+    Observe that, the use of $\operatorname{id}_X$ as the ``identification'' can also be seen, in a more concrete manner, in the proof of proposition \ref{prop:iso-obj-in}.
+
+    Let's consider why only $\alpha_X$ acting on $\operatorname{id}_X$ is enough to determines the whole component of $\alpha_Y$. Given any $\alpha:\operatorname{Hom}_\textbf{C}(-,X)\Rightarrow F$, it is clear that its component is given by $\alpha_X:\operatorname{Hom}_\textbf{C}(X,X)\Rightarrow FX$, where we have $\operatorname{Hom}_\textbf{C}(X, X)\ni \operatorname{id}_X\mapsto a\in FX$. If we are given $f^\text{op}:X\to Y$, then $\alpha_Y(f)$, can be found by consider the naturality condition on $f^\text{op}$ (The use of opposite category and presheaf is given in remark \ref{remark:presheaf-opposite}):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFgsWCkiXSxbMCwxLCJGWCJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oWSxYKSJdLFsyLDEsIkZZIl0sWzAsMSwiXFxhbHBoYV9YIiwyXSxbMiwzLCJcXGFscGhhX1kiXSxbMSwzLCJGZl5cXHRleHR7b3B9IiwyXSxbMCwyLCIoLVxcY2lyYyBmKSJdXQ==
+    \begin{tikzcd}
+        {\operatorname{Hom}_\textbf{C}(X,X)} && {\operatorname{Hom}_\textbf{C}(Y,X)} \\
+        FX && FY
+        \arrow["{\alpha_X}"', from=1-1, to=2-1]
+        \arrow["{\alpha_Y}", from=1-3, to=2-3]
+        \arrow["{Ff^\text{op}}"', from=2-1, to=2-3]
+        \arrow["{(-\circ f)}", from=1-1, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    Note that $\operatorname{Hom}_\textbf{C}(-,X)[f^\text{op}] =(-\circ f)$. Then we can see that $Ff^\text{op}\circ \alpha_X = \alpha_Y\circ(-\circ f)$ or, when plugging $\operatorname{id}_X$ into both sides $Ff^\text{op}(\alpha_X(\operatorname{id}_X))=\alpha_Y(f)$. Therefore, it is enough just to consider how $\alpha_X$ acts on $\operatorname{id}_X$, since the rest of the function can be derived using the steps here.
+    
+
+    \textbf{(Bijective):} Let's show that $\operatorname{yo}$ is both injective and surjective.
+    
+    \textit{Injectivity:} Recall that $\operatorname{yo}:\alpha\mapsto\alpha_X(\operatorname{id}_X)$. Thus if $\operatorname{yo}(\alpha)=\operatorname{yo}(\alpha')$ i.e $\alpha_X'(\operatorname{id}_X)=\alpha_X(\operatorname{id}_X)$, then by the observation we have above, for any $f^\text{op}:X\to Y$, we have $\alpha_Y(f)=\alpha_Y'(f)$ i.e $\alpha=\alpha'$.
+
+    \textit{Surjectivity:} Given $a\in FX$, we will construct the natural transformation $\alpha:\operatorname{Hom}_\textbf{C}(-,X)\Rightarrow F$, where its components are  $\alpha_Y:\operatorname{Hom}_\textbf{C}(Y, X)\to FY$, where $\alpha_Y(f_1)=Ff^\text{op}_1(\alpha_X(\operatorname{id}_X))$ for $f_1:Y\to X$ and $\alpha_Z:\operatorname{Hom}_\textbf{C}(Z, X)\to FZ$, where $\alpha_Z(f_2)=Ff^\text{op}_2(\alpha_X(\operatorname{id}_X))$ for $f_2:Z\to X$ and $\alpha_X(\operatorname{id}_X)=a$
+    
+    Then to be a natural transformation, the following diagram has to commute, given $g^\text{op}:Y\to Z$
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFksIFgpIl0sWzAsMSwiRlkiXSxbMSwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFosIFgpIl0sWzEsMSwiRloiXSxbMSwzLCJGZ15cXHRleHR7b3B9IiwyXSxbMiwzLCJcXGFscGhhX1kiXSxbMCwxLCJcXGFscGhhX1giLDJdLFswLDIsIigtXFxjaXJjIGcpIl1d
+    \begin{tikzcd}
+        {\operatorname{Hom}_\textbf{C}(Y, X)} & {\operatorname{Hom}_\textbf{C}(Z, X)} \\
+        FY & FZ
+        \arrow["{Fg^\text{op}}"', from=2-1, to=2-2]
+        \arrow["{\alpha_Y}", from=1-2, to=2-2]
+        \arrow["{\alpha_X}"', from=1-1, to=2-1]
+        \arrow["{(-\circ g)}", from=1-1, to=1-2]
+    \end{tikzcd}
+    \end{equation*}
+
+    That is, we have 
+    $$\alpha_Y(f_1\circ g) = F(f_1\circ g)^\text{op}(a) = F(g^\text{op}\circ f^\text{op})(a)=Fg^\text{op} \circ Ff_1^\text{op}(a)$$ and $Fg^\text{op}\circ \alpha_X(f_1) = Fg^\text{op} \circ Ff_1^\text{op}(a)$. Thus, $Fg^\text{op}\circ\alpha_X=\alpha_Y\circ(-\circ g)$ as needed.
+
+    \textbf{(Natural on $X$):} To show this, we are required to have the natural transformation of 
+    \begin{equation*}
+    \begin{aligned}
+        \beta:\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}&\Big( \operatorname{Hom}_\textbf{C}(-, \bigcirc), F \Big)\Rightarrow F\bigcirc\\
+        \text{ where }&\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, \bigcirc), F \Big):\textbf{C}^\text{op}\to \textbf{Set}
+    \end{aligned}
+    \end{equation*}
+    the object placeholder for the natural transformation is $\bigcirc$, whose components are given to be $\beta_X=\operatorname{yo}_X$ we added subscript $X$ to $\operatorname{yo}$ to indicate where it belongs. Thus, we will use a similar trick, given $f^\text{op}:X\to Y$ we will set $\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), F \Big)[f^\text{op}]=(-\circ \phi)$, where $\phi:\operatorname{Hom}_\textbf{C}(-, Y)\Rightarrow\operatorname{Hom}_\textbf{C}(-, X)$, whose component is $\phi_A=(f\circ-)$, and $\circ$ is the vertical composition.  Note that $\phi$ is a natural transformation, as the naturality condition, given $g^\text{op}:A\to B$ is shown to be:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KEEsIFgpIl0sWzAsMCwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShBLCBZKSJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oQiwgWSkiXSxbMiwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KEIsIFgpIl0sWzAsMSwiKGZcXGNpcmMtKSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzMsMiwiKGZcXGNpcmMtKSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzAsMywiKC1cXGNpcmMgZykiLDJdLFsxLDIsIigtXFxjaXJjIGcpIl1d
+    \begin{tikzcd}
+        {\operatorname{Hom}_\textbf{C}(A, Y)} && {\operatorname{Hom}_\textbf{C}(B, Y)} \\
+        {\operatorname{Hom}_\textbf{C}(A, X)} && {\operatorname{Hom}_\textbf{C}(B, X)}
+        \arrow["{(f\circ-)}", tail reversed, no head, from=2-1, to=1-1]
+        \arrow["{(f\circ-)}"', tail reversed, no head, from=2-3, to=1-3]
+        \arrow["{(-\circ g)}"', from=2-1, to=2-3]
+        \arrow["{(-\circ g)}", from=1-1, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    This is exactly the natural condition within definition \ref{def:prob-action-nat}. Now, let's consider the pre-composition of $\phi$ in action. Given $\alpha: \operatorname{Hom}_\textbf{C}(-, X)\Rightarrow F$, we have $(\alpha\circ \phi):\operatorname{Hom}_\textbf{C}(-, Y)\Rightarrow\operatorname{Hom}_\textbf{C}(-, X)\Rightarrow F$ and so its component is $(\alpha\circ \phi)_X(h)=\alpha_X(f\circ h)$ where $h:X\to Y$. 
+    
+    To show that the map is natural on $\bigcirc$, we have to show that the following diagram commutes:
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X3tbXFx0ZXh0YmZ7Q31eXFx0ZXh0e29wfSwgXFx0ZXh0YmZ7U2V0fV19XFxCaWcoIFxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oLSwgWCksIEYgXFxCaWcpIl0sWzAsMSwiRlgiXSxbMiwwLCJcXG9wZXJhdG9ybmFtZXtIb219X3tbXFx0ZXh0YmZ7Q31eXFx0ZXh0e29wfSwgXFx0ZXh0YmZ7U2V0fV19XFxCaWcoIFxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oLSwgWSksIEYgXFxCaWcpIl0sWzIsMSwiRlkiXSxbMCwxLCJcXGNvbmciXSxbMiwzLCJcXGNvbmciLDJdLFsxLDMsIkZmXlxcdGV4dHtvcH0iLDJdLFswLDIsIigtXFxjaXJjIFxccGhpKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le3lvfV9YIiwyXSxbMiwzLCJcXG9wZXJhdG9ybmFtZXt5b31fWSJdXQ==
+    \begin{tikzcd}
+        {\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), F \Big)} && {\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, Y), F \Big)} \\
+        FX && FY
+        \arrow["\cong", from=1-1, to=2-1]
+        \arrow["\cong"', from=1-3, to=2-3]
+        \arrow["{Ff^\text{op}}"', from=2-1, to=2-3]
+        \arrow["{(-\circ \phi)}", from=1-1, to=1-3]
+        \arrow["{\operatorname{yo}_X}"', from=1-1, to=2-1]
+        \arrow["{\operatorname{yo}_Y}", from=1-3, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+
+    That is, for any $\alpha:\operatorname{Hom}_\textbf{C}(-, X)\Rightarrow F$ on both 2 paths on the diagram, we have $$Ff^{\operatorname{op}}(\operatorname{yo}_X(\alpha)) = Ff^{\operatorname{op}}(\alpha_X(\operatorname{id}_X)) = \alpha_Y(f) \quad\text{and} \quad \operatorname{yo}_Y(\alpha\circ\phi) = (\alpha\circ\phi)_Y(\operatorname{id}_Y) = \alpha_Y(f)$$Thus, $Ff^{\operatorname{op}}\circ \operatorname{yo}_X=\operatorname{yo}_Y\circ(-\circ\phi)$, as needed
+
+    \textbf{(Natural on $F$):} On the other hand, we will have to consider the following natural transformation:
+
+    \begin{equation*}
+    \begin{aligned}
+        \gamma:\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}&\Big( \operatorname{Hom}_\textbf{C}(-, X), \square \Big)\Rightarrow \square X \\   
+        \text{ where }&\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), \square \Big): [\textbf{C}^\text{op}, \textbf{Set}]\to \textbf{Set}
+    \end{aligned}
+    \end{equation*}
+
+    again, the object placeholder for the natural transformation is $\square$, whose components are given to be $\gamma_F=\operatorname{yo}_F$ where $F$ is the presheaf (note that we have abuse the notation of $\operatorname{yo}$ abit). Now, to show that it is natural on $\square$, given $\psi:F\Rightarrow G$, where $F,G:\textbf{C}^\text{op}\to\textbf{Set}$
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X3tbXFx0ZXh0YmZ7Q31eXFx0ZXh0e29wfSwgXFx0ZXh0YmZ7U2V0fV19XFxCaWcoIFxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oLSwgWCksIEYgXFxCaWcpIl0sWzAsMSwiRlgiXSxbMiwwLCJcXG9wZXJhdG9ybmFtZXtIb219X3tbXFx0ZXh0YmZ7Q31eXFx0ZXh0e29wfSwgXFx0ZXh0YmZ7U2V0fV19XFxCaWcoIFxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oLSwgWCksIEcgXFxCaWcpIl0sWzIsMSwiR1giXSxbMCwxLCJcXGNvbmciXSxbMiwzLCJcXGNvbmciLDJdLFsxLDMsIlxccHNpX1giLDJdLFswLDIsIihcXHBzaVxcY2lyYy0pIl0sWzIsMywiXFxvcGVyYXRvcm5hbWV7eW99X0ciXSxbMCwxLCJcXG9wZXJhdG9ybmFtZXt5b31fRiIsMl1d
+    \begin{tikzcd}
+        {\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), F \Big)} && {\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), G \Big)} \\
+        FX && GX
+        \arrow["\cong", from=1-1, to=2-1]
+        \arrow["\cong"', from=1-3, to=2-3]
+        \arrow["{\psi_X}"', from=2-1, to=2-3]
+        \arrow["{(\psi\circ-)}", from=1-1, to=1-3]
+        \arrow["{\operatorname{yo}_G}", from=1-3, to=2-3]
+        \arrow["{\operatorname{yo}_F}"', from=1-1, to=2-1]
+    \end{tikzcd}
+    \end{equation*}
+
+    where we use the vertical composition, which doesn't require any opposite category, and of course, like remark \ref{remark:presheaf-opposite}, we have $\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), F \Big)[\psi]=(\psi\circ-)$, being vertical composition. That is, for any $\alpha:\operatorname{Hom}_\textbf{C}(-, X)\Rightarrow F$ on both 2 paths on the diagram, we have: $$(\psi_X \circ \operatorname{yo}_F)(\alpha) = \psi_X(\alpha_X(\operatorname{id}_X))\quad\text{ and }\quad \operatorname{yo}_G(\psi\circ \alpha) = (\psi\circ \alpha)_X(\operatorname{id}_X) = \psi_X(\alpha_X(\operatorname{id}_X))$$Thus: $\psi_X \circ \operatorname{yo}_F=\operatorname{yo}_G\circ(\psi\circ -)$, as needed.
+\end{proof}
+\end{dem}
+
+
+\begin{theorem}{\textbf{(Yoneda Embedding)}}
+    Given a category $\textbf{C}$ with objects $X$ and $Y$, then there is a bijection between the following sets:
+    $$
+    \operatorname{Hom}_\textbf{C}(X, Y) \cong \operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_{\textbf{C}}(-, X), \operatorname{Hom}_{\textbf{C}}(-, Y) \Big)
+    $$
+\end{theorem}
+
+\begin{dem}
+\begin{proof}
+    With the Yoneda lemma above, we can set $F:\operatorname{Hom}_{\textbf{C}^\text{op}}(-, Y)$, and the proof is complete.
+\end{proof}
+\end{dem}
+
+We also have the following dual result
+
+\begin{corollary}{\textbf{(Dual Yoneda Embedding)}}
+    Given a category $\textbf{C}$ with objects $X$ and $Y$, then there is a bijection between the following sets:
+    \begin{equation*}
+        \operatorname{Hom}_\textbf{C}(X, Y) \cong \operatorname{Hom}_{[\textbf{C}, \textbf{Set}]}\Big( \operatorname{Hom}_{\textbf{C}}(Y, -), \operatorname{Hom}_{\textbf{C}}(X, -) \Big)
+    \end{equation*}
+\end{corollary}
+
+We have the following corollary on how Yoneda lemma perform, which will give us the proper interpretation of universal properties, and a reworking of proposition \ref{prop:iso-obj-in}
+
+\begin{corollary}
+    \label{coro:iso-hom-functor-iso-represent}
+    Given objects $X$ and $Y$ in the category $\textbf{C}$, we have that $X\cong Y$ iff:
+    \begin{itemize}
+        \item The functor (or, presheaf) that they represent are naturally isomorphic.
+        \item For any object $S$ of $\textbf{C}$, the set $\operatorname{Hom}_\textbf{C}(S, X)\cong\operatorname{Hom}_\textbf{C}(S, Y)$ (or, $\operatorname{Hom}_\textbf{C}(X, S)\cong\operatorname{Hom}_\textbf{C}(Y, S)$). i.e if $X$ and $Y$ are indistinguishable by $S$, for every $S$ in $\textbf{C}$
+    \end{itemize}
+\end{corollary}
+
+\begin{dem}
+\begin{proof}
+    $\boldsymbol{(\implies)}:$ Let $f:X\to Y$ be the isomorphism between $X$ and $Y$, then by Yoneda embedding there is $\alpha:\operatorname{Hom}_{\textbf{C}}(-, X)\Rightarrow \operatorname{Hom}_{\textbf{C}}(-, Y)$, so that $\alpha_X(\operatorname{id}_X)=f$. Let's show that $\alpha$ is naturally isomorphic. 
+
+    Note that the component of $\alpha_A$ for any $A$ in $\textbf{C}$ is $(f\circ -)$, which is isomorphism because it has an inverse of $(f^{-1}\circ-)$, where $f^{-1}$ is an inverse of $f$ that exists because $f$ is isomorphism, and this also works in opposite direction And so, all the components of $\alpha$ are isomorphism i.e $\alpha$ is natural isomorphism.
+
+
+    $\boldsymbol{(\impliedby)}:$ Given $\alpha:\operatorname{Hom}_{\textbf{C}}(-, X)\Rightarrow \operatorname{Hom}_{\textbf{C}}(-, Y)$ to be natural isomorphism, by Yoneda embedding there is $f\in\operatorname{Hom}(X, Y)$ in which $f=\alpha_X(\operatorname{id}_X)$. We will show that this $f$ is isomorphism. We note that its inverse $g$ would be $\alpha_X^{-1}(\operatorname{id}_X)$ where $\alpha_X^{-1}$ is an inverse of $\alpha_X$ as it is an isomorphism. That is because:
+
+    \begin{equation*}
+        g\circ f = \alpha_X^{-1}(\operatorname{id}_X)\circ\alpha_X(\operatorname{id}_X) = \operatorname{Id}(\operatorname{id}_X) = \operatorname{id}_X
+    \end{equation*}
+
+    and this also works in opposite direction, so $f$ is an isomorphism. Similar proof also works on opposite direction.
+
+\end{proof}
+\end{dem}
+
+Finally, we can then us this corollary to formally define the universal properties (which will be used to define all the construction that we have seen so far i.e product, internal-hom, pull-back, etc.) as:
+
+\begin{definition}\textbf{(Universal Properties)}
+    Given an object $X$ of category $\textbf{C}$, then a universal properties of $X$ consists of a functor $F:\textbf{C}\rightarrow\textbf{Set}$ and natural isomorphism $\operatorname{Hom}_\textbf{C}(X, -)\Rightarrow F$. Or, a presheaf $P:\textbf{C}^\text{op}\rightarrow\textbf{Set}$ and natural isomorphism $\operatorname{Hom}_\textbf{C}(-, X)\Rightarrow P$ 
+\end{definition}
+
+\begin{remark}{\textbf{(Example of Universal Properties)}}
+    \label{remark:universal-prop}
+    Let's consider the definition of universal properties when applied onto the concept of product. Given two objects $Y$ and $X$ of $\textbf{C}$, we can define their product via presheaf $P:\operatorname{Hom}_\textbf{C}(-,X)\times\operatorname{Hom}_\textbf{C}(-,Y):\textbf{C}^\text{op}\to\textbf{Set}$. Let's consider its action:
+    \begin{itemize}
+        \item \textit{Object:} Given object $S$, we have the set $\operatorname{Hom}_\textbf{C}(S,X)\times\operatorname{Hom}_\textbf{C}(S,Y)$ i.e a set of arrows of  $X\leftarrow S\rightarrow Y$
+        \item \textit{Arrow:} Given arrow $f^\text{op}:S\to T$ we have the (lifted) map, given to be: \begin{equation*}
+        % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFMsWClcXHRpbWVzXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShTLFkpIl0sWzAsMSwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShULFgpXFx0aW1lc1xcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oVCxZKSJdLFswLDEsIigtXFxjaXJjIGYpXFx0aW1lcygtXFxjaXJjIGYpIiwxXV0=
+        \begin{tikzcd}
+            {\operatorname{Hom}_\textbf{C}(S,X)\times\operatorname{Hom}_\textbf{C}(S,Y)} \\
+            {\operatorname{Hom}_\textbf{C}(T,X)\times\operatorname{Hom}_\textbf{C}(T,Y)}
+            \arrow["{(-\circ f)\times(-\circ f)}"{description}, from=1-1, to=2-1]
+        \end{tikzcd}
+        \end{equation*}
+        as we have seen in the earlier example.
+    \end{itemize}
+    This gives us the following question: does the presheaf $P$ representable ? i.e we follows the definition of universal property above. That is we are intersted in an object $Z$, whose related functor is in natural isomorphism to $P$ that is $\operatorname{Hom}_\textbf{C}(-,Z)\Rightarrow\operatorname{Hom}_\textbf{C}(-,X)\times\operatorname{Hom}_\textbf{C}(-,Y)$. Let's considder its component and the naturality condition:
+    \begin{itemize}
+        \item \textit{Component:} Given object $A$, the component of the natural isomorphism is $\operatorname{Hom}_\textbf{C}(A,Z)\xrightarrow{\cong}\operatorname{Hom}_\textbf{C}(A,X)\times\operatorname{Hom}_\textbf{C}(A,Y)$. That is given an arrow $f:A\to Z$ there is a unique corresponding pair of arrows $q_1:A\to X$ and $q_2:A\to Y$. From the Yoneda lemma, one might also consider component at $Z$, then the isomorphism $\operatorname{Hom}_\textbf{C}(Z,Z)\xrightarrow{\cong}\operatorname{Hom}_\textbf{C}(Z,X)\times\operatorname{Hom}_\textbf{C}(Z,Y)$ maps $\operatorname{id}_Z\mapsto(p_1, p_2)$
+        \item \textit{Naturality Condition:} Given the arrow $f^\text{op}:Z\to A$ (coincide with the $f$ above), then the LHS diagram commutes:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsOCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFosWikiXSxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFosWClcXHRpbWVzXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShaLFkpIl0sWzIsMSwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShBLFgpXFx0aW1lc1xcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oQSxZKSJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oQSxaKSJdLFs1LDAsIkEiXSxbNSwxLCJaIl0sWzQsMSwiWCJdLFs2LDEsIlkiXSxbMywyLCJcXGNvbmciXSxbMCwxLCJcXGNvbmciLDJdLFsxLDIsIigtXFxjaXJjIGYpXFx0aW1lcygtXFxjaXJjIGYpIiwyXSxbMCwzLCIoLVxcY2lyYyBmKSJdLFs1LDYsInBfMSJdLFs1LDcsInBfMiIsMl0sWzQsNSwiZiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDYsInFfMSIsMl0sWzQsNywicV8yIl1d
+        \begin{tikzcd}
+            {\operatorname{Hom}_\textbf{C}(Z,Z)} && {\operatorname{Hom}_\textbf{C}(A,Z)} &&& A \\
+            {\operatorname{Hom}_\textbf{C}(Z,X)\times\operatorname{Hom}_\textbf{C}(Z,Y)} && {\operatorname{Hom}_\textbf{C}(A,X)\times\operatorname{Hom}_\textbf{C}(A,Y)} && X & Z & Y
+            \arrow["\cong", from=1-3, to=2-3]
+            \arrow["\cong"', from=1-1, to=2-1]
+            \arrow["{(-\circ f)\times(-\circ f)}"', from=2-1, to=2-3]
+            \arrow["{(-\circ f)}", from=1-1, to=1-3]
+            \arrow["{p_1}", from=2-6, to=2-5]
+            \arrow["{p_2}"', from=2-6, to=2-7]
+            \arrow["f", dashed, from=1-6, to=2-6]
+            \arrow["{q_1}"', from=1-6, to=2-5]
+            \arrow["{q_2}", from=1-6, to=2-7]
+        \end{tikzcd}
+        \end{equation*}
+        Especially when we start with $\operatorname{id}_Z$ on the upper LHS. We have the following conditions: $p_1\circ f=q_1$ and $p_2\circ f = q_2$, or on the RHS diagram.
+    \end{itemize}
+    Thus, the natural isomorphism will gives us the universal properties of the product i.e unique $f$ that makes the projection maps commutes. This idea will be generalized further with the notion of limit and colimits.
+\end{remark}
+
+

@@ -1,0 +1,1006 @@
+\section{Ends and Coends}
+
+\subsection{Profunctor}
+
+\begin{definition}{\textbf{(Profunctor)}}
+    Profunctor is a functor of the form $\textbf{C}^\text{op}\times\textbf{D}\to\textbf{E}$
+\end{definition}
+
+\begin{remark}
+    Consider the case where $\textbf{E}$ is $\textbf{Set}$, it maps a pair of objects $\brackc{A, B}$ to a set $P\brackc{A, B}$ a pair of morphisms $\brackc{f:S\to A, g:B\to T}$ to a function $P\brackc{f,g}:P\brackc{A,B}\to\brackc{S, T}$.  And, we denote profunctor between two categories in the case where $\textbf{E}$ is $\textbf{Set}$ as $\textbf{C} \profunct \textbf{D}$
+\end{remark}
+
+\begin{remark}{(Profunctor and Hom-Functor)}
+    The good model of profunctor is hom-functor, thus we can think of them as generalizing the hom-functor (hence the lifting of arrows is seen as generalized composition). It provides additional bridges between object.
+
+    When performing a lifting of arrows individually, given a profunctor $P\brackc{A, B}$ with an arrow $f:S\to A$ to get $P\brackc{S, B}$, in which we have $P\brackc{f, \operatorname{id}_B}:P\brackc{A, B}\to\brackc{S, B}$. On the other hand, we can ``post-compose'' with $g:B\to T$ as we got $P\brackc{\operatorname{id}_A,g}:P\brackc{A,B}\to P\brackc{A, T}$.
+\end{remark}
+
+
+\begin{definition}{\textbf{(Collages)}}
+    The collage (or co-graph) between two categories $\textbf{C}$ and $\textbf{D}$ is a category whose objects are from both category (disjoin union). The hom-set between two objects are either hom-set in $\textbf{C}$ if both are in $\textbf{C}$ (same for $\textbf{D}$), or $P\brackc{X, Y}$ if $X$ is in $\textbf{C}$ and $Y$ is in $\textbf{D}$. The composition when the morphism is profunctor is via lifting (note that profunctor is of one direction $\textbf{C} \profunct \textbf{D}$). 
+\end{definition}
+
+% Suppose that $P\langle A, B\rangle$ when composed with $P\langle B, C \rangle$ where $A$ and $C$ are objects of $\textbf{C}$, while $B$ is the object of $\textbf{D}$ is defined to be
+
+\begin{proposition}
+    Given the category of ``walking arrow'' of two objects and one non-trivial arrow (including two more identity arrows), defined as $\bullet_1\to\bullet_2$, then: 
+    
+    (1) There is a functor from collage of two categories $\textbf{C}$ and $\textbf{D}$ to this category. (2) On the other hand, if there is a functor from $\textbf{E}$ to the ``walking arrow'', then we can split it into a collage of two categories.
+\end{proposition}
+\begin{proof}
+    
+    \textbf{(Part 1):} We define the functor as follows: (1) Maps objects from $\textbf{C}$ to $\bullet_1$ and objects from $\textbf{D}$ to $\bullet_2$. (2) Maps morphism \textit{within} $\textbf{C}$ to $\operatorname{id}_{\bullet_1}$ and morphism \textit{within} $\textbf{D}$ to $\operatorname{id}_{\bullet_2}$. That is they behaves almost like a constant functor. For the profunctor $\textbf{C}\profunct\textbf{D}$, we maps them to $\bullet_1\to\bullet_2$. Please note that we can check that this is actually a functor, as it respect the composition and its action on identity. 
+
+    \textbf{(Part 2):} We can reverse the process described in the first part. We only note that the arrow between $C\to D$ are actually a profunctor, which is due to the property of hom-functor, since in the original category $\textbf{E}$, pre-composing and post-composing induces the functor $\textbf{C}^\textbf{op}\times\textbf{D}\to\textbf{Set}$.
+\end{proof}
+
+\begin{remark}{(Profunctor as proof)}
+    To understand the profunctor more, we can see that it is a a proof-relevant relation between objects. Consider the following interpretation:
+    \begin{itemize}
+        \item If the profunctor $P\brackc{A, B}$ is empty then $B$ isn't related to $A$. However, $P\brackc{A, A}$ \textbf{can be} empty and it doesn't have to be symmetric i.e we don't assume anything about this relation. 
+        \item Furthermore, consider the lifting that is if $A$ is related to $B$ via $P$ i.e $P\brackc{A, B}\ne\emptyset$ and the hom-set $\operatorname{Hom}_\textbf{C}(S, A)$ and $\operatorname{Hom}_\textbf{D}(B, T)$ both aren't empty, then we can automatically related $S$ and $T$ via $P$. 
+    \end{itemize}
+    The hom-functor as it is a special case of pro-functor can be seen in this way, although $\operatorname{Hom}_\textbf{C}(A, A)$ isn't empty as it must contains at least the identity morphism.
+    % Starting with a co-presheaf of $F:\textbf{C}\to\textbf{Set}$, we can consider the objects $A$ of $\textbf{C}$ whee $FA\ne\emptyset$, that is $A$ has a proof, which treated as an element of the set. 
+
+\end{remark}
+
+\subsection{Profunctor Composition + Co-Ends}
+
+\begin{remark}{(Intuition about Profunctor Composition)}
+    Consider the following cases: suppose you want to charge your cellphone, to find a charger you need to find your friend who has a charger \textbf{and} the charger need to be compatible with your phone. 
+    
+    Taking into profunctor vocabulary, we need 2 kinds of proof, proof of friendship and proof of possession of a charger, and both proof has to satisfies the same person. 
+\end{remark}
+
+\begin{remark}{(Double Counting in Profunctor Composition)}
+    We are interested in profunctor composition, from the intuition above, we want to \textbf{sum} (this is the ``universal property'' that we will use as a template) over all objects $X$ in the product $P\brackc{A, X}\times Q\brackc{X, B}$. However, we can observe that a double counting can occurs:
+    \begin{itemize}
+        \item Consider the profunctor $Q\brackc{A, X}$ and $P\brackc{Y, B}$ with a morphism connecting between $X$ and $Y$ i.e $f:X\to Y$. (we distinguish between two objects to make sure they are clearly distinct).
+        \item There are 2 ways in order to extends the profunctor: extending $Q$ to the right i.e $Q\brackc{\operatorname{id}_A, f}$ and use $y$ as a middle point, or extending $P$ to the left i.e $P\brackc{f,\operatorname{id}_B}$ and take $x$ as the intermediate node.
+    \end{itemize}
+    Therefore, we will have to force the sum to be on the diagonal and forces $X$ to be equal to $Y$.    
+\end{remark}
+
+\begin{definition}{\textbf{(Co-Wedge)}}
+    Given a pro-functor of $P:\textbf{C}^\text{op}\times\textbf{C}\to\textbf{D}$, to do the sum of the diagonal, we can relies on the diagram of sum, which is given on the LHS (the dots between $P\brackc{Y, Y}$ and $P\brackc{X, X}$ represents the rest of the objects):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJQXFxicmFja2N7WSwgWX0iXSxbMiwwLCJQXFxicmFja2N7WCwgWH0iXSxbMSwxLCJEIl0sWzEsMCwiXFxjZG90cyJdLFswLDIsImlfWSIsMl0sWzEsMiwiaV9YIl1d
+    \begin{tikzcd}
+        {P\brackc{Y, Y}} & \cdots & {P\brackc{X, X}} \\
+        & D
+        \arrow["{i_Y}"', from=1-1, to=2-2]
+        \arrow["{i_X}", from=1-3, to=2-2]
+    \end{tikzcd}
+    \qquad \quad 
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJQXFxicmFja2N7WSwgWX0iXSxbMiwxLCJQXFxicmFja2N7WCwgWH0iXSxbMSwyLCJEIl0sWzEsMCwiUFxcYnJhY2tje1ksIFh9Il0sWzAsMiwiaV9ZIiwyXSxbMSwyLCJpX1giXSxbMywwLCJQXFxicmFja2N7XFxvcGVyYXRvcm5hbWV7aWR9X1ksZn0iLDJdLFszLDEsIlBcXGJyYWNrY3tmLFxcb3BlcmF0b3JuYW1le2lkfV9YfSJdXQ==
+    \begin{tikzcd}
+        & {P\brackc{Y, X}} \\
+        {P\brackc{Y, Y}} && {P\brackc{X, X}} \\
+        & D
+        \arrow["{P\brackc{\operatorname{id}_Y,f}}"', from=1-2, to=2-1]
+        \arrow["{P\brackc{f,\operatorname{id}_X}}", from=1-2, to=2-3]
+        \arrow["{i_Y}"', from=2-1, to=3-2]
+        \arrow["{i_X}", from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    To restrict the results, since we have functor of 2 variables and varying across the objects, we can find a common ancestor between $P\brackc{Y, Y}$ and $P\brackc{X, X}$, assuming that we have the relating morphism $f:X\to Y$ with appropriate commutative condition. This RHS diagram here is called co-wedge and the commuting condition $i_X\circ P\brackc{f, \operatorname{id}_Y}=i_Y\circ\brackc{\operatorname{id}_X, f}$ is called co-wedge condition.
+\end{definition}
+
+\begin{definition}{\textbf{(Co-End)}}
+    The universal co-wedge is called a co-end. This follows from the diagram below (Note that the integration represents infinite sum):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwxLCJQXFxicmFja2N7WSwgWX0iXSxbMiwxLCJQXFxicmFja2N7WCwgWH0iXSxbMSwxLCJcXGludF5YUFxcYnJhY2tje1gsWH0iXSxbMSwwLCJQXFxicmFja2N7WSwgWH0iXSxbMSwyLCJEIl0sWzAsMiwiaV9ZIl0sWzEsMiwiaV9YIiwyXSxbMywwLCJQXFxicmFja2N7ZiwgXFxvcGVyYXRvcm5hbWV7aWR9X1l9IiwyXSxbMywxLCJQXFxicmFja2N7XFxvcGVyYXRvcm5hbWV7aWR9X1gsIGZ9Il0sWzIsNCwiaCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDQsImdfWSIsMV0sWzEsNCwiZ19YIiwxXV0=
+    \begin{tikzcd}
+        & {P\brackc{Y, X}} \\
+        {P\brackc{Y, Y}} & {\int^XP\brackc{X,X}} & {P\brackc{X, X}} \\
+        & D
+        \arrow["{P\brackc{f, \operatorname{id}_Y}}"', from=1-2, to=2-1]
+        \arrow["{P\brackc{\operatorname{id}_X, f}}", from=1-2, to=2-3]
+        \arrow["{i_Y}", from=2-1, to=2-2]
+        \arrow["{g_Y}"{description}, from=2-1, to=3-2]
+        \arrow["h", dashed, from=2-2, to=3-2]
+        \arrow["{i_X}"', from=2-3, to=2-2]
+        \arrow["{g_X}"{description}, from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    Note the co-ends have to works for all objects $X$ and $Y$ with morphism $f:X\to Y$. With the universal property, we define $\int^XP\brackc{X,X}\to D$ between co-end to some object $D$, by only define a family of functions from diagonal entries of the functor to $D$ i.e $g_X:P\brackc{X,X}\to D$ that satisfying the co-wedge condition.
+\end{definition}
+
+The notion of co-wedge, since it looks like a naturality condition, can be extended to the notion of extranatural transformation. The natural transformation follows from the relationship between functor; extranatural transformation is the relationship between 2 profunctors.
+
+\begin{definition}{\textbf{(Extranatural Transformation)}}
+    It is a family of arrows $\alpha_{CD}:P\brackc{C,C}\to Q\brackc{D, D}$ between two functors of the form $P:\textbf{C}^\text{op}\times\textbf{C}\to\textbf{E}$ and $Q:\textbf{D}^\text{op}\times\textbf{D}\to\textbf{E}$. The extranaturality in $C$ given $f:C\to C'$ is given the LHS diagram, and the extranaturality in $D$ given $g:D\to D'$ is given in RHS diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMSwwLCJQXFxicmFja2N7QycsIEN9Il0sWzEsMiwiUVxcYnJhY2tje0QsIER9Il0sWzAsMSwiUFxcYnJhY2tje0MnLCBDJ30iXSxbMiwxLCJQXFxicmFja2N7QywgQ30iXSxbNSwyLCJRXFxicmFja2N7RCwgRCd9Il0sWzQsMSwiUVxcYnJhY2tje0QsIER9Il0sWzYsMSwiUVxcYnJhY2tje0QnLCBEJ30iXSxbNSwwLCJQXFxicmFja2N7QywgQ30iXSxbMCwyLCJQXFxicmFja2N7XFxvcGVyYXRvcm5hbWV7aWR9X0MsIGZ9IiwyXSxbMCwzLCJQXFxicmFja2N7ZixcXG9wZXJhdG9ybmFtZXtpZH1fQ30iXSxbMiwxLCJcXGFscGhhX3tDJ0R9IiwyXSxbMywxLCJcXGFscGhhX3tDRH0iXSxbNyw1LCJcXGFscGhhX3tDRH0iLDJdLFs3LDYsIlxcYWxwaGFfe0NEJ30iXSxbNSw0LCJRXFxicmFja2N7XFxvcGVyYXRvcm5hbWV7aWR9X0QsIGd9IiwyXSxbNiw0LCJRXFxicmFja2N7ZywgXFxvcGVyYXRvcm5hbWV7aWR9X0R9Il1d
+    \begin{tikzcd}
+        & {P\brackc{C', C}} &&&& {P\brackc{C, C}} \\
+        {P\brackc{C', C'}} && {P\brackc{C, C}} && {Q\brackc{D, D}} && {Q\brackc{D', D'}} \\
+        & {Q\brackc{D, D}} &&&& {Q\brackc{D, D'}}
+        \arrow["{P\brackc{\operatorname{id}_C, f}}"', from=1-2, to=2-1]
+        \arrow["{P\brackc{f,\operatorname{id}_C}}", from=1-2, to=2-3]
+        \arrow["{\alpha_{CD}}"', from=1-6, to=2-5]
+        \arrow["{\alpha_{CD'}}", from=1-6, to=2-7]
+        \arrow["{\alpha_{C'D}}"', from=2-1, to=3-2]
+        \arrow["{\alpha_{CD}}", from=2-3, to=3-2]
+        \arrow["{Q\brackc{\operatorname{id}_D, g}}"', from=2-5, to=3-6]
+        \arrow["{Q\brackc{g, \operatorname{id}_D}}", from=2-7, to=3-6]
+    \end{tikzcd}
+    \end{equation*}
+    The extranatural condition of $P$ and constant profunctor $\Delta_D$, defines co-wedge. For the co-end, we can have the component of $\alpha_X=h\circ i_X$ and same for other objects.
+\end{definition}
+
+\begin{definition}{\textbf{(Profunctor Composition)}}
+    Given two pro-functors $P:\textbf{A}^\text{op}\times\textbf{C}\to\textbf{E}$ and $Q:\textbf{C}^\text{op}\times\textbf{A}\to\textbf{E}$, then their composition is given as:
+    \begin{equation*}
+        (P\diamond Q)\brackc{A, B} = \int^{X:\textbf{C}}P\brackc{A, X}\times Q\brackc{X, B}
+    \end{equation*}
+    Note that to proof the associativity, we have to relies on the Fubini rule.
+\end{definition}
+
+\begin{definition}{\textbf{(Wedge)}}
+    By duality, instead of having the sum that represents the co-wedge, we can define the wedge via the product on the diagonal. Given a profunctor $P:\textbf{C}^\text{op}\times\textbf{C}\to\textbf{D}$, we can on the RHS the diagram for ``infinite'' product:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJQXFxicmFja2N7WSwgWX0iXSxbMiwxLCJQXFxicmFja2N7WCwgWH0iXSxbMSwwLCJEIl0sWzEsMSwiXFxjZG90cyJdLFswLDIsIlxccGlfWSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzEsMiwiXFxwaV9YIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+    \begin{tikzcd}
+        & D \\
+        {P\brackc{Y, Y}} & \cdots & {P\brackc{X, X}}
+        \arrow["{\pi_Y}", tail reversed, no head, from=2-1, to=1-2]
+        \arrow["{\pi_X}"', tail reversed, no head, from=2-3, to=1-2]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJQXFxicmFja2N7WSwgWX0iXSxbMiwxLCJQXFxicmFja2N7WCwgWH0iXSxbMSwwLCJEIl0sWzEsMiwiUFxcYnJhY2tje1gsIFl9Il0sWzAsMiwiXFxwaV9ZIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwyLCJcXHBpX1giLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJhcnJvd2hlYWQifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFswLDMsIlxcYnJhY2tje2YsIFxcb3BlcmF0b3JuYW1le2lkfV9ZfSIsMl0sWzEsMywiXFxicmFja2N7XFxvcGVyYXRvcm5hbWV7aWR9X1gsZn0iXV0=
+    \begin{tikzcd}
+        & D \\
+        {P\brackc{Y, Y}} && {P\brackc{X, X}} \\
+        & {P\brackc{X, Y}}
+        \arrow["{\pi_Y}", tail reversed, no head, from=2-1, to=1-2]
+        \arrow["{\brackc{f, \operatorname{id}_Y}}"', from=2-1, to=3-2]
+        \arrow["{\pi_X}"', tail reversed, no head, from=2-3, to=1-2]
+        \arrow["{\brackc{\operatorname{id}_X,f}}", from=2-3, to=3-2]
+    \end{tikzcd} 
+    \end{equation*}
+    And with similar concept to the co-wedge, we can requires the diagram on the RHS to commutes, given $f:X\to Y$, we have $\brackc{f,\operatorname{id}_Y}\circ\pi_Y = \brackc{\operatorname{id}_X,f}\circ\pi_X$
+\end{definition}
+
+\begin{definition}{\textbf{(Ends)}}
+    The universal wedge is called a end. This follows from the diagram below:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwxLCJQXFxicmFja2N7WSwgWX0iXSxbMiwxLCJQXFxicmFja2N7WCwgWH0iXSxbMSwwLCJEIl0sWzEsMiwiUFxcYnJhY2tje1gsIFl9Il0sWzEsMSwiXFxpbnRfWCBQXFxicmFja2N7WCwgWH0iXSxbMCwzLCJcXGJyYWNrY3tmLCBcXG9wZXJhdG9ybmFtZXtpZH1fWX0iLDJdLFsxLDMsIlxcYnJhY2tje1xcb3BlcmF0b3JuYW1le2lkfV9YLGZ9Il0sWzAsNCwiXFxwaV9ZIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSw0LCJcXHBpX1giLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJhcnJvd2hlYWQifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsyLDAsImdfWSIsMl0sWzIsMSwiZ19YIl0sWzIsNCwiaCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        & D \\
+        {P\brackc{Y, Y}} & {\int_X P\brackc{X, X}} & {P\brackc{X, X}} \\
+        & {P\brackc{X, Y}}
+        \arrow["{g_Y}"', from=1-2, to=2-1]
+        \arrow["h", dashed, from=1-2, to=2-2]
+        \arrow["{g_X}", from=1-2, to=2-3]
+        \arrow["{\pi_Y}", tail reversed, no head, from=2-1, to=2-2]
+        \arrow["{\brackc{f, \operatorname{id}_Y}}"', from=2-1, to=3-2]
+        \arrow["{\pi_X}"', tail reversed, no head, from=2-3, to=2-2]
+        \arrow["{\brackc{\operatorname{id}_X,f}}", from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{proposition}{\textbf{(Natural Transformations as an End)}}
+    \label{prop:nat-trans-as-end}
+    The set of natural transformation between functor $F, G:\textbf{C}\to\textbf{D}$ being a hom-set in the functor category is given by End as:
+    \begin{equation*}
+        \operatorname{Hom}_{[\textbf{C}, \textbf{D}]}(F, G) \cong \int_{X:\textbf{C}}\operatorname{Hom}_\textbf{D}(FX, GX)
+    \end{equation*}
+    Note that the hom-set is seen as profunctor here.
+\end{proposition}
+\begin{proof}
+    First, we consider the following diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0R9KEZZLCBHWSkiXSxbMiwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0R9KEZYLCBHWCkiXSxbMSwyLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0R9KEZYLCBHWSkiXSxbMSwxLCJcXGludF97WDpcXHRleHRiZntDfX1cXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0R9KEZYLCBHWCkiXSxbMSwwLCIxIl0sWzAsMiwiLVxcY2lyYyBGZiIsMl0sWzEsMiwiR2ZcXGNpcmMgLSJdLFswLDMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzEsMywiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbNCwzLCIiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCwwLCJcXGFscGhhX1kiLDJdLFs0LDEsIlxcYWxwaGFfWCJdXQ==
+    \begin{tikzcd}
+        & 1 \\
+        {\operatorname{Hom}_\textbf{D}(FY, GY)} & {\int_{X:\textbf{C}}\operatorname{Hom}_\textbf{D}(FX, GX)} & {\operatorname{Hom}_\textbf{D}(FX, GX)} \\
+        & {\operatorname{Hom}_\textbf{D}(FX, GY)}
+        \arrow["{\alpha_Y}"', from=1-2, to=2-1]
+        \arrow[dashed, from=1-2, to=2-2]
+        \arrow["{\alpha_X}", from=1-2, to=2-3]
+        \arrow[tail reversed, no head, from=2-1, to=2-2]
+        \arrow["{-\circ Ff}"', from=2-1, to=3-2]
+        \arrow[tail reversed, no head, from=2-3, to=2-2]
+        \arrow["{Gf\circ -}", from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    We can see that when we pick an element from the ends, is the same (by universal properties) as picking an element from $\alpha_Y\in\operatorname{Hom}_\textbf{D}(FY, GY)$ and $\alpha_X\in\operatorname{Hom}_\textbf{D}(FX, GX)$ such that $Gf\circ\alpha_X=\alpha_Y\circ Ff$. This happens to all the objects in $\textbf{C}$, and it is clear that $\alpha_C$ for all objects $C$ in $\textbf{C}$ are the component of the $\alpha:F\Rightarrow G$ with the appropriate naturality condition follows from wedge condition.
+
+    % we note that given $\alpha:F\Rightarrow G$, and given $f:X\to Y$, the naturality condition is given by $Gf\circ\alpha_X=\alpha_Y\circ Ff$
+\end{proof}
+
+\begin{proposition}{\textbf{((Co)-Limit as (Co)-Ends)}}
+    Given a profunctor $F:1\times\textbf{J}\to\textbf{D}$ that ignores the first parameters i.e $F\langle *, X\rangle = FX$ and given $g:X\to Y$, $F\langle *, g\rangle = Fg$. Then
+    \begin{equation*}
+        \int_XFX=\lim F \qquad \quad \int^XFX=\operatorname{colim} F
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    For any morphism $f:X\to Y$ in $\textbf{J}$ with objects $X$ and $Y$. We have the diagram below. Observe that (co)-wedge is turned into a (co)-cone and by the universal property, the (co)-ends becomes (co)-limit.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMSwwLCJGWCJdLFswLDEsIkZZIl0sWzIsMSwiRlgiXSxbMSwxLCJcXGludF5YRlgiXSxbMSwyLCJEIl0sWzEsM10sWzIsM10sWzAsMSwiRmYiLDJdLFswLDIsIlxcb3BlcmF0b3JuYW1le2lkfV97Rlh9IiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzEsNF0sWzIsNF0sWzMsNCwiIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+    \begin{tikzcd}
+        & FX \\
+        FY & {\int^XFX} & FX \\
+        & D
+        \arrow["Ff"', from=1-2, to=2-1]
+        \arrow["{\operatorname{id}_{FX}}", dotted, from=1-2, to=2-3]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=2-1, to=3-2]
+        \arrow[dashed, from=2-2, to=3-2]
+        \arrow[from=2-3, to=2-2]
+        \arrow[from=2-3, to=3-2]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNSxbMSwwLCJEIl0sWzEsMSwiXFxpbnRfWEZYIl0sWzAsMSwiRlgiXSxbMiwxLCJGWSJdLFsxLDIsIkZZIl0sWzEsMl0sWzEsM10sWzAsMSwiIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMl0sWzAsM10sWzIsNCwiRmYiLDJdLFszLDQsIlxcb3BlcmF0b3JuYW1le2lkfV97Rll9IiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        & D \\
+        FX & {\int_XFX} & FY \\
+        & FY
+        \arrow[from=1-2, to=2-1]
+        \arrow[dashed, from=1-2, to=2-2]
+        \arrow[from=1-2, to=2-3]
+        \arrow["Ff"', from=2-1, to=3-2]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=2-2, to=2-3]
+        \arrow["{\operatorname{id}_{FY}}", dotted, from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{proof}
+
+\begin{remark}{(Hom-Functor and Ends)}
+    By the theorem \ref{thm:rep-functor-continuous}, the hom-functor is continuous and since the ends and co-ends can be represented as limit and co-limit, we have the following formulas, given $P:\textbf{C}^\text{op}\times\textbf{C}\to\textbf{D}$:
+    \begin{equation*}
+        \operatorname{Hom}_\textbf{D}\left( D, \int_AP\brackc{A, A} \right) \cong \int_A\operatorname{Hom}_\textbf{D}\Big( D, P\brackc{A, A} \Big) \quad \operatorname{Hom}_\textbf{D}\left(\int^A P\brackc{A, A}, D \right) \cong \int_A\operatorname{Hom}_\textbf{D}\Big( P\brackc{A, A}, D \Big)
+    \end{equation*}
+    Note that on the RHS, we replace co-end with end because we are dealing with the opposite category, as the first parameter. 
+\end{remark}
+
+\begin{proposition}{\textbf{(Functoriality of Ends)}}
+    \label{prop:functoriality-of-ends}
+    Given a natural transformation $\eta:P\Rightarrow P'$ between 2 profunctors $P:\textbf{C}^\text{op}\times\textbf{C}\to\textbf{D}$, then we can define an induced arrow: $\int_X\eta:\int_X P\brackc{X, X}\to\int_X P'\brackc{X, X}$, as follows (using universal properties):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCw1LCJQXFxsYW5nbGUgWSwgWVxccmFuZ2xlIl0sWzIsMywiUFxcbGFuZ2xlIFgsIFhcXHJhbmdsZSJdLFsyLDUsIlBcXGxhbmdsZSBYLCBZXFxyYW5nbGUiXSxbMCwzLCJcXGludF9YIFBcXGxhbmdsZSBYLCBYXFxyYW5nbGUiXSxbMSwwLCJcXGludF9YUCdcXGxhbmdsZSBYLCBYXFxyYW5nbGUiXSxbMSwyLCJQJ1xcbGFuZ2xlIFksIFlcXHJhbmdsZSJdLFszLDAsIlAnXFxsYW5nbGUgWCwgWFxccmFuZ2xlIl0sWzMsMiwiUCdcXGxhbmdsZSBYLCBZXFxyYW5nbGUiXSxbMSwyLCJQXFxsYW5nbGUgXFxvcGVyYXRvcm5hbWV7aWR9X1gsZlxccmFuZ2xlIiwxXSxbMCwzLCJcXHBpX1kiLDEseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJhcnJvd2hlYWQifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxLDMsIlxccGlfWCIsMSx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzUsNywiUCdcXGxhbmdsZSBmLCBcXG9wZXJhdG9ybmFtZXtpZH1fWVxccmFuZ2xlIiwxXSxbNCw1LCJcXHBpJ19ZIiwxXSxbNCw2LCJcXHBpJ19YIiwxXSxbNiw3LCJQJ1xcbGFuZ2xlIFxcb3BlcmF0b3JuYW1le2lkfV9YLGZcXHJhbmdsZSIsMV0sWzAsMiwiIFBcXGxhbmdsZSBmLCBcXG9wZXJhdG9ybmFtZXtpZH1fWVxccmFuZ2xlIiwxXSxbMCw1LCJcXGV0YV97XFxsYW5nbGUgWSwgWVxccmFuZ2xlfSIsMV0sWzIsNywiXFxldGFfe1xcbGFuZ2xlIFgsIFlcXHJhbmdsZX0iLDFdLFsxLDYsIlxcZXRhX3tcXGxhbmdsZSBYLCBYXFxyYW5nbGV9IiwxXSxbMyw0LCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        & {\int_XP'\langle X, X\rangle} && {P'\langle X, X\rangle} \\
+        \\
+        & {P'\langle Y, Y\rangle} && {P'\langle X, Y\rangle} \\
+        {\int_X P\langle X, X\rangle} && {P\langle X, X\rangle} \\
+        \\
+        {P\langle Y, Y\rangle} && {P\langle X, Y\rangle}
+        \arrow["{\pi'_X}"{description}, from=1-2, to=1-4]
+        \arrow["{\pi'_Y}"{description}, from=1-2, to=3-2]
+        \arrow["{P'\langle \operatorname{id}_X,f\rangle}"{description}, from=1-4, to=3-4]
+        \arrow["{P'\langle f, \operatorname{id}_Y\rangle}"{description}, from=3-2, to=3-4]
+        \arrow[dashed, from=4-1, to=1-2]
+        \arrow["{\eta_{\langle X, X\rangle}}"{description}, from=4-3, to=1-4]
+        \arrow["{\pi_X}"{description}, tail reversed, no head, from=4-3, to=4-1]
+        \arrow["{P\langle \operatorname{id}_X,f\rangle}"{description}, from=4-3, to=6-3]
+        \arrow["{\eta_{\langle Y, Y\rangle}}"{description}, from=6-1, to=3-2]
+        \arrow["{\pi_Y}"{description}, tail reversed, no head, from=6-1, to=4-1]
+        \arrow["{ P\langle f, \operatorname{id}_Y\rangle}"{description}, from=6-1, to=6-3]
+        \arrow["{\eta_{\langle X, Y\rangle}}"{description}, from=6-3, to=3-4]
+    \end{tikzcd}
+    \end{equation*}
+
+    And note that this preserves the composition i.e given $\eta':P'\Rightarrow P''$, we have that $\int_X(\eta'\circ\eta)=\int_X\eta'\circ\int_X\eta$. And $\int_X\operatorname{id}_{P}=\operatorname{id}_{\int_XP\brackc{X,X}}$, meaning that Ends induces a functor.
+\end{proposition}
+\begin{proof}
+    Note that we have used the natural transformation laid out in LHS diagram (to ensure that everything commutes), which construct the ``faces'' of the box above. And, the arrow between two ends is constructed via universal properties shown in LHS:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOSxbNSwxLCJcXGludF9YUCdcXGxhbmdsZSBYLCBYXFxyYW5nbGUiXSxbNCwyLCJQJ1xcbGFuZ2xlIFksIFlcXHJhbmdsZSJdLFs2LDIsIlAnXFxsYW5nbGUgWCwgWFxccmFuZ2xlIl0sWzUsMywiUCdcXGxhbmdsZSBYLCBZXFxyYW5nbGUiXSxbMCwxLCJQXFxsYW5nbGUgWSwgWVxccmFuZ2xlIl0sWzIsMSwiUCdcXGxhbmdsZSBZLCBZXFxyYW5nbGUiXSxbMCwyLCJQXFxsYW5nbGUgWCwgWVxccmFuZ2xlIl0sWzIsMiwiUCdcXGxhbmdsZSBYLCBZXFxyYW5nbGUiXSxbNSwwLCJcXGludF9YIFBcXGxhbmdsZSBYLCBYXFxyYW5nbGUiXSxbMSwzLCJQJ1xcbGFuZ2xlIGYsIFxcb3BlcmF0b3JuYW1le2lkfV9ZXFxyYW5nbGUiLDJdLFswLDEsIlxccGknX1kiLDJdLFswLDIsIlxccGknX1giXSxbMiwzLCJQJ1xcbGFuZ2xlIFxcb3BlcmF0b3JuYW1le2lkfV9YLGZcXHJhbmdsZSJdLFs0LDUsIlxcZXRhX3tcXGxhbmdsZSBZLCBZXFxyYW5nbGV9Il0sWzQsNiwiIFBcXGxhbmdsZSBmLCBcXG9wZXJhdG9ybmFtZXtpZH1fWVxccmFuZ2xlIiwyXSxbNSw3LCJQJ1xcbGFuZ2xlIGYsIFxcb3BlcmF0b3JuYW1le2lkfV9ZXFxyYW5nbGUiXSxbNiw3LCJcXGV0YV97XFxsYW5nbGUgWCwgWVxccmFuZ2xlfSIsMl0sWzgsMSwiXFxldGFfe1xcbGFuZ2xlIFksIFlcXHJhbmdsZX1cXGNpcmNcXHBpX1kiLDIseyJsYWJlbF9wb3NpdGlvbiI6NjAsImN1cnZlIjoyfV0sWzgsMiwiXFxldGFfe1xcbGFuZ2xlIFgsIFhcXHJhbmdsZX1cXGNpcmNcXHBpX1giLDAseyJjdXJ2ZSI6LTJ9XSxbOCwwLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        &&&&& {\int_X P\langle X, X\rangle} \\
+        {P\langle Y, Y\rangle} && {P'\langle Y, Y\rangle} &&& {\int_XP'\langle X, X\rangle} \\
+        {P\langle X, Y\rangle} && {P'\langle X, Y\rangle} && {P'\langle Y, Y\rangle} && {P'\langle X, X\rangle} \\
+        &&&&& {P'\langle X, Y\rangle}
+        \arrow[dashed, from=1-6, to=2-6]
+        \arrow["{\eta_{\langle Y, Y\rangle}\circ\pi_Y}"'{pos=0.6}, curve={height=12pt}, from=1-6, to=3-5]
+        \arrow["{\eta_{\langle X, X\rangle}\circ\pi_X}", curve={height=-12pt}, from=1-6, to=3-7]
+        \arrow["{\eta_{\langle Y, Y\rangle}}", from=2-1, to=2-3]
+        \arrow["{ P\langle f, \operatorname{id}_Y\rangle}"', from=2-1, to=3-1]
+        \arrow["{P'\langle f, \operatorname{id}_Y\rangle}", from=2-3, to=3-3]
+        \arrow["{\pi'_Y}"', from=2-6, to=3-5]
+        \arrow["{\pi'_X}", from=2-6, to=3-7]
+        \arrow["{\eta_{\langle X, Y\rangle}}"', from=3-1, to=3-3]
+        \arrow["{P'\langle f, \operatorname{id}_Y\rangle}"', from=3-5, to=4-6]
+        \arrow["{P'\langle \operatorname{id}_X,f\rangle}", from=3-7, to=4-6]
+    \end{tikzcd}
+    \end{equation*}
+    It is clear from the diagram how the horizon composition of the natural transformation is worked out (adding another block and the universal property will makes sure that 2 map $a$ and $a$ are equal). This is the same for the case of identity (the identity case means that we do nothing).
+\end{proof}
+
+\begin{theorem}{\textbf{(Fubini Rule)}}
+    Given the functor of the form $P:\textbf{C}\times\textbf{C}^\text{op}\times\textbf{D}\times\textbf{D}^\text{op}\to\textbf{E}$, as long as the ends exits, we can show that:
+    \begin{equation*}
+        \int_{C:\textbf{C}}\int_{D:\textbf{D}}P\brackc{C,C}\brackc{ D, D}\cong \int_{D:\textbf{D}}\int_{C:\textbf{C}} P\brackc{C,C}\brackc{ D, D}\cong\int_{\brackc{C,D}:\textbf{C}\times\textbf{D}} P\brackc{C,C}\brackc{ D, D}
+    \end{equation*}
+    Note that the last one, the functor $P$ is re-interpreted as $P:(\textbf{C}\times\textbf{D})^\text{op}\times(\textbf{C}\times\textbf{D})\to\textbf{E}$. This is the same for co-end case.
+\end{theorem}
+\begin{proof}
+    \todo   
+\end{proof}
+
+\subsection{Ninja Yoneda Lemma}
+
+\begin{proposition}{\textbf{(Ninja Yoneda Lemma)}}
+    We can restate Yoneda lemma in terms of Ends and Co-ends as:
+    \begin{equation*}
+        \int_{X:\textbf{C}}\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(X, A), FX \Big) \cong FA \qquad \quad
+        \int^{X:\textbf{C}}\operatorname{Hom}_\textbf{C}(X, A)\times FX\cong FA
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    \textbf{(Part 1):} We will start with the original formulation, and then we simply use the 
+    \begin{equation*}
+    \begin{aligned}
+        FA\cong\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, A), F \Big) &\cong \int_{X:\textbf{C}^\text{op}}\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(X, A), FX \Big) \\
+        &\cong \int_{X:\textbf{C}}\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(X, A), FX \Big) \\
+    \end{aligned}
+    \end{equation*}
+    To see why the second reduction works, let's trying to consider the commutative diagram of Ends as given here.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMSwxLCJcXGludF97WDpcXHRleHRiZntDfV5cXHRleHR7b3B9fVxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7U2V0fVxcQmlnKCBcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFgsIEEpLCBGWCBcXEJpZykiXSxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme1NldH1cXEJpZyggXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShYLCBBKSwgRlggXFxCaWcpIl0sWzIsMSwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntTZXR9XFxCaWcoIFxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oWSwgQSksIEZZIFxcQmlnKSJdLFsxLDIsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7U2V0fVxcQmlnKCBcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFgsIEEpLCBGWSBcXEJpZykiXSxbMSwwLCIxIl0sWzEsMywiRmZcXGNpcmMtIiwyXSxbMCwxXSxbMCwyXSxbMiwzLCItXFxjaXJjWy1cXGNpcmMgZl0iXSxbNCwxXSxbNCwyXSxbNCwwLCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        & 1 \\
+        {\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(X, A), FX \Big)} & {\int_{X:\textbf{C}^\text{op}}\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(X, A), FX \Big)} & {\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(Y, A), FY \Big)} \\
+        & {\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(X, A), FY \Big)}
+        \arrow[from=1-2, to=2-1]
+        \arrow[dashed, from=1-2, to=2-2]
+        \arrow[from=1-2, to=2-3]
+        \arrow["{Ff\circ-}"', from=2-1, to=3-2]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=2-2, to=2-3]
+        \arrow["{-\circ[-\circ f]}", from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    We note that  $[-\circ f]:\operatorname{Hom}_\textbf{C}(Y, A)\to \operatorname{Hom}_\textbf{C}(X, A)$. That is we required $f:X\to Y$ sits in the opposite category, where $-\circ f$ is the maps between sets after it get lifted from $\operatorname{Hom}_\textbf{Set}(-, A):\textbf{C}^\text{op}\to\textbf{Set}$. Therefore, the opposite category only needs to define the morphism on the RHS. In which we can define the ends over $\textbf{C}$ instead of $\textbf{C}^\text{op}$ and by universal property, they are the same. We can think of it as an integration over the ``objects'' and not the morphism.
+
+    \textbf{(Part 2):} Let's consider the maps out from the co-end to some set $S$ that is:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{Hom}_\textbf{Set}\bigg( \int^{X:\textbf{C}}&\operatorname{Hom}_\textbf{C}(X, A)\times FX, S \bigg) \cong \int_{X:\textbf{C}}\operatorname{Hom}_\textbf{Set}\Big(\operatorname{Hom}_\textbf{C}(X, A)\times FX, S \Big) \\
+        &\cong \int_{X:\textbf{C}}\operatorname{Hom}_\textbf{Set}\Big(\operatorname{Hom}_\textbf{C}(X, A), S^{FX} \Big) \cong S^{FA}\cong \operatorname{Hom}_\textbf{Set}(FA, S) \\
+    \end{aligned}
+    \end{equation*}
+    Note that one the third isomorphism, we have used the first Ninja Yoneda lemma, as we can view $S^{F-}:\textbf{C}^\text{op}\to\textbf{Set}$ as the functor as the limit/universal properties are functorial. Finally, via the corollary \ref{coro:iso-hom-functor-iso-represent}, we the desired isomorphism.
+\end{proof}
+
+\begin{proposition}{\textbf{(Ninja Co-Yoneda Lemma)}}
+    We also have consider the co-pre-sheaf, instead of pre-sheaf, seen in Yoneda lemma.
+    \begin{equation*}
+        \int_{X:\textbf{C}}\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(A, X), GX \Big) \cong GA \qquad \quad
+        \int^{X:\textbf{C}}\operatorname{Hom}_\textbf{C}(A, X)\times GX\cong GA
+    \end{equation*}
+\end{proposition}
+
+\begin{remark}{(Ninja Yoneda Lemma)}
+    We can think of hom-profunctor as the identity matrix i.e Kronecker delta, in which the Yoneda lemma will looks like $\sum_j\delta^j_iv_j=v_i$.
+\end{remark}
+
+\subsection{Day Convolution}
+
+\begin{definition}{\textbf{(Day Convolution)}}
+    Given a monoidal category $(\textbf{C},\otimes, I)$ and a pre-sheaf $F, G:\textbf{C}\to\textbf{Set}$, then the Day convolution:
+    \begin{equation*}
+        (G\star F)(X)=\int^{A,B:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( A\otimes B, X \big)\times GA\times FB
+    \end{equation*}
+\end{definition}
+
+\begin{proposition}
+    Day convolution endows the category of co-preserve $\textbf{C}\to\textbf{Set}$ with a monoidal structure, where the convolution is associative (shown in LHS) with the unit object is $\operatorname{Hom}_\textbf{C}(I,-)$ (shown in RHS).
+    \begin{equation*}
+        \big(H\star(G\star F)\big)(X) \cong \big((H\star G)\star F\big)(X) \qquad \quad \Big( \operatorname{Hom}_\textbf{C}(I, -)\star F \Big)(X)\cong FX
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    \textbf{(Associativity):} We have the following isomorphisms:
+    \begin{equation*}
+    \begin{aligned}
+        \big(H\star(G\star F)\big)(X) &= \int^{D, E:\textbf{C}}\operatorname{Hom}_\textbf{C}(D\otimes E, X)\times HD\times\underbrace{\left( \int^{A,B:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( A\otimes B, E \big)\times GA\times FB \right)}_{(G\star F)(E)} \\
+        &\cong\int^{A, B, D, E:\textbf{C}}\operatorname{Hom}_\textbf{C}(D\otimes E, X)\times\operatorname{Hom}_\textbf{C}\big( A\otimes B, E \big)\times GA\times HD\times FB \\
+        &\cong\int^{A, B, D:\textbf{C}}\operatorname{Hom}_\textbf{C}(D\otimes A\otimes B, X)\times GA\times HD\times FB \\
+    \end{aligned}
+    \end{equation*}
+    On the other hand, we have that:
+    \begin{equation*}
+    \begin{aligned}
+        \big((H\star G)\star F\big)(X) &= \int^{A,B:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( A\otimes B, X \big)\times \underbrace{\left(\int^{D,E:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( D\otimes E, A \big)\times HD\times GE\right)}_{(H\star G)A}\times FB \\
+        &\cong \int^{A,B,D,E:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( D\otimes E, A \big)\times \operatorname{Hom}_\textbf{C}\big( A\otimes B, X \big)\times GE\times HD\times FB \\
+        &\cong \int^{B,D,E:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( D\otimes E\otimes B, X \big)\times GE\times HD\times FB \\
+    \end{aligned}
+    \end{equation*}
+    Note that on the third isomorphism, we simply use the Ninja Yoneda lemma. And we just rename the object from $E$ to $A$ and we are done.
+
+    \textbf{(Unit):} We simply have:
+    \begin{equation*}
+    \begin{aligned}
+        \Big( \operatorname{Hom}_\textbf{C}(I, -)\star F \Big)(X) &\cong \int^{A,B:\textbf{C}}\operatorname{Hom}_\textbf{C}\big( A\otimes B, X \big)\times \operatorname{Hom}_\textbf{C}(I, A)\times FB \\
+        &\cong \int^{B:\textbf{C}}\operatorname{Hom}_\textbf{C}\big(I\otimes B, X \big)\times FB \cong FX
+    \end{aligned}
+    \end{equation*}
+\end{proof}
+
+\todo Skip section \textbf{Applicative functors as monoids} and \textbf{Free Applicatives}
+
+\begin{proposition}
+    The profunctor composition is associative and contains the identity functor being the hom-functor. Both of them are true up to isomorphism, in which we have:
+    \begin{equation*}
+        \big( (P\diamond Q)\diamond R \big) \cong \big( P\diamond (Q\diamond R) \big) \qquad \qquad \operatorname{Hom}_\textbf{C}(-,=)\diamond P \cong P
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+    This can be shown using the Fubini theorem, in which we have:
+    \begin{equation*}
+    \begin{aligned}
+        \big( (P\diamond Q)\diamond &R \big) \langle A, B\rangle = \int^{Y:\textbf{C}}(P\diamond Q)\brackc{A, Y}\times R\brackc{Y, B} \\
+        &= \int^{Y:\textbf{C}}\left(\int^{X:\textbf{C}}P\brackc{A, X}\times Q\brackc{X, Y}\right)\times R\brackc{Y, B} \\
+        &\cong  \int^{X:\textbf{C}}P\brackc{A, X}\times \left(\int^{Y:\textbf{C}}Q\brackc{X, Y}\times R\brackc{Y, B}\right) = \big( P\diamond (Q\diamond R) \big)\langle A, B\rangle
+    \end{aligned}
+    \end{equation*}
+    On the other hand, for the identity we have that (using the ninja Yoneda lemma)
+    \begin{equation*}
+        \big(\operatorname{Hom}_\textbf{C}(-,=)\diamond P\big)\langle A, B\rangle = \int^{X:\textbf{C}}\operatorname{Hom}_\textbf{C}(A, X)\times P\langle X, B\rangle \cong P\langle A, B\rangle
+    \end{equation*}
+\end{proof}
+
+\begin{definition}{\textbf{(Bicategory of Profunctor)}}
+    \label{def:cat-profunctor}
+    The category whose categorical law is satisfies up to isomorphism is called bicategory. In which the objects are categories. The morphism is the profunctor between them i.e $\textbf{C}\profunct \textbf{D}$. 
+    
+    And it has to be equipped with a 2-cell too i.e morphism between morphism, which will let that be a natural transformation. That is with $P:\textbf{C}\profunct \textbf{D}$ and $Q:\textbf{C}\profunct \textbf{D}$, we have the following naturality condition $f:S\to A$ and $g:B\to T$ in the diagram of:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJQXFxicmFja2N7QSwgQn0iXSxbMiwwLCJQXFxicmFja2N7UywgVH0iXSxbMCwxLCJRXFxicmFja2N7QSwgQn0iXSxbMiwxLCJRXFxicmFja2N7UywgVH0iXSxbMCwxLCJQXFxicmFja2N7ZiwgZ30iXSxbMCwyLCJcXGFscGhhX3tBLCBCfSIsMl0sWzEsMywiXFxhbHBoYV97UywgVH0iXSxbMiwzLCJRXFxicmFja2N7ZiwgZ30iLDJdXQ==
+    \begin{tikzcd}
+        {P\brackc{A, B}} && {P\brackc{S, T}} \\
+        {Q\brackc{A, B}} && {Q\brackc{S, T}}
+        \arrow["{P\brackc{f, g}}", from=1-1, to=1-3]
+        \arrow["{\alpha_{A, B}}"', from=1-1, to=2-1]
+        \arrow["{\alpha_{S, T}}", from=1-3, to=2-3]
+        \arrow["{Q\brackc{f, g}}"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(Further Notes on 2-Category)}
+    We have observed that categories, functors, and natural transformations form a 2-Category $\textbf{Cat}$. On one object, a category $\textbf{C}$ that is 0-cell:
+
+    \begin{itemize}
+        \item (Behavior of 1-Cells): The 1-cells that start and end at this object form a regular category, which is the functor category $[\textbf{C}, \textbf{C}]$. The object in this category are endo-1-cells of the outer 2-category $\textbf{Cat}$, where arrows between them are 2-cells of the outer 2-category.
+        \item (Monoidal Structure): This endo-1-cell is automatically equipped with a monoidal structure, where the tensor product is the composition, and the monoidal unit object is the identity 1-cell.
+    \end{itemize}
+
+    If we focus our attention on just one endo-1-cell, we can ``square'' it i.e creating $F\circ F$. We say that $F$ is a monad if we can find 2-cells: $\mu:F\circ F\Rightarrow F$ and $\eta:I\Rightarrow F$ that behave like multiplication and unit making associativity and unit diagrams commute In fact a monad can be defined in an arbitrary bicategory.
+\end{remark}
+
+\begin{remark}{(Monad Structure for Profunctor)}
+    Given the discussion above and the fact that $\textbf{Prof}$ is a bicategory, we can define a monad in it, which is an endo-profunctor $\textbf{C}\profunct \textbf{C}$ or $P:\textbf{C}^\text{op}\times\textbf{C}\to\textbf{Set}$ with 2 natural transformations (2-cells): $\mu:P\diamond P\to P$ and $\eta:\operatorname{Hom}_\textbf{C}(-, =)\to P$ monad can be defined in an arbitrary bicategory. We have the natural transformation as:
+    \begin{equation*}
+    \begin{aligned}[t]
+        \mu&\in\int_{\brackc{A, B}}\operatorname{Hom}_\textbf{Set}\left( \int^XP\brackc{A, X} \times P\brackc{X, B}, P\brackc{A, B} \right) \\
+        &\cong \int_{\brackc{A, B}, X}\operatorname{Hom}_\textbf{Set}\Big( P\brackc{A, X} \times P\brackc{X, B},  P\brackc{A, B} \Big)
+    \end{aligned}
+    \qquad \quad 
+    \eta \in \int_{\brackc{A, B}}\operatorname{Hom}_\textbf{Set}\Big( \operatorname{Hom}_\textbf{C}(A, B),  P\brackc{A, B} \Big)
+    \end{equation*}
+\end{remark}
+
+\subsection{Lens}
+
+\begin{remark}{(Lens)}
+    Given a composite objects, which contains parts. We should be able to extract some part of the object, or replace them with a new one. That is we have $\texttt{get} : S\to A$ and $\texttt{set} : S\times A\to S$ with the laws (following from \href{https://arxiv.org/abs/1809.00738}{here}):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiU1xcdGltZXMgQSJdLFsyLDAsIlMiXSxbMSwxLCJBIl0sWzQsMCwiUyJdLFs2LDAsIlNcXHRpbWVzIEEiXSxbNSwxLCJTIl0sWzgsMCwiU1xcdGltZXMgQVxcdGltZXMgQSJdLFs5LDAsIlNcXHRpbWVzIEEiXSxbOCwxLCJTXFx0aW1lcyBBIl0sWzksMSwiQSJdLFswLDEsIlxcdGV4dHR0e3NldH0iXSxbMSwyLCJcXHRleHR0dHtnZXR9Il0sWzAsMiwiXFxwaV8yIiwyXSxbMyw0LCJcXGJyYWNrY3tcXG9wZXJhdG9ybmFtZXtpZH1fUywgXFx0ZXh0dHR7Z2V0fX0iXSxbNCw1LCJcXHRleHR0dHtzZXR9Il0sWzMsNSwiXFxvcGVyYXRvcm5hbWV7aWR9X1MiLDJdLFs4LDksIlxcdGV4dHR0e3NldH0iLDJdLFs3LDksIlxcdGV4dHR0e3NldH0iXSxbNiw3LCJcXGJyYWNrY3tcXHRleHR0dHtzZXR9LCBcXG9wZXJhdG9ybmFtZXtpZH19Il0sWzYsOCwiXFxwaV97MSwzfSIsMl1d
+    \begin{tikzcd}
+        {S\times A} && S && S && {S\times A} && {S\times A\times A} & {S\times A} \\
+        & A &&&& S &&& {S\times A} & A
+        \arrow["{\texttt{set}}", from=1-1, to=1-3]
+        \arrow["{\pi_2}"', from=1-1, to=2-2]
+        \arrow["{\texttt{get}}", from=1-3, to=2-2]
+        \arrow["{\brackc{\operatorname{id}_S, \texttt{get}}}", from=1-5, to=1-7]
+        \arrow["{\operatorname{id}_S}"', from=1-5, to=2-6]
+        \arrow["{\texttt{set}}", from=1-7, to=2-6]
+        \arrow["{\brackc{\texttt{set}, \operatorname{id}}}", from=1-9, to=1-10]
+        \arrow["{\pi_{1,3}}"', from=1-9, to=2-9]
+        \arrow["{\texttt{set}}", from=1-10, to=2-10]
+        \arrow["{\texttt{set}}"', from=2-9, to=2-10]
+    \end{tikzcd}
+    \end{equation*}
+    One can see that the object $S$ that lens perform the zooming can be decomposed as $S\to (C, A)$ where we call $C$ an residue. In similar cases, we can compose $(C, A)\to S$ to an unified object.
+\end{remark}
+
+With the motivation above, we can consider the following profunctor below (and show that it is really a profunctor). Note that we aimed keep the residue ($X$ and $Y$) the same while we make a change on other component. Furthermore, we also allow a new composite object type from $S$ to $T$.
+
+\begin{lemma}{\textbf{(Existential Lens Profunctor)}}
+    This below is a profunctor $\textbf{C}^\text{op}\times\textbf{C}\to\textbf{Set}$ in $\brackc{X, Y}$:
+    \begin{equation*}
+        \operatorname{Hom}_\textbf{Set}\big( S, Y\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( X\times B, T \big)
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    Its action on an object $\brackc{C, D}$ is clear. So, we will consider the action of $\brackc{f, \operatorname{id}_D}$ on profunctor at $\brackc{C, D}$ where $f:E\to C$ in $\textbf{C}^\text{op}$, we have:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{Hom}_\textbf{Set}\big( S, D\times A \big) \times \operatorname{Hom}_\textbf{Set}&\big( C\times B, T \big) \\
+        &\xmapsto{\brackc{\operatorname{id}, \brackc{-\circ\brackc{f, \operatorname{id}}, \operatorname{id}}}} \operatorname{Hom}_\textbf{Set}\big( S, D\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( E\times B, T \big)
+    \end{aligned}
+    \end{equation*}
+
+    This works the same way as the case of $g:D\to F$. Furthermore, since it is simply a pre/post-composition, it is obvious that it preserves the composition and identity (product is functorial too as seen in generally in proposition \ref{prop:limit-functoriality}) as we have: $\brackc{h, \operatorname{id}}\circ\brackc{f, \operatorname{id}}=\brackc{h\circ f, \operatorname{id}}$
+\end{proof}
+
+Finally, having co-ends allows us to ``sum'' all possible but still preserve the type of residual. 
+
+\begin{definition}{\textbf{(Existential Lens)}}
+    \label{def:existential-len}
+    Given the profunctor above, existential lens is the co-end over its diagonal:
+    \begin{equation*}
+        \mathcal{L}\brackc{S, T}\brackc{A, B} = \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big)
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(Simplification of Existential Lens)}
+    Let's trying to simplify the lens, as we note that $\operatorname{Hon}_\textbf{Set}(S, C\times A)\cong \operatorname{Hom}_\textbf{Set}(S, C)\times\operatorname{Hom}_\textbf{Set}(S, A)$, then we can use Yoneda lemma:
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{L}\brackc{S, T}\brackc{A, B} &= \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big) \\
+        &\cong \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}(S, C)\times\operatorname{Hom}_\textbf{Set}(S, A) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big) \\
+        &\cong \operatorname{Hom}_\textbf{Set}(S, A) \times \operatorname{Hom}_\textbf{Set}\big( S\times B, T \big) \\
+    \end{aligned}
+    \end{equation*}
+    Each of the sets are $\texttt{get}:S\to A$ and $\texttt{set}:S\times B\to T$.
+\end{remark}
+
+\begin{remark}{(Get/Set Implementation of Lens Composition)}
+    The essential notion of lens composition follows from the fact that we can have ``double zooming'' that is we perform a zooming of an zoomed object. This is clearly illustrated in how $\texttt{get}$ and $\texttt{set}$ are defined for composition of lens (following from \href{https://arxiv.org/abs/1809.00738}{here}):
+    
+    \begin{equation*}
+    \begin{aligned}
+        S' \xrightarrow{\texttt{get}} & \ S \xrightarrow{\texttt{get}} A \\
+        S' \times A' \xrightarrow{\brackc{\operatorname{id}, \texttt{get}}}& \ (S'\times S)\times A'\xrightarrow{\operatorname{assoc}} S'\times (S\times A') \xrightarrow{\brackc{\operatorname{id}, \texttt{set}}} S'\times S_\text{new} \xrightarrow{\texttt{set}} S'_\text{new}
+    \end{aligned}
+    \end{equation*}
+    where we have the decomposition of $S'\to (C', S)$ and $S\to(C, A)$. Observe that we didn't even consider its decomposition here and/or the residual.
+\end{remark}
+
+\begin{definition}{\textbf{(Existential Lens Composition)}}
+    {\color{violet} Here, given two lens: $\mathcal{L}\brackc{S, T}\brackc{A, B}$ and $\mathcal{L}\brackc{A', B'}\brackc{A, B}$, we can define their composition as follows:}
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{L}\brackc{S, T}\brackc{A', B'} &= \int^{\brackc{A, B}:\textbf{C}\times\textbf{C}} \mathcal{L}\brackc{S, T}\brackc{A, B}\times \mathcal{L}\brackc{A, B}\brackc{A', B'} \\
+        &\cong \int^{C,C'} \operatorname{Hom}_\textbf{Set}\big( S, (C\times C')\times A' \big)\times\operatorname{Hom}_\textbf{Set}\big( (C\times C')\times B', T \big)
+    \end{aligned}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(Two Versions of Existential Lens Composition)}
+    {\color{violet} Note that the len can be defined as (the lens $\mathcal{L}\brackc{S, T}\brackc{A, B}$ is already defined above): }
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{L}\brackc{A, B}\brackc{A', B'} &= \int^{C':\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( A, C'\times A' \big) \times \operatorname{Hom}_\textbf{Set}\big( C'\times B', B \big) \\
+    \end{aligned}
+    \end{equation*}
+    Then we have the following isomorphism starting from the LHS of the statement of the definition above. Note that we have used ninja Yoneda lemma of contravariant version (we didn't have to change to co-end) in the blue and cyan section, since everything is nice and functorial with Fubini theorem:
+    \begin{equation*}
+        \begin{aligned}
+        \mathcal{L}\brackc{S, T}\brackc{A', B'} &=  
+        \begin{aligned}[t]
+            \int^{\brackc{A, B}:\textbf{C}\times\textbf{C}} \Bigg(&\int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big)\Bigg) \\
+            &\times \left( \int^{C':\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( A, C'\times A' \big) \times \operatorname{Hom}_\textbf{Set}\big( C'\times B', B \big) \right) \\
+        \end{aligned} \\
+        &\cong \begin{aligned}[t]
+            \int^{\brackc{C, C'}:\textbf{C}\times\textbf{C}} \Bigg(&{\int^{A:\textbf{C}}\operatorname{Hom}_\textbf{Set}(A, C'\times A')\times\operatorname{Hom}_\textbf{Set}\big( S, C\times A \big)}\Bigg) \\
+            &\times \left( {\int^{B:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( A, C'\times A' \big) \times \operatorname{Hom}_\textbf{Set}\big( C'\times B', B \big)} \right) \\
+        \end{aligned} \\
+        &\cong \int^{\brackc{C, C'}:\textbf{C}\times\textbf{C}}\operatorname{Hom}_\textbf{Set}\big( S, C\times (C'\times A') \big)\times \operatorname{Hom}_\textbf{Set}\big( C\times ( C'\times B'), T \big) \\
+        &\cong \int^{\brackc{C, C'}:\textbf{C}\times\textbf{C}}\operatorname{Hom}_\textbf{Set}\big( S, (C\times C')\times A' \big) \times \operatorname{Hom}_\textbf{Set}\big( (C\times C')\times B', T \big) 
+        \end{aligned}
+    \end{equation*}
+\end{remark}
+
+
+\begin{definition}{\textbf{(Category of Lens/Identity Lens)}}
+    We can, thus, see lens as the morphism between a pair of objects, together with the compositions of lens, we can define the $\textbf{Len}$ category. It is clear that this composition is associative (inherited from the associativity of products)
+    {\color{violet} and the identity lens is:}
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{L}_\text{id}\brackc{A, B}\brackc{A, B} &= \operatorname{Hom}_\textbf{Set}\big( A, \boldsymbol{1}\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( \boldsymbol{1}\times B, B \big) \\
+        &\cong \operatorname{Hom}_\textbf{Set}\big( A, A \big) \times \operatorname{Hom}_\textbf{Set}\big(B, B \big) \\
+    \end{aligned}
+    \end{equation*}
+    The intuition is that if we have no core/residual object, then the zooming will just be a full map. It is clear from our formulation of composition that this identity lens act like identity. Note that if we view $\times$ as a tensor product and initial object $\textbf{1}$ as the unit, we are one step toward generalization of the lens.
+\end{definition}
+
+\todo Skip \textbf{Lenses and Fibrations}
+
+\section{Tambara Modules}
+
+\begin{remark}{(Representation of Monoid)}
+    We will consider a monoid here, in which we can think of it as single-object category $\textbf{M}$, with object $\star$ and the hom-set $\operatorname{Hom}_\textbf{M}(\star ,\star )$. The product is defined as the composition. Thus, representation of a monoid is a functor $F:\textbf{M}\to\textbf{Set}$ (maps $\star$ to a set that a monoid will acts on, and maps arrows $\star\to\star$ as the action on that set).
+    \begin{itemize}
+        \item If the functor is fully faithful, then we are happy (but this isn't usually the case). In the extreme case, the whole $\operatorname{Hom}_\textbf{M}(\star ,\star )$ is mapped to identity morphism of some set $S$. 
+        \item We can also consider the whole set of representation via a functor category $[\textbf{M}, \textbf{Set}]$. The natural transformation is straightforward as it contains on component: $\alpha:F\star \to G\star $. Given $m:\star \to\star $, the naturality condition is $Gm\circ\alpha=\alpha\circ Fm$. The action on different sets should differs but still commutes.
+    \end{itemize}
+    We can think of the last point as finding how monoid can acts on every sets possible. This provides the motivation of Tannakian reconstruct, where we want to recover the monoid elements/structure based on how it got represented.
+\end{remark}
+
+% This goes as follows:
+
+% \begin{remark}{(Exploration of Reconstruction)}
+%     % Given the element of monoid (not the object) $m\in\operatorname{Hom}_\textbf{Set}(\star,\star)$, then we can consider natural transformation that relates the action $Fm$ and $Gm$ together. Consider a tuple whose element are from the set $\operatorname{Hom}_\textbf{Set}(F\star,F\star)$ for all functors $F:\textbf{M}\to\textbf{Set}$, where each of its elements are related each other i.e given $g\in \operatorname{Hom}_\textbf{Set}(G\star,G\star)$ and $h\in\operatorname{Hom}_\textbf{Set}(H\star,H\star)$, there is $\alpha$ such that $\alpha\circ g=h\circ\alpha$.
+%     % With this, this is exactly the element of the end, 
+%     With ends, we have the following wedge condition, as $\alpha$ is the morphism in functor category $[\textbf{M}, \textbf{Set}]$ as $\alpha:G\Rightarrow H$:
+%     \begin{equation*}
+%     % https://q.uiver.app/#q=WzAsNCxbMSwwLCJcXGludF9GXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntTZXR9KEZcXHN0YXIsRlxcc3RhcikiXSxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme1NldH0oR1xcc3RhcixHXFxzdGFyKSJdLFsyLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7U2V0fShIXFxzdGFyLEhcXHN0YXIpIl0sWzEsMiwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntTZXR9KEdcXHN0YXIsSFxcc3RhcikiXSxbMSwzLCJcXGFscGhhXFxjaXJjLSIsMl0sWzAsMSwiXFxwaV9HIiwyXSxbMCwyLCJcXHBpX0giXSxbMiwzLCItXFxjaXJjXFxhbHBoYSJdXQ==
+%     \begin{tikzcd}
+%         & {\int_F\operatorname{Hom}_\textbf{Set}(F\star,F\star)} \\
+%         {\operatorname{Hom}_\textbf{Set}(G\star,G\star)} && {\operatorname{Hom}_\textbf{Set}(H\star,H\star)} \\
+%         & {\operatorname{Hom}_\textbf{Set}(G\star,H\star)}
+%         \arrow["{\pi_G}"', from=1-2, to=2-1]
+%         \arrow["{\pi_H}", from=1-2, to=2-3]
+%         \arrow["{\alpha\circ-}"', from=2-1, to=3-2]
+%         \arrow["{-\circ\alpha}", from=2-3, to=3-2]
+%     \end{tikzcd}
+%     \end{equation*}
+%     That is we used the profunctor $P\brackc{G, H}=\operatorname{Hom}_\textbf{Set}(G\star,H\star)$ with signature of $P:[\textbf{M}, \textbf{Set}]^\text{op}\times[\textbf{M}, \textbf{Set}]\to\textbf{Set}$. Then, we see that given a natural transformation on such category $\alpha:G'\to G$ and $\beta:H\to H'$, we can lifted them as $P\brackc{\alpha,\beta}:P\brackc{G, H}\to P\brackc{G',H'}$ i.e $P\brackc{\alpha,\beta}=\beta\circ-\circ\alpha$. 
+    
+%     
+% \end{remark}
+
+\begin{theorem}{\textbf{(Tannakian Reconstruction)}}
+    We can consider the hom-set between two objects by consider every of its representations combined via ends:
+    \begin{equation*}
+        \int_{F:[\textbf{C}, \textbf{Set}]}\operatorname{Hom}_\textbf{Set}\big( FA, FB \big) \cong \operatorname{Hom}_\textbf{C}(A, B)
+    \end{equation*}
+    We can see clearly that the reconstruction of monoid is the special case of this. Intuitively, it is the way to study arrows of $A\to B$ by looking at all possible representation $F$.
+\end{theorem}
+\begin{proof}
+    Following the Yoneda lemma and with LHS, we have:
+    \begin{equation*}
+    \begin{aligned}
+        \int_{F:[\textbf{C}, \textbf{Set}]}&\operatorname{Hom}_\textbf{Set}\bigg( \underbrace{\operatorname{Hom}_{[\textbf{C}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(A, -), F \Big)}_{FA}, \underbrace{\operatorname{Hom}_{[\textbf{C}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(B, -), F \Big)}_{FB} \bigg) \\
+        &\cong \operatorname{Hom}_{[\textbf{C}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(A, -), \operatorname{Hom}_\textbf{C}(B, -) \Big) \cong \operatorname{Hom}_\textbf{C}(A, B)
+    \end{aligned}
+    \end{equation*}
+    The second equality, we have used the Ninja Yoneda lemma (aka, the natural transformation definition of end), and we ended with the Yoneda embedding theorem.
+\end{proof}
+
+\begin{remark}{(Some Notes on Reconstruction)}
+    Here, we used the profunctor $P\brackc{F, G}=\operatorname{Hom}_\textbf{Set}(FA,GB)$ with signature of $P:[\textbf{C}, \textbf{Set}]^\text{op}\times[\textbf{C}, \textbf{Set}]\to\textbf{Set}$. Then, we see that given a natural transformation $\alpha:F'\Rightarrow F$ and $\beta:G\Rightarrow G'$, we can lifted them (with appropriate component) as $P\brackc{\alpha,\beta}:P\brackc{F, G}\to P\brackc{F',G'}$ i.e $P\brackc{\alpha,\beta}=\beta_B\circ-\circ\alpha_A$. We consider the following wedge condition:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMSwwLCJcXGludF9GXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntTZXR9KEZBLEZCKSJdLFswLDIsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7U2V0fShHQSxHQikiXSxbMiwyLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme1NldH0oSEEsSEIpIl0sWzEsMywiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntTZXR9KEdBLEhCKSJdLFsxLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oQSxCKSJdLFsxLDMsIlxcYWxwaGFfQlxcY2lyYy0iLDJdLFswLDEsIlxccGlfRyIsMl0sWzAsMiwiXFxwaV9IIl0sWzIsMywiLVxcY2lyY1xcYWxwaGFfQSJdLFs0LDEsIkctIiwxXSxbNCwyLCJILSIsMV0sWzAsNCwiXFxjb25nIiwxXV0=
+    \begin{tikzcd}
+        & {\int_F\operatorname{Hom}_\textbf{Set}(FA,FB)} \\
+        & {\operatorname{Hom}_\textbf{C}(A,B)} \\
+        {\operatorname{Hom}_\textbf{Set}(GA,GB)} && {\operatorname{Hom}_\textbf{Set}(HA,HB)} \\
+        & {\operatorname{Hom}_\textbf{Set}(GA,HB)}
+        \arrow["\cong"{description}, from=1-2, to=2-2]
+        \arrow["{\pi_G}"', from=1-2, to=3-1]
+        \arrow["{\pi_H}", from=1-2, to=3-3]
+        \arrow["{G-}"{description}, from=2-2, to=3-1]
+        \arrow["{H-}"{description}, from=2-2, to=3-3]
+        \arrow["{\alpha_B\circ-}"', from=3-1, to=4-2]
+        \arrow["{-\circ\alpha_A}", from=3-3, to=4-2]
+    \end{tikzcd}
+    \end{equation*}
+    Note that we can see $\pi_H$ as the applying functor $H$ to each of the element of $\operatorname{Hon}_\textbf{H}(-,=)\mapsto\operatorname{Hon}_\textbf{Set}(H-,H=)$. And so, the wedge condition encodes the natural transformation.
+\end{remark}
+
+\begin{remark}{(Back to Monoid Example)}
+    Let's try to reconstruct/recover the monoid from its representation, given the set of all functions of a functor $F\star\to F\star$ i.e a hom-set. The effort will lead to the special case of Tannakian reconstruction:
+    \begin{equation*}
+        \int_{F:[\textbf{M}, \textbf{Set}]}\operatorname{Hom}_\textbf{Set}\big( F\star, F\star \big) \cong \operatorname{Hom}_\textbf{M}(\star ,\star )
+    \end{equation*}
+    Note that this has very similarity to Cayley's theorem, in which it is also the special case of Yoneda lemma.
+\end{remark}
+
+To generalize the Tannakian reconstruction further, we will consider a special functor category $\textbf{T}$, where we apply the forgetful functor to its functors. 
+
+\begin{proposition}{\textbf{(Tannakian Reconstruction on Adjunction)}}
+    \label{prop:adj-tannakan}
+    Given a free/forgetful adjunction $F\dashv U$ between two functor category: $\operatorname{Hom}_{\textbf{T}}(FQ, P)\cong\operatorname{Hom}_{[\textbf{C},\textbf{Set}]}(Q,UP)$, where we have, given objects $A$ and $S$:
+    \begin{equation*}
+        \int_{P:\textbf{T}}\operatorname{Hom}_{\textbf{Set}}\big( (UP)A, (UP)S \big)\cong\big( \Phi\operatorname{Hom}_\textbf{C}(A, -) \big)S
+    \end{equation*}
+    where $\Phi=U\circ F:[\textbf{C}, \textbf{Set}]\to \textbf{T}\to[\textbf{C}, \textbf{Set}]$, a monad in a functor category (recall theorem \ref{thm:adj-to-monad}) created from the adjoint functor. Note the similarity between this and the Tannakian reconstruction above.
+\end{proposition}
+\begin{proof}
+    Given the LHS, we follows similar procedural to the theorem above, where we apply the Yoneda lemma, use the adjunction, ninja Yoneda lemma, adjunction again, and Yoneda embedding:
+    \allowdisplaybreaks
+    \begin{align*}
+        \int_{P:\textbf{T}}&\operatorname{Hom}_{\textbf{Set}}\big( (UP)A, (UP)S \big) \\
+        &\cong \int_{P:\textbf{T}}\operatorname{Hom}_\textbf{Set}\left(\operatorname{Hom}_{[\textbf{C}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(A, -), UP \Big), \operatorname{Hom}_{[\textbf{C}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(S, -), UP \Big)\right) \\
+        &\cong \int_{P:\textbf{T}}\operatorname{Hom}_\textbf{Set}\left(\operatorname{Hom}_{\textbf{T}}\Big( F\operatorname{Hom}_\textbf{C}(A, -), P \Big), \operatorname{Hom}_{\textbf{T}}\Big( F\operatorname{Hom}_\textbf{C}(S, -), P \Big)\right) \\
+        &\cong \operatorname{Hom}_{\textbf{T}}\Big( F\operatorname{Hom}_\textbf{C}(S, -), F\operatorname{Hom}_\textbf{C}(A, -) \Big) \cong \operatorname{Hom}_{\textbf{T}}\Big( \operatorname{Hom}_\textbf{C}(S, -), UF\operatorname{Hom}_\textbf{C}(A, -) \Big) \\
+        &\cong \big(UF\operatorname{Hom}_\textbf{C}(A, -)\big)S
+    \end{align*}
+\end{proof}
+
+\begin{remark}{(Fibre Functor)}
+    In the proposition above, instead of simply considering $[\textbf{C},\textbf{Set}]$, we have the specialized functor category $\textbf{T}$, and its ``specialty'' is characterized by the adjunction:
+    \begin{itemize}
+        \item On LHS, we have the fibre functor $P:\textbf{T}\to\textbf{Set}$ parameterize by $A$, defined as $P\mapsto(UP)A$. {\color{violet} This functor describes an ``infinitesimal neighborhood'' of an object, probing the object's environment, and that is due to $T$'s status as having more structure than a mere $[\textbf{C},\textbf{Set}]$, which describe only an singular object}.
+        \item Furthermore, this ends can be seen as set of natural transformation (implicitly defined by wedge condition, proposition \ref{prop:nat-trans-as-end}) between two fibre functors (and hence we are back at the reconstructive intuition) that also involved the $\textbf{T}$.
+    \end{itemize}
+    The result is that when we consider view provided by a special ``filter'' of functor category $\textbf{{T}}$ (which gives rise to fibre functor), the ``image'' of arrow out of object $A$ is ``modified'' by the monad $\Phi$.
+\end{remark}
+
+\subsection{Profunctor Lens}
+
+\begin{remark}{(Preparing Lens for Reconstruction)}
+    Note that, we can define lens as follow (the first line is the original one and the second one is a more suited for our use here):
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{L}\brackc{S, T}\brackc{A, B} &= \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big) \\
+        &= \int^{C:\textbf{C}} \operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}} \Big( C\bullet \brackc{A, B}, \brackc{S, T} \Big)
+    \end{aligned}
+    \end{equation*}
+    where the action on $\textbf{C}^\text{op}\times\textbf{C}$ can be defined generally as $\brackc{C, C'}\bullet\brackc{A, B}=\brackc{C\times A, C'\times B}$. 
+\end{remark}
+
+\begin{definition}{\textbf{(Profunctor Representation)}}
+    \label{def:pro-repre}
+    Given the above definition of lens, we are interested to see the co-presheaves on category $\textbf{C}^\text{op}\times\textbf{C}$ (the integrand $ \operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}} \big( C\bullet -,= \big)$) that is the profunctor representation.
+\end{definition}
+
+\begin{definition}{\textbf{(Iso)}}
+    Using the proposition \ref{prop:adj-tannakan}, where $\textbf{T}=[\textbf{C}^\text{op}\times\textbf{C}, \textbf{Set}]$ being a category of profunctor (definition \ref{def:cat-profunctor}) without any additional structure, so $\Phi$ or forgetful functor isn't needed, and we have:
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{O}\brackc{S, T}\brackc{A, B}&=\int_{P:\textbf{T}}\operatorname{Hom}_{\textbf{Set}}\big(P\brackc{A, B}, P\brackc{C, D} \big) \cong \operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}}(\brackc{A, B}, \brackc{S, T}) \\
+        &\cong \operatorname{Hom}_{\textbf{C}^\text{op}}(A, S)\times \operatorname{Hom}_{\textbf{C}}(B, T) = \operatorname{Hom}_{\textbf{C}}(S, A)\times \operatorname{Hom}_{\textbf{C}}(B, T)
+    \end{aligned}
+    \end{equation*}
+
+    {\color{violet} Skip the Haskell explanation for the adaptor.}
+\end{definition}
+
+\begin{remark}{(Profunctor and Lens)}
+    % We define the forgetful functor $U$ to forgot the structure and doesn't change the set, that is $P\brackc{A, B}$ is the same as $(UP)\brackc{A, B}$. 
+    Given the existential lens (definition \ref{def:existential-len}), we have a pair of decomposition and composition morphism i.e $\brackc{f, g}\in \operatorname{Hom}_\textbf{C}(S, C\times A)\times \operatorname{Hom}_\textbf{C}(C\times B, T)$. To build profunctor representation (definition \ref{def:pro-repre}), we need to define $P\brackc{A, B}\to P\brackc{S, T}$, in which we have:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJQXFxicmFja2N7QSwgQn0iXSxbMiwwLCJQXFxicmFja2N7UywgVH0iXSxbMSwwLCJQXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMiwxLCJQXFxicmFja2N7ZiwgZ30iXSxbMCwyLCI/Pz8iLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        {P\brackc{A, B}} & {P\brackc{C\times A, C\times B}} & {P\brackc{S, T}}
+        \arrow["{???}", dashed, from=1-1, to=1-2]
+        \arrow["{P\brackc{f, g}}", from=1-2, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    Than's why we need to add more structure to have the LHS maps, defined as $\alpha_{\brackc{A, B}, C}$
+\end{remark}
+
+This leads to the concept of Tambara module. To make sure that the map is well-behaved, we are requires the family of maps to be natural in $A$ and $B$. This conditions can be emphasized on requiring $\alpha$ acts on the diagonal element (when 2 parameter are the same), which gives us:
+
+\begin{definition}{\textbf{(Dinatural Transformation)}}
+    A transformation $\alpha$ between diagonal parts of two profunctors $P$ and $Q$ is called dinatural transformation if the following diagram commutes for any $f:C\to C'$:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMSwwLCJQXFxicmFja2N7QycsIEN9Il0sWzAsMSwiUFxcYnJhY2tje0MsIEN9Il0sWzIsMSwiUFxcYnJhY2tje0MnLCBDJ30iXSxbMCwyLCJRXFxicmFja2N7QywgQ30iXSxbMiwyLCJRXFxicmFja2N7QycsIEMnfSJdLFsxLDMsIlFcXGJyYWNrY3tDLCBDJ30iXSxbMCwxLCJQXFxicmFja2N7ZixcXG9wZXJhdG9ybmFtZXtpZH1fe0N9fSIsMl0sWzEsMywiXFxhbHBoYV9DIiwyXSxbMiw0LCJcXGFscGhhX3tDJ30iXSxbMCwyLCJQXFxicmFja2N7XFxvcGVyYXRvcm5hbWV7aWR9X3tDJ30sIGZ9Il0sWzMsNSwiUFxcYnJhY2tje1xcb3BlcmF0b3JuYW1le2lkfV97Q30sIGZ9IiwyXSxbNCw1LCJQXFxicmFja2N7ZiwgXFxvcGVyYXRvcm5hbWV7aWR9X3tDfX0iXV0=
+    \begin{tikzcd}
+        & {P\brackc{C', C}} \\
+        {P\brackc{C, C}} && {P\brackc{C', C'}} \\
+        {Q\brackc{C, C}} && {Q\brackc{C', C'}} \\
+        & {Q\brackc{C, C'}}
+        \arrow["{P\brackc{f,\operatorname{id}_{C}}}"', from=1-2, to=2-1]
+        \arrow["{P\brackc{\operatorname{id}_{C'}, f}}", from=1-2, to=2-3]
+        \arrow["{\alpha_C}"', from=2-1, to=3-1]
+        \arrow["{\alpha_{C'}}", from=2-3, to=3-3]
+        \arrow["{P\brackc{\operatorname{id}_{C}, f}}"', from=3-1, to=4-2]
+        \arrow["{P\brackc{f, \operatorname{id}_{C}}}", from=3-3, to=4-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Tambara Modules)}}
+    It is a profunctor $P$ equipped with the family of dinatural transformations $\alpha_{\brackc{A, B}, C}:P\brackc{A, B}\to P\brackc{C\times A, C\times B}$, that satisfies the following commutative diagram, given $f:C\to C'$
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJQXFxicmFja2N7QSwgQn0iXSxbMCwxLCJQXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMiwxLCJQXFxicmFja2N7QydcXHRpbWVzIEEsIEMnXFx0aW1lcyBCfSJdLFsxLDIsIlBcXGJyYWNrY3tDXFx0aW1lcyBBLCBDJ1xcdGltZXMgQn0iXSxbMCwxLCJcXGFscGhhX3tcXGJyYWNrY3tBLCBCfSwgQ30iLDFdLFsxLDMsIlBcXGJyYWNrY3tcXG9wZXJhdG9ybmFtZXtpZH1fe0NcXHRpbWVzIEF9LCBcXGJyYWNrY3tmLFxcb3BlcmF0b3JuYW1le2lkfV9CfX0iLDFdLFswLDIsIlxcYWxwaGFfe1xcYnJhY2tje0EsIEJ9LCBDJ30iLDFdLFsyLDMsIlBcXGJyYWNrY3tcXGJyYWNrY3tmLFxcb3BlcmF0b3JuYW1le2lkfV97QX19LCBcXG9wZXJhdG9ybmFtZXtpZH1fe0NcXHRpbWVzIEJ9fSIsMV1d
+    \begin{tikzcd}
+        & {P\brackc{A, B}} \\
+        {P\brackc{C\times A, C\times B}} && {P\brackc{C'\times A, C'\times B}} \\
+        & {P\brackc{C\times A, C'\times B}}
+        \arrow["{\alpha_{\brackc{A, B}, C}}"{description}, from=1-2, to=2-1]
+        \arrow["{\alpha_{\brackc{A, B}, C'}}"{description}, from=1-2, to=2-3]
+        \arrow["{P\brackc{\operatorname{id}_{C\times A}, \brackc{f,\operatorname{id}_B}}}"{description}, from=2-1, to=3-2]
+        \arrow["{P\brackc{\brackc{f,\operatorname{id}_{A}}, \operatorname{id}_{C\times B}}}"{description}, from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    To make this more explicit, we consider the profunctor $Q$ being $P\brackc{-\times A,-\times B}$. It also has to respect the monoidal structure of product (see remark \ref{remark:tambara-ext}). To the unit (terminal object), we have: $\operatorname{\alpha}_{\brackc{A, B},\textbf{1}}=\operatorname{id}_{P\brackc{A, B}}$. For multiplication, we have, up to isomorphism:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJQXFxicmFja2N7QSwgQn0iXSxbMiwwLCJQXFxicmFja2N7QydcXHRpbWVzIENcXHRpbWVzIEEsIEMnXFx0aW1lcyBDXFx0aW1lcyBCfSJdLFsxLDEsIlBcXGJyYWNrY3tDXFx0aW1lcyBBLCBDXFx0aW1lcyBCfSJdLFswLDEsIlxcYWxwaGFfe1xcYnJhY2tje0EsIEJ9LCBDJ1xcdGltZXMgQ30iXSxbMCwyLCJcXGFscGhhX3tcXGJyYWNrY3tBLCBCfSwgQ30iLDFdLFsyLDEsIlxcYWxwaGFfe1xcYnJhY2tje0NcXHRpbWVzIEEsIENcXHRpbWVzIEJ9LCBDJ30iLDFdXQ==
+    \begin{tikzcd}
+        {P\brackc{A, B}} && {P\brackc{C'\times C\times A, C'\times C\times B}} \\
+        & {P\brackc{C\times A, C\times B}}
+        \arrow["{\alpha_{\brackc{A, B}, C'\times C}}", from=1-1, to=1-3]
+        \arrow["{\alpha_{\brackc{A, B}, C}}"{description}, from=1-1, to=2-2]
+        \arrow["{\alpha_{\brackc{C\times A, C\times B}, C'}}"{description}, from=2-2, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Category of Tambara Module)}}
+    \label{def:tambara-module-cat}
+    We define a category of Tabara module with morphism being natural transformation that preserves the added structure. Given $\rho:(P,\alpha)\to(Q,\beta)$, the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJQXFxicmFja2N7QSwgQn0iXSxbMCwxLCJRXFxicmFja2N7QSwgQn0iXSxbMiwwLCJQXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMiwxLCJRXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMCwxLCJcXHJob197XFxicmFja2N7QSwgQn19IiwyXSxbMCwyLCJcXGFscGhhX3tcXGJyYWNrY3tBLCBCfSwgQ30iXSxbMSwzLCJcXGJldGFfe1xcYnJhY2tje0EsIEJ9LCBDfSIsMl0sWzIsMywiXFxyaG9fe1xcYnJhY2tje0NcXHRpbWVzIEEsIENcXHRpbWVzIEJ9fSJdXQ==
+    \begin{tikzcd}
+        {P\brackc{A, B}} && {P\brackc{C\times A, C\times B}} \\
+        {Q\brackc{A, B}} && {Q\brackc{C\times A, C\times B}}
+        \arrow["{\alpha_{\brackc{A, B}, C}}", from=1-1, to=1-3]
+        \arrow["{\rho_{\brackc{A, B}}}"', from=1-1, to=2-1]
+        \arrow["{\rho_{\brackc{C\times A, C\times B}}}", from=1-3, to=2-3]
+        \arrow["{\beta_{\brackc{A, B}, C}}"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(What we been so far: Reconstruction Lens)}
+    We consider the Tannakian construction (and what we expected lens to be), where $\textbf{T}$ is the Tambara modules:
+    \begin{equation*}
+        \int_{P:\textbf{T}}\operatorname{Hom}_{\textbf{Set}}\Big( (UP)\brackc{A, B}, (UP)\brackc{S, T} \Big)\cong\big( \Phi\operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}}(\brackc{A, B}, -) \big)\brackc{S, T}
+    \end{equation*}
+    Since we already know $U$ as the forgetful functor of Tambara category. We are left to consider the monad $\Phi$ or the freely generated Tambara module functor $F$.
+\end{remark}
+
+\begin{remark}{(Comonad for Lens)}
+    It's easier to guess the comonad. Consider the comonad in category of profunctors where, it is defined as:
+    \begin{equation*}
+        (\Theta P)\brackc{A, B} = \int_{C}P\brackc{C\times A, C\times B}
+    \end{equation*}   
+    where $\varepsilon_P: \Theta P\to P$ is given to be $\pi_{\textbf{1}}$, while $\nu_P:\Theta P\to\Theta(\Theta P)$ is {\color{violet} defined via universal construction } (see remark below for more details).
+\end{remark}
+
+\begin{remark}{(Comonad Equipped Maps)}
+    There are 2 map of for the comonad, which are:
+    \begin{itemize}
+        \item $\boldsymbol{\varepsilon_P: \Theta P\to P}$ is given to be $\pi_{\textbf{1}}$ where $\textbf{1}$ is the terminal object. In which we have:
+        \begin{equation*}
+            \begin{aligned}
+                \pi_{\textbf{1}}\left( \int_{C}P\brackc{C\times A, C\times B} \right) &= P\brackc{\textbf{1}\times A, \textbf{1}\times B} \\
+                &\cong P\brackc{A, B}
+            \end{aligned}
+            \qquad\quad
+            % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXGludF97Q31QXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMCwxLCJcXGludF97Q31RXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMSwwLCJQXFxicmFja2N7QSwgQn0iXSxbMSwxLCJRXFxicmFja2N7QSwgQn0iXSxbMiwzLCJcXGFscGhhX3tBLCBCfSJdLFswLDEsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxLDMsIlxccGlfMSciLDJdLFswLDIsIlxccGlfMSJdXQ==
+            \begin{tikzcd}
+                {\int_{C}P\brackc{C\times A, C\times B}} & {P\brackc{A, B}} \\
+                {\int_{C}Q\brackc{C\times A, C\times B}} & {Q\brackc{A, B}}
+                \arrow["{\pi_1}", from=1-1, to=1-2]
+                \arrow[dashed, from=1-1, to=2-1]
+                \arrow["{\alpha_{A, B}}", from=1-2, to=2-2]
+                \arrow["{\pi_1'}"', from=2-1, to=2-2]
+            \end{tikzcd}
+        \end{equation*}
+        To show that it is a natural transformation, consider the morphism $\alpha:P\Rightarrow Q$, with its component, for any objects $A, B$ be $\alpha_{A, B}:P\brackc{A, B}\to Q\brackc{A, B}$. The map between ends follows from functoriality of ends (proposition \ref{prop:functoriality-of-ends}), and RHS diagram should commutes per construction. 
+        \item$\boldsymbol{\nu_P:\Theta P\to\Theta(\Theta P)}$ where its designation is:
+        \begin{equation*}
+            \Theta(\Theta P)\brackc{A, B} = \Theta\left(\int_{C}P\brackc{C\times A, C\times B}\right) = \int_{C'}\int_C P\brackc{C'\times C\times A, C'\times C\times B}
+        \end{equation*}
+        Since that the maps between $\Theta P\to\Theta(\Theta P)$ can be defined via universal properties of Ends, and the naturality and commutative are guaranteed by the universal properties, see \texttt{etc.tex} for the diagram.
+    \end{itemize}
+\end{remark}
+
+\begin{remark}{(Tambara module as Coalgebra)}
+    Tambara module is actually the coalgebra of the len's comonad (as it adds a $C\times-$), where the structure map of coalgebra $i_P:P\to\Theta P$ is defined to be (it commutes because of dinatural transformation condition of Tambara module), given any morphism $f:X\to Y$:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMSwxLCJcXGludF97Q31QXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMSwwLCJQXFxicmFja2N7QSwgQn0iXSxbMCwxLCJQXFxicmFja2N7WFxcdGltZXMgQSwgWFxcdGltZXMgQn0iXSxbMiwxLCJQXFxicmFja2N7WVxcdGltZXMgQSwgWVxcdGltZXMgQn0iXSxbMSwyLCJQXFxicmFja2N7WFxcdGltZXMgQSwgWVxcdGltZXMgQn0iXSxbMSwwLCJpX1AiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMSwyLCJcXGFscGhhX3tcXGJyYWNrY3tBLCBCfSwgWH0iLDFdLFsxLDMsIlxcYWxwaGFfe1xcYnJhY2tje0EsIEJ9LCBZfSIsMV0sWzAsMl0sWzIsNCwiUFxcYnJhY2tje1xcb3BlcmF0b3JuYW1le2lkfV97Q1xcdGltZXMgQX0sIFxcYnJhY2tje2YsXFxvcGVyYXRvcm5hbWV7aWR9X0J9fSIsMV0sWzMsNCwiUFxcYnJhY2tje1xcYnJhY2tje2YsXFxvcGVyYXRvcm5hbWV7aWR9X3tBfX0sIFxcb3BlcmF0b3JuYW1le2lkfV97Q1xcdGltZXMgQn19IiwxXSxbMCwzXV0=
+    \begin{tikzcd}
+        & {P\brackc{A, B}} \\
+        {P\brackc{X\times A, X\times B}} & {\int_{C}P\brackc{C\times A, C\times B}} & {P\brackc{Y\times A, Y\times B}} \\
+        & {P\brackc{X\times A, Y\times B}}
+        \arrow["{\alpha_{\brackc{A, B}, X}}"{description}, from=1-2, to=2-1]
+        \arrow["{i_P}", dashed, from=1-2, to=2-2]
+        \arrow["{\alpha_{\brackc{A, B}, Y}}"{description}, from=1-2, to=2-3]
+        \arrow["{P\brackc{\operatorname{id}_{C\times A}, \brackc{f,\operatorname{id}_B}}}"{description}, from=2-1, to=3-2]
+        \arrow[from=2-2, to=2-1]
+        \arrow[from=2-2, to=2-3]
+        \arrow["{P\brackc{\brackc{f,\operatorname{id}_{A}}, \operatorname{id}_{C\times B}}}"{description}, from=2-3, to=3-2]
+    \end{tikzcd}
+    \end{equation*}
+    Or, we can define $i:P\Rightarrow\Theta P$, in a more compacted manners using (proposition \ref{prop:nat-trans-as-end}), as:
+    \begin{equation*}
+        \int_{A, B}\operatorname{Hom}_{\textbf{Set}}\big(P\brackc{A, B}, (\Theta P)\brackc{A, B}\big) \cong \int_{A, B}\int_C\operatorname{Hom}_{\textbf{Set}}\big(P\brackc{A, B}, P\brackc{C\times A, C\times B}\big) 
+    \end{equation*}
+    
+    In fact Tambara modules form the Eilenberg-Moore category of coalgebras (definition \ref{def:coalg-cat}) for the comonad $\Theta$. That is because the morphism between Tabara modules respects the structure (see definition \ref{def:tambara-module-cat}) in blue:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwzLCJcXGludF97Q31QXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMCwyLCJQXFxicmFja2N7QSwgQn0iXSxbMSwzLCJQXFxicmFja2N7WVxcdGltZXMgQSwgWVxcdGltZXMgQn0iXSxbMSwwLCJRXFxicmFja2N7QSwgQn0iXSxbMiwxLCJRXFxicmFja2N7WVxcdGltZXMgQSwgWVxcdGltZXMgQn0iXSxbMSwxLCJcXGludF97Q31RXFxicmFja2N7Q1xcdGltZXMgQSwgQ1xcdGltZXMgQn0iXSxbMSwwLCJpX1AiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMSwyLCJcXGFscGhhX3tcXGJyYWNrY3tBLCBCfSwgWX0iLDEseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMCwyLCIiLDAseyJjb2xvdXIiOlswLDYwLDYwXX1dLFsxLDMsIlxccmhvX3tcXGJyYWNrY3tBLCBCfX0iLDAseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMyw1LCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMyw0LCJcXGJldGFfe1xcYnJhY2tje0EsIEJ9LCBZfSIsMCx7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFswLDUsIiIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsyLDQsIlxccmhvX3tcXGJyYWNrY3tZXFx0aW1lcyBBLCBZXFx0aW1lcyBCfX0iLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFs1LDRdXQ==
+    \begin{tikzcd}
+        & {Q\brackc{A, B}} \\
+        & {\int_{C}Q\brackc{C\times A, C\times B}} & {Q\brackc{Y\times A, Y\times B}} \\
+        {P\brackc{A, B}} \\
+        {\int_{C}P\brackc{C\times A, C\times B}} & {P\brackc{Y\times A, Y\times B}}
+        \arrow[dashed, from=1-2, to=2-2]
+        \arrow["{\beta_{\brackc{A, B}, Y}}", color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=2-3]
+        \arrow[from=2-2, to=2-3]
+        \arrow["{\rho_{\brackc{A, B}}}", color={rgb,255:red,92;green,92;blue,214}, from=3-1, to=1-2]
+        \arrow["{i_P}", dashed, from=3-1, to=4-1]
+        \arrow["{\alpha_{\brackc{A, B}, Y}}"{description}, color={rgb,255:red,92;green,92;blue,214}, from=3-1, to=4-2]
+        \arrow[dashed, from=4-1, to=2-2]
+        \arrow[color={rgb,255:red,214;green,92;blue,92}, from=4-1, to=4-2]
+        \arrow["{\rho_{\brackc{Y\times A, Y\times B}}}"', color={rgb,255:red,214;green,92;blue,92}, from=4-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+
+    Note that the maps $\int_CP\brackc{C\times A,C\times B}\to\int_CQ\brackc{C\times A,C\times B}$ can be derived from the fact that we have the maps from $\int_CP\brackc{C\times A,C\times B}\to Q\brackc{Y\times A, Y\times B}$ colored in red, and so on.
+
+    % This means that we are ready to find the left adjoint to $\Theta$ being the monad $\Phi$}.
+\end{remark}
+
+\begin{proposition}{\textbf{(Monad for Lens)}}
+    The monad for lens (defined on the second line) is a left adjoint of the $\Theta$ comonad defined above:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{Hom}_{[\textbf{C}^\text{op}\times\textbf{C}, \textbf{Set}]}\big( &\Phi P, Q \big) \cong \operatorname{Hom}_{[\textbf{C}^\text{op}\times\textbf{C}, \textbf{Set}]}\left( P, \Theta Q \right) \\
+        \text{ where }&(\Phi P)\brackc{S, T} = \int^{U, V, C} \operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}}\big( C\bullet\brackc{U, V}, \brackc{S, T} \big) \times P\brackc{U, V} \\
+    \end{aligned}
+    \end{equation*}
+    where $\operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}}\big( C\bullet\brackc{U, V}, \brackc{S, T} \big)=\operatorname{Hom}_{\textbf{C}}(S, C\times U)\times\operatorname{Hom}_\textbf{C}(C\times V, T)$.
+\end{proposition}
+\begin{proof}
+    The second to last isomorphism is the double application of co-Yoneda lemma and Fubini theorem. The last one is the natural transformation formula in ends with the continuity of hom-functor.
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{Hom}&{}_{[\textbf{C}^\text{op}\times\textbf{C}, \textbf{Set}]}\Bigg(\int^{U, V, C} \operatorname{Hom}_{\textbf{C}}(-, C\times U)\times\operatorname{Hom}_\textbf{C}(C\times V, =)\times P\brackc{U, V}, Q\brackc{-, =}\Bigg) \\  
+        &\cong \int_{U, V, C}\operatorname{Hom}_{[\textbf{C}^\text{op}\times\textbf{C}, \textbf{Set}]}\Bigg( \operatorname{Hom}_{\textbf{C}}(-, C\times U)\times P\brackc{U, V}\times\operatorname{Hom}_\textbf{C}(C\times V, =), Q\brackc{-, =}\Bigg) \\  
+        &\cong \int_{U, V, C}\int_{\brackc{A,B}:\textbf{C}^\text{op}\times\textbf{C}}\operatorname{Hom}_\textbf{Set}\Bigg( \operatorname{Hom}_{\textbf{C}}(A, C\times U)\times P\brackc{U, V}\times\operatorname{Hom}_\textbf{C}(C\times V, B), Q\brackc{A, B}\Bigg) \\  
+        &\cong \int_{U, V, C}\operatorname{Hom}_\textbf{Set}\Bigg(P\brackc{U, V}, Q\brackc{C\times U, C\times V}\Bigg) \cong \operatorname{Hom}_{[\textbf{C}^\text{op}\times\textbf{C}, \textbf{Set}]}\Bigg(P\brackc{-, =}, \int_{C}Q\brackc{C\times -, C\times =}\Bigg)  \\  
+    \end{aligned}
+    \end{equation*}
+\end{proof}
+
+\begin{remark}{(Equivalence between Algebra and Co-Algebra)}
+    Given result above, if we replace $Q$ with $P$, then the set of (monadic) algebras for $\Phi$ is isomorphism to set of coalgebra for $\Theta$. This means that the Eilenberg-Moore category for the monad $\Phi$ is the same as Tambara category.
+\end{remark}
+
+\begin{corollary}
+    The action of $\Phi$ on the representable functor is lens i.e:
+    \begin{equation*}
+        \big( \Phi\operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}}(\brackc{A, B}, -) \big)\brackc{S, T} \cong \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big) 
+    \end{equation*}
+\end{corollary}
+\begin{proof}
+    We have the following isomorphism (using the co-Yoneda lemma):
+    \begin{equation*}
+    \begin{aligned}
+        \big( \Phi\operatorname{Hom}&{}_{\textbf{C}^\text{op}\times\textbf{C}}(\brackc{A, B}, -) \big)\brackc{S, T}  \\
+        &= \int^{U, V, C} \operatorname{Hom}_{\textbf{C}}(S, C\times U)\times\operatorname{Hom}_\textbf{C}(C\times V, T) \times \operatorname{Hom}_{\textbf{C}^\text{op}\times\textbf{C}}(\brackc{A, B}, \brackc{U, V}) \\
+        &\cong \int^{U, V, C} \operatorname{Hom}_{\textbf{C}}(S, C\times U)\times\operatorname{Hom}_\textbf{C}(C\times V, T) \times \operatorname{Hom}_{\textbf{C}}(U, A)\times\operatorname{Hom}_{\textbf{C}}(B, V) \\
+        &\cong \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C\times A \big) \times \operatorname{Hom}_\textbf{Set}\big( C\times B, T \big) 
+    \end{aligned}
+    \end{equation*}
+\end{proof}
+
+\subsection{General Optics}
+
+\begin{remark}{(Monoidal Category Extension of Tambara Module)}
+    \label{remark:tambara-ext}
+    Given the Tambara module, instead of using a product $\times$, we can extends to use a tensor product $\otimes$ and unit object $I$. That is the structure map is:
+    \begin{equation*}
+        \alpha_{A, B, C} : P\brackc{A, B} \to P\brackc{C\otimes A, C\otimes B} 
+    \end{equation*}
+    And, the rest of the construction should be the same.
+\end{remark}
+
+\begin{definition}{\textbf{(Prism)}}
+    Given the tensor product to be a co-product, we have defined prism, where it can be defined (and simplified) as:
+    \begin{equation*}
+    \begin{aligned}
+        \mathcal{P}\brackc{S, T}\brackc{A, B} &= \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C + A \big) \times \operatorname{Hom}_\textbf{Set}\big( C+ B, T \big) \\
+        &\cong \int^{C:\textbf{C}} \operatorname{Hom}_\textbf{Set}\big( S, C + A \big) \times \operatorname{Hom}_\textbf{Set}\big( C, T \big) \times  \operatorname{Hom}_\textbf{Set}\big( B, T \big) \\
+        &\cong \operatorname{Hom}_\textbf{Set}\big( S, T + A \big) \times \operatorname{Hom}_\textbf{Set}\big( B, T \big)
+    \end{aligned}
+    \end{equation*}
+    Thus, we have the pair of functions $\texttt{match}:S\to T+A$ and $\texttt{build}:B\to T$. In the form of existential form (Ends), we have $S$ is either the focus $A$ or the residue $C$, and $T$ can be built from new focus $B$ or residual $C$
+    
+    \todo Adding Haskell logic here to illustrate.
+\end{definition}
+
+\begin{remark}{(Traversal)}
+    It is a type of optic that focuses on multiple foci at once. Consider the case of traversing the tree, as the traversal can gives you the list of the nodes and the replacement is possible. The issue is that we need to keep track of the length (requires the dependent type).
+\end{remark}
+
+
+

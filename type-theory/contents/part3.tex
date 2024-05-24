@@ -1,0 +1,332 @@
+\section{Universes}
+
+We can think of universe as the types that consists of types. 
+
+\begin{definition}{\textbf{(Universe Type Family)}}
+    Given element $X:\mathcal{U}$, $\mathcal{T}(X)$ is thought as the type of element $X$. The family  $\mathcal{T}$ is called a universal type family. 
+\end{definition}
+
+% \begin{remark}{(Intuition about Universes)}
+%     In reality, a universe consists of a type $\mathcal{U}$ equipped with a type family $\mathcal{T}$ over $\mathcal{U}$. Given  $X:\mathcal{U}$, we think of $X$ as an encoding of type $\mathcal{T}(X)$, where the type family $\mathcal{T}$ is called a universal type family. 
+% \end{remark}
+
+\begin{remark}{(Usefulness of Universe)}
+    We need universe because:
+    \begin{itemize}
+        \item Define a new type family over inductive type via inductive principles. For example, we can used to define ordering relation $\le$ and $<$ of $\mathbb{N}$:
+        \begin{itemize}
+            \item Allow us to define observation equality, denoted as $\operatorname{Eq}_\mathbb{N}$ on $\mathbb{N}$, which can be used to show that $0_\mathbb{N}\ne1_\mathbb{N}$. This helps us to think about identity type, as it can be used to characterized the identity type of $\mathbb{N}$ 
+            \item Characterizing identity type is one of the main themes in HoTT
+        \end{itemize}
+        \item Universe also allows us to define many types of types equipped with structure. For example type of groups, where we can have the operation satisfying the group law, with underlying type is a set.
+    \end{itemize}
+    Finally, universe got the useful feature as they are defined to be closed under all types constructors, as we will see below, in the definition. However, it is inconsistent to assume that universe is contained in itself (as we might have Russell's paradox).
+\end{remark}
+
+\begin{definition}{\textbf{(Universe/Universe Family)}}
+    A universe is a type $\mathcal{U}$ in the empty context, equipped with a type family $\mathcal{T}$ over $\mathcal{U}$ called a universal family:
+    \begin{itemize}
+        \item $\mathcal{U}$ is closed under $\Pi$, that is it is equipped with the function: $\check{\Pi}:\Pi_{(X:\mathcal{U})}\big( \mathcal{T}(X)\rightarrow \mathcal{U} \big)\rightarrow\mathcal{U}$ with the judgmental equality of: $\mathcal{T}\big(\check{\Pi}(X,Y)\big) \equiv \Pi_{(x:\mathcal{T}(X))}\mathcal{T}(Y(x))$
+        \item $\mathcal{U}$ is closed under $\Sigma$, that is it is equipped with the function: $\check{\Sigma}:\Pi_{(X:\mathcal{U})}\big( \mathcal{T}(X)\rightarrow \mathcal{U} \big)\rightarrow\mathcal{U}$ with the judgmental equality of: $\mathcal{T}\big(\check{\Sigma}(X,Y)\big)\equiv\Sigma_{(x:\mathcal{T}(X))}\mathcal{T}(Y(x))$
+        \item $\mathcal{U}$ is closed under identity type, that is it is equipped with the function: $\check{I}:\Pi_{(X:\mathcal{U})}\mathcal{T}(X)\rightarrow\big(\mathcal{T}(X)\rightarrow\mathcal{U}\big)$ with the judgmental equality of: $\mathcal{T}\big(\check{I}(X,x,y)\big)\equiv(x=y)$
+        \item $\mathcal{U}$ is closed under co-products, that is it is equipped with function: $\check{+} : \mathcal{U}\rightarrow\big(\mathcal{U}\rightarrow\mathcal{U}\big)$ with the judgmental equality of: $\mathcal{T}(X\check{+}Y)\equiv\mathcal{T}(X)+\mathcal{T}(Y)$ 
+        \item $\mathcal{U}$ contains elements $\check{\emptyset},\check{1},\check{\mathbb{N}}:\mathcal{U}$ with the judgmental equality of:
+        \begin{equation*}
+            \mathcal{T}(\check{\emptyset})\equiv \emptyset \qquad \mathcal{T}(\check{1}) \equiv \boldsymbol{1} \qquad \mathcal{T}(\check{\mathbb{N}}) \equiv \mathbb{N}
+        \end{equation*}
+    \end{itemize}
+\end{definition}
+
+\begin{definition}{\textbf{(Contains)}}
+    Given a type $A$ and universe $\mathcal{U}$, we say that $A$ is a type in $\mathcal{U}$ or $\mathcal{U}$ contains $A$ if $\mathcal{U}$ comes equipped with element $\check{A}:\mathcal{U}$, in context for which:
+    \begin{equation*}
+        \Gamma\vdash \mathcal{T}(\check{A}) \equiv A \type
+    \end{equation*}
+    holds. If $A$ is a type in $\mathcal{U}$, we usually write $A$ for $\check{A}$ and $\mathcal{T}(\check{A})$. 
+\end{definition}
+
+Although we can't have universe within itself, nor getting by only a single universe, it is convenient if every type, including any universe, is in some universe. That is, we will assume that there are sufficiently many universes.
+
+\begin{postulate}
+    For every finite list of types in context as we may have:
+    \begin{equation*}
+        \Gamma_1\vdash A_1\type\quad \cdots\quad \Gamma_n\vdash A_n\type
+    \end{equation*}
+    There is a universe that contains each $A_i$ that is $\mathcal{U}$ equipped with $\Gamma_i \vdash \check{A}_i:\mathcal{U}$ for which the judgment of $\Gamma_i\vdash\mathcal{T}(\check{A}_i)\equiv  A \type$ holds.
+\end{postulate}
+
+With this, we will rarely need to work with more than one universe at the same time. We can obtain many specific universe as:
+
+\begin{definition}{\textbf{(Base Universe)}}
+    The base universe $\mathcal{U}_0$ is the universe that we obtain using postulate above with the empty list of type in context. 
+\end{definition}
+
+That is it is closed under all the ways of forming types, but it isn't specified to contain any future types.
+
+\begin{definition}{\textbf{(Successor Universe)}}
+    The successor universe of a universe $\mathcal{U}$ is the universe obtained by a postulate above with the finite list of.
+    \begin{equation*}
+    \begin{aligned}
+        &\vdash \mathcal{U}\type \\
+        X:\mathcal{U} &\vdash \mathcal{T}(X)\type
+    \end{aligned}
+    \end{equation*}
+    It is usually denoted as $\mathcal{U}^+$.
+\end{definition}
+
+\begin{remark}{(What successor universe contains):}
+    The successor universes $\mathcal{U}^+$, therefore, contain type $\mathcal{U}$ as well as any types in $\mathcal{U}$ in the sense that:
+    \begin{equation*}
+    \begin{aligned} 
+        \begin{aligned}[t] 
+            &\vdash\check{\mathcal{U}}:\mathcal{U}^+ \\ 
+            X:\mathcal{U}&\vdash\check{\mathcal{T}}(X):\mathcal{U}^+ \\ 
+        \end{aligned} \qquad \qquad 
+        \begin{aligned}[t] 
+            &\vdash\mathcal{T}^+(\check{\mathcal{U}}) \equiv \mathcal{U}\type \\ 
+            X:\mathcal{U}&\vdash\mathcal{T}^+(\check{\mathcal{T}}(X)) \equiv \mathcal{T}(X) \type 
+        \end{aligned} 
+    \end{aligned}
+    \end{equation*}
+    We also get the function $i:\mathcal{U}\rightarrow\mathcal{U}^+$ that includes the type in $\mathcal{U}$ into $\mathcal{U}^+$ and it is defined as $i:=\lambda X.\check{\mathcal{T}}(X)$, and with this successor universe, we can create an infinite tower: $\mathcal{U},\mathcal{U}^+,\mathcal{U}^{++},\dots$ of universes.
+\end{remark}
+
+The tower of universe need not to be exhaustive i.e every types is contained in a universe in this tower. 
+
+\begin{definition}{\textbf{(Join)}}
+    The join of 2 universes $\mathcal{U}$ and $\mathcal{V}$ is the universes $\mathcal{U}\sqcup\mathcal{V}$ obtained using postulate above, where we have:
+    \begin{equation*}
+    \begin{aligned}
+        X : \mathcal{U}&\vdash\mathcal{T}_\mathcal{U}(X)\type \\ 
+        Y : \mathcal{V}&\vdash\mathcal{T}_\mathcal{V}(Y)\type \\
+    \end{aligned}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(Inclusion Function of Join Universe)}
+    Since the join $\mathcal{U}\sqcup\mathcal{V}$ contains all the types in $\mathcal{U}$ and $\mathcal{V}$, there is a maps of $i:\mathcal{U}\rightarrow\mathcal{U}\sqcup\mathcal{V}$ and $j:\mathcal{V}\rightarrow\mathcal{U}\sqcup\mathcal{V}$. Note that we don't postulate any relations between universes and in general, it is the case that $(\mathcal{U}\sqcup\mathcal{V})\sqcup\mathcal{W}$ and $\mathcal{U}\sqcup(\mathcal{V}\sqcup\mathcal{W})$ will be unrelated. 
+\end{remark}
+
+\subsection{Observational Equality of the Natural Numbers}
+
+\begin{remark}{(Intuition Behind Observational Equality)}
+    Via the notion of universe, we can define many relation on natural number, where we will start with observational equality of $\mathbb{N}$. To proof that $m$ and $n$ are observational equal, we can look of how they are constructed.
+\end{remark}
+
+\begin{definition}{\textbf{(Observational Equality)}}
+    The observational equality of $\mathbb{N}$ is a binary relation with the type of $\obseq:\mathbb{N}\rightarrow\big( \mathbb{N}\rightarrow\mathcal{U}_0 \big)$ such that:
+    \begin{equation*}
+    \begin{aligned}
+        \begin{aligned} 
+            \obseq (0_\mathbb{N}, 0_\mathbb{N}) &\equiv  \boldsymbol{1} \\ 
+            \obseq (0_\mathbb{N}, \succnat (n)) &\equiv  \emptyset \\ 
+        \end{aligned} \qquad\qquad 
+        \begin{aligned} 
+            \obseq (\succnat (n), 0_\mathbb{N}) &\equiv  \emptyset \\ 
+            \obseq (\succnat (n), \succnat (m)) &\equiv  \obseq (n,m) \\ 
+        \end{aligned} 
+    \end{aligned}
+    \end{equation*}
+    \textbf{(Construction):} We define $\obseq $ by double induction on $\mathbb{N}$, that is it is suffices to provide:
+    \begin{equation*}
+    \begin{aligned}
+        E_0 &: \mathbb{N}\rightarrow\mathcal{U}_0 \\
+        E_S &: \mathbb{N}\rightarrow\Big( (\mathbb{N}\rightarrow\mathcal{U}_0)\rightarrow(\mathbb{N}\rightarrow\mathcal{U}_0) \Big) \\
+    \end{aligned}
+    \end{equation*}
+    Both function can be defined inductively as, furthermore, the observational equality itself can be constructed based on these two types (see the right most side).
+    \begin{equation*}
+    \begin{aligned}
+        E_0(0_\mathbb{N})&\equiv\boldsymbol{1} \\
+        E_0(\succnat(n))&\equiv\emptyset
+    \end{aligned}\qquad \quad
+    \begin{aligned}
+        E_S(n,X,0_\mathbb{N}) &\equiv\emptyset \\
+        E_S(n,X,\succnat(m))&\equiv X(m)
+    \end{aligned}\qquad \quad
+    \begin{aligned}
+    \begin{aligned}
+        \obseq  (0_\mathbb{N},m)&\equiv  E_0(m) \\
+        \obseq  (\succnat(n),m) &\equiv  E_S(n,\obseq (n),m)
+    \end{aligned}
+    \end{aligned}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(On the need of Universe)}
+    We can see here that by having a universe of types, we can ``bootstrap'' the type $\operatorname{Eq}(n)$ as we have:
+    \begin{equation*}
+        \obseq (\succnat(n),\succnat(m))\equiv  E_S(n,\obseq  (n),\succnat(m))\equiv \obseq (n)(m)
+    \end{equation*}
+\end{remark}
+
+The observational equality of the natural number is important because it can be used to prove equalities and negations of equalities (see proposition below). Consider:
+
+\begin{lemma}
+    Observational equality of $\mathbb{N}$ is a reflexive relation:
+    \begin{equation*}
+        \operatorname{refl-Eq}_\mathbb{N}:\Pi_{(n:\mathbb{N})}\obseq (n,n)
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    The function $\operatorname{refl-Eq}_\mathbb{N}$ is defined inductively on $n$ as follows:
+    \begin{equation*}
+        \operatorname{refl-Eq}_\mathbb{N}(0_\mathbb{N})\equiv*\qquad \quad \operatorname{refl-Eq}_\mathbb{N}(\succnat(n))\equiv\operatorname{refl-Eq}_\mathbb{N}(n)
+    \end{equation*}
+\end{proof}
+\begin{proof}{(Alternative By Me)}
+    That is we need to show that:
+    \begin{equation*}
+        \frac{\Gamma, n : \mathbb{N} \vdash * : \boldsymbol{1}\equiv\obseq(n,n)}{\Gamma\vdash\operatorname{refl-Eq}_\mathbb{N}\equiv\lambda n.*:\Pi_{(n:\mathbb{N})}\obseq (n,n)} \ \lambda
+    \end{equation*}
+    We will claim that $\obseq(n, n)\equiv\boldsymbol{1}$. This is done by induction on $n$. That is: Base Case: $\obseq(0_\mathbb{N}, 0_\mathbb{N})\equiv\boldsymbol{1}$ per definition. On the other hand, for step case, with IH to be $\obseq(n, n)\equiv\boldsymbol{1}$, then we can show that $\obseq(\succnat(n), \succnat(n))\equiv\boldsymbol{1}$ where:
+    \begin{equation*}
+        \obseq(\succnat(n), \succnat(n))\equiv\obseq(n, n)\equiv\boldsymbol{1}
+    \end{equation*}
+\end{proof}
+
+\begin{proposition}
+    For any 2 natural number $m$ and $n$, we have that:
+    \begin{equation*}
+        (m=n)\leftrightarrow\obseq(m,n)
+    \end{equation*}
+\end{proposition}
+\begin{proof}
+
+    We can define $f\equiv\lambda x.*:(m=m)\to\boldsymbol{1}$, where we have $f(\operatorname{refl}_m)=*$. On the other hand, the function $\obseq(m,n)\to(m=n)$ can be defined by induction on $m$ and $n$, where we have the following cases:
+    \begin{itemize}
+        \item Base Case: $\obseq(0_\mathbb{N}, 0_\mathbb{N})\equiv\boldsymbol{1}$, then we have $\boldsymbol{1}\to\operatorname{refl}_{0_\mathbb{N}}$. Furthermore, $\obseq(0_\mathbb{N},\succnat(n))\equiv\emptyset$, then we have the $\emptyset\to(m=n)$, in which by induction principle, we have a term. We can define the terms in similar manners if the second argument is $0_\mathbb{N}$.
+        \item Step case, the IH is that we assume to have $f:\obseq(m,n)\to(m=n)$, in which, we want to define $f:\obseq(\succnat(m),\succnat(n))\to(\succnat(m)=\succnat(n))$, this can be done as follows:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9ic2VxKFxcc3VjY25hdChtKSxcXHN1Y2NuYXQobikpIl0sWzAsMSwiXFxvYnNlcShtLG4pIl0sWzEsMSwibT1uIl0sWzEsMCwiXFxzdWNjbmF0KG0pPVxcc3VjY25hdChuKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le2lkfSIsMl0sWzEsMiwiZiIsMl0sWzIsMywiXFxvcGVyYXRvcm5hbWV7YXB9X3tcXHN1Y2NuYXR9IiwyXSxbMCwzLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+        \begin{tikzcd}
+            {\obseq(\succnat(m),\succnat(n))} & {\succnat(m)=\succnat(n)} \\
+            {\obseq(m,n)} & {m=n}
+            \arrow[dashed, from=1-1, to=1-2]
+            \arrow["{\operatorname{id}}"', from=1-1, to=2-1]
+            \arrow["f"', from=2-1, to=2-2]
+            \arrow["{\operatorname{ap}_{\succnat}}"', from=2-2, to=1-2]
+        \end{tikzcd}
+        \end{equation*}
+        The map on the left is identity as we have the judgmental equality
+    \end{itemize}
+\end{proof}
+
+Using the observational equality of $\mathbb{N}$, we can prove Peano's seventh and eighths axioms, which is stated and proved in the next 2 theorems.
+
+\begin{theorem}
+    For any two $m,n\in \mathbb{N}$, we have:
+    \begin{equation*}
+        (m=n)\leftrightarrow(\succnat(m)=\succnat(n))
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    Starting with the function $\operatorname{ap}_{\succnat}:(m=n)\to(\succnat(m)=\succnat(n))$. On the other hand, we want to construct the function $(\succnat(m)=\succnat(n))\to(m=n)$. Note that we can define it as:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCIoXFxzdWNjbmF0KG0pPVxcc3VjY25hdChuKSkiXSxbMCwxLCJcXG9ic2VxKFxcc3VjY25hdChtKSxcXHN1Y2NuYXQobikpIl0sWzEsMSwiXFxvYnNlcShtLG4pIl0sWzEsMCwiKG09bikiXSxbMCwxXSxbMSwyLCJcXG9wZXJhdG9ybmFtZXtpZH0iLDJdLFsyLDNdLFswLDMsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        {(\succnat(m)=\succnat(n))} & {(m=n)} \\
+        {\obseq(\succnat(m),\succnat(n))} & {\obseq(m,n)}
+        \arrow[dashed, from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow["{\operatorname{id}}"', from=2-1, to=2-2]
+        \arrow[from=2-2, to=1-2]
+    \end{tikzcd}
+    \end{equation*}
+    where the left and right arrows comes from the proposition above
+\end{proof}
+
+\begin{theorem}
+    For any $n\in\mathbb{N}$, we have $0_\mathbb{N}\ne\succnat(n)$
+\end{theorem}
+\begin{proof}
+    Please note that, if $0_\mathbb{N}=\succnat(n)$, then by proposition above, there is a function $(0_\mathbb{N}=\succnat(n))\to\obseq(0_\mathbb{N}=\succnat(n))\equiv\emptyset$. This implies that $0_\mathbb{N}=\succnat(n)\equiv\emptyset$, therefore  $0_\mathbb{N}\ne\succnat(n)$, as needed.
+\end{proof}
+
+\begin{proposition}
+    Given $m,n,k\in \mathbb{N}$ where: $(m=n)\leftrightarrow(m+k=n+k)$. That is, adding $k$ is an injective function.
+\end{proposition}
+\begin{proof}
+    Starting with the function $(m=n)\to(m+k=n+k)$, then we can consider induction on identity type, that is $(m=m)\to(m+k=m+k)$ to define this function, we will perform an induction on $m$:
+    \begin{itemize}
+        \item Base Case, We want to show that $(0=0)\to(0+k=0+k)\equiv(k=k)$, again this can be proven by induction on $k$ as we have:
+        \begin{itemize}
+            \item Base Case: $\operatorname{id}_{\operatorname{refl}_0}:(0=0)\to(0=0)$
+            \item Step Case: Given $p:(0=0)\to(k=k)$, then $\operatorname{ap}_{\succnat}\circ p:(0=0)\to(\succnat(k)=\succnat(k))$, as needed.
+        \end{itemize}
+        \item Step Case, we assume that $p:(m=m)\to(m+k=m+k)$, then we want to show that $(\succnat(m)=\succnat(m))\to(\succnat(m)+k=\succnat(m)+k)$, in which, we have that:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNyxbMCwwLCIoXFxzdWNjbmF0KG0pPVxcc3VjY25hdChtKSkiXSxbMCwxLCJcXG9ic2VxKFxcc3VjY25hdChtKSwgXFxzdWNjbmF0KG0pKSJdLFswLDIsIlxcb2JzZXEobSxtKSJdLFsxLDIsIihtPW0pIl0sWzIsMiwiKG0raz1tK2spIl0sWzIsMSwiKFxcc3VjY25hdChtK2spPVxcc3VjY25hdChtK2spKSJdLFsyLDAsIihcXHN1Y2NuYXQobSkraz1cXHN1Y2NuYXQobSkraykiXSxbMCwxXSxbMSwyLCJcXG9wZXJhdG9ybmFtZXtpZH0iLDJdLFsyLDNdLFszLDQsInAiLDJdLFs0LDUsIlxcb3BlcmF0b3JuYW1le2FwfV97XFxzdWNjbmF0fSIsMl0sWzUsNiwiXFxvcGVyYXRvcm5hbWV7aWR9IiwyXSxbMCw2LCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+        \begin{tikzcd}
+            {(\succnat(m)=\succnat(m))} && {(\succnat(m)+k=\succnat(m)+k)} \\
+            {\obseq(\succnat(m), \succnat(m))} && {(\succnat(m+k)=\succnat(m+k))} \\
+            {\obseq(m,m)} & {(m=m)} & {(m+k=m+k)}
+            \arrow[dashed, from=1-1, to=1-3]
+            \arrow[from=1-1, to=2-1]
+            \arrow["{\operatorname{id}}"', from=2-1, to=3-1]
+            \arrow["{\operatorname{id}}"', from=2-3, to=1-3]
+            \arrow[from=3-1, to=3-2]
+            \arrow["p"', from=3-2, to=3-3]
+            \arrow["{\operatorname{ap}_{\succnat}}"', from=3-3, to=2-3]
+        \end{tikzcd}
+        \end{equation*}
+    \end{itemize}
+\end{proof}
+
+\begin{proposition}
+    Given $m,n\in \mathbb{N}$, then $(m+n=0)\leftrightarrow(m=0)\times(n=0)$
+\end{proposition}
+\begin{proof}
+    Let's start with $(m+n=0)\to(m=0)\times(n=0)$, note that if we can define $g_1:(m+n=0)\to(m=0)$ and $g_2:(m+n=0)\to(n=0)$, then we can define (that is using a pair function):
+    \begin{equation*}
+        \lambda.x(g_1(x), g_2(x)):(m+n=0)\to(m=0)\times(n=0)
+    \end{equation*}
+    as needed. We will provide the construction just for the $g_1$ case because the other is done similarly. We will perform induction on $n$:
+    \begin{itemize}
+        \item Base Case: We have that $(m+0=0)\to(m=0)$, suppose we are given a term $a:(m+0=0)$, then we can concatenate with $\operatorname{inv}(\operatorname{right-unit-law-add}_\mathbb{N}(m)):m=m+0$ to get $m=0$. That is the function of 
+        \begin{equation*}
+            \lambda x.\operatorname{right-unit-law-add}_\mathbb{N}(m)\bullet x:(m+0=0)\to(m=0)
+        \end{equation*}
+        \item Step Case: Given the IH of $p:(m+n=0)\to(m=0)$, we want to construct $(m+\succnat(n)=0)\to(m=0)$, which is created by the following composition:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsMyxbMCwwLCIobStcXHN1Y2NuYXQobik9MClcXGVxdWl2KFxcc3VjY25hdChtK24pPTApIl0sWzEsMSwiKG09MCkiXSxbMCwxLCJcXG9idmVxKFxcc3VjY25hdChtK24pLDApXFxlcXVpdlxcZW1wdHlzZXQiXSxbMCwyXSxbMiwxLCJcXG9wZXJhdG9ybmFtZXtleC1mYWxzb30iLDJdXQ==
+        \begin{tikzcd}
+            {(m+\succnat(n)=0)\equiv(\succnat(m+n)=0)} \\
+            {\obseq(\succnat(m+n),0)\equiv\emptyset} & {(m=0)}
+            \arrow[from=1-1, to=2-1]
+            \arrow["{\operatorname{ex-falso}}"', from=2-1, to=2-2]
+        \end{tikzcd}
+        \end{equation*}
+    \end{itemize}
+    On the other hand, we want to proof that $(m=0)\times(n=0)\to(m+n=0)$. First, we can define the type $f:(m=0)\to(m+n=0+n)$ via induction:
+    \begin{itemize}
+        \item Base Case: Starting with the helper function $\operatorname{add-zero}=\lambda x.x+0$, with the action of path we can define the term $\operatorname{ap}_{\operatorname{add-zero}}:(m=0)\to(m+0=0+0)$.
+        \item Step Case: we will assume that that is a type $p:(m=0)\to(m+n=0+n)$, then we want to find a term for the type $(m=0)\to(m+\succnat(n)=0+\succnat(n))$. Then, we have:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCIobT0wKSJdLFswLDEsIihtK249MCtuKSJdLFsyLDEsIihcXHN1Y2NuYXQobStuKT1cXHN1Y2NuYXQoMCtuKSkiXSxbMiwwLCIobStcXHN1Y2NuYXQobik9MCtcXHN1Y2NuYXQobikpIl0sWzAsMSwicCIsMl0sWzEsMiwiXFxvcGVyYXRvcm5hbWV7YXB9X3tcXHN1Y2NuYXR9IiwyXSxbMiwzXSxbMCwzLCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+        \begin{tikzcd}
+            {(m=0)} && {(m+\succnat(n)=0+\succnat(n))} \\
+            {(m+n=0+n)} && {(\succnat(m+n)=\succnat(0+n))}
+            \arrow[dashed, from=1-1, to=1-3]
+            \arrow["p"', from=1-1, to=2-1]
+            \arrow["{\operatorname{ap}_{\succnat}}"', from=2-1, to=2-3]
+            \arrow[from=2-3, to=1-3]
+        \end{tikzcd}
+        \end{equation*}
+        The RHS arrow is just for the concatenation of various equality.
+    \end{itemize}
+    Then we can construct the function as follows: given $a:(m=0)$ and $b:(n=0)$, and so 
+    \begin{equation*}
+        \lambda (a,b). f(a)\bullet \operatorname{left-unit-law-add}_\mathbb{N}(n) \bullet b: (m=0)\times(n=0)\to(m+n=0)
+    \end{equation*}
+    where note that $f(a):(m+n=0+n)$ and with the application of concatenation of identity types, as follows (note that $l$ is the left unit law that we have proved):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJtK24iXSxbMSwwLCIwK24iXSxbMiwwLCJuIl0sWzMsMCwiMCJdLFsyLDMsImIiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFswLDEsImYoYSkiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxLDIsImwiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+    \begin{tikzcd}
+        {m+n} & {0+n} & n & 0
+        \arrow["{f(a)}", Rightarrow, no head, from=1-1, to=1-2]
+        \arrow["l", Rightarrow, no head, from=1-2, to=1-3]
+        \arrow["b", Rightarrow, no head, from=1-3, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+\end{proof}

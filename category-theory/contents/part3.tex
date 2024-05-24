@@ -1,0 +1,837 @@
+\section{More Category Theory/Functors}
+
+Now after we get a hang of the basic concepts of category theory via concrete examples, let's now consider a more abstract notions. Let's start with 2 ways on how we create the new kind of category from the old one:
+
+\subsection{New from Old Category}
+
+\begin{definition}{\textbf{(Opposite Category)}}
+    Given a category $\textbf{C}$, we can define the opposite category $\textbf{C}^\text{op}$ with the following components:
+    \begin{itemize}
+        \item \textit{Object:} We keep all the objects of $\textbf{C}^\text{op}$ to be the same as $\textbf{C}$
+        \item \textit{Morphism:} Given the morphism $f:X\rightarrow Y$ of the category $\textbf{C}$, there is an arrow $f^\text{op}:Y\rightarrow X$ for the category $\textbf{C}^\text{op}$
+        \item \textit{Identity Morphism:} This stays the same. 
+        \item \textit{Composition of Morphism:} Given the morphism $f:X\rightarrow Y$ and $g:Y\rightarrow Z$ of the category $\textbf{C}$, we thus have the morphism $f^\text{op}:Y\rightarrow X$ and $g^\text{op}:Z\rightarrow Y$ in $\textbf{C}^\text{op}$ with the following composition: $$\big(g\circ f\big)^\text{op} = f^\text{op}\circ g^\text{op}$$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}{\textbf{(Product Category)}}
+    Given a category $\textbf{C}$ and $\textbf{D}$, we can define the product category $\textbf{C}\times\textbf{D}$ with the following components:
+    \begin{itemize}
+        \item \textit{Object:}The product category has objects being a pair $(X, X')$ where $X$ is an object of $\textbf{C}$ and $X'$ is an object of $\textbf{D}$
+        \item \textit{Morphism:} Given morphism $f:A\rightarrow B$ of category $\textbf{C}$ and $f':X'\rightarrow Y'$ of category $\textbf{D}$, we can define the morphism to be a pair: $(f,f'):(X, X')\rightarrow (Y, Y')$, which applied element wise.
+        \item \textit{Identity Morphism:} We have for object $(X,X')$, the identity morphism is defined as $\operatorname{id}_{(X,X')} = (\operatorname{id}_X,\operatorname{id}_{X'})$
+        \item \textit{Composition of Morphism:} Given the morphism $(f,f'):(X,X')\rightarrow(Y,Y')$ and $(g,g'):(Y,Y')\rightarrow(Z,Z')$, their composition is defined as: $$(f,f')\circ(g,g') = (f\circ f', g\circ g')$$
+    \end{itemize}
+\end{definition}
+
+Let's consider some properties of morphism within the opposite category:
+
+\begin{proposition}
+    Given a category $\textbf{C}$ the morphism $f,g:X\rightarrow Y$ are equal iff its opposite in category $\textbf{C}^\text{op}$ are equal too i.e $f=g$ iff $f^\text{op}=g^\text{op}$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    $(\implies):$ This is obvious from the definition of the opposite morphism, as we can swap the signature of both functions $f$ and $g$. $(\impliedby):$ We can consider the following equality: $f = (f^\text{op})^\text{op} = (g^\text{op})^\text{op} = g$.
+\end{proof}
+\end{dem}
+
+\begin{corollary}
+    A diagram in $\textbf{C}$ commutes iff the dual diagram in $\textbf{C}^\text{op}$ commutes. Given a category $\textbf{C}$, the morphism $f:X\rightarrow Y$ is invertible iff $f^{\text{op}}:Y\rightarrow X$ of the category $\textbf{C}^\text{op}$ is invertible i.e if $X$ and $Y$ are isomorphic in $\textbf{C}$, then they are isomorphic to $\textbf{C}^\text{op}$
+\end{corollary}
+
+\begin{dem}
+\begin{proof}
+    \textbf{(Part 1):} Let's denote the composed function from the first path to be $f_1:X\rightarrow Y$ and the composed function from second path to be $f_2:X\rightarrow Y$. Then since the diagram commute, we have $f_1=f_2$. But by the proposition above, we have that $f_1^\text{op}=f_2^\text{op}$ that is the dual diagram also commutes. 
+    
+    The other direction follows from the fact that $f_1^\text{op}=f_2^\text{op}$ implies $f_1=f_2$
+
+    \textbf{(Part 2):} If $f:X\rightarrow Y$ is invertible, there is $f^{-1}:Y\rightarrow X$ such that: $f\circ f^{-1} = \operatorname{id}_Y$ and $f^{-1}\circ f = \operatorname{id}_X$. We can find the composition of the opposite morphism, as follows:
+
+    \begin{equation*}
+    \begin{aligned}
+        &(f\circ f^{-1})^\text{op} = (f^{-1})^\text{op}\circ f^\text{op} = \operatorname{id}_Y^\text{op} \\
+        &(f^{-1}\circ f)^\text{op} = f^\text{op}\circ (f^{-1})^\text{op} = \operatorname{id}_X^\text{op}
+    \end{aligned}
+    \end{equation*}
+    thus, we have proven that $f^\text{op}$ is invertible. The other direction follows from the similar proof. 
+\end{proof}
+\end{dem}
+
+\subsection{Types of Functions}
+
+Since we already have talked about isomorphism, we have the following properties of it:
+
+\begin{proposition}
+    Given the category $\textbf{C}$ with some objects $X$ and $Y$. The inverse of isomorphism $f:X\rightarrow Y$ is unique i.e show that if $g:Y\rightarrow X$ and $g':Y\rightarrow X$ are the inverses, then $g=g'$. The composite of isomorphism is isomorphism.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    Let's provide the proof for each points. We have that:
+    \begin{equation*}
+        g = g\circ\operatorname{id}_Y=g\circ(f\circ g') = (g\circ f)\circ g' = \operatorname{id}_X\circ g'=g'
+    \end{equation*}
+    For the second statement, given the function $f_1:X\rightarrow Y$ and $f_2:Y\rightarrow Z$ with their inverses $f_1^{-1}:Y\rightarrow X$ and $f_2^{-1}:Z\rightarrow Y$, respectively. We consider the following equations:
+    \begin{equation*}
+        \begin{aligned}
+        (f_2\circ f_1)\circ(f_1^{-1}\circ f^{-1}_2) &= f_2\circ(f_1\circ f_1^{-1})\circ f_2^{-1} \\
+        &= f_2\circ\operatorname{id}_Y\circ f_2^{-1} = f_2\circ f_2^{-1}=\operatorname{id}_Z
+        \end{aligned}
+    \end{equation*}
+    The other direction is similar, thus $(f^{-1}_1\circ f^{-1}_2)=(f_2\circ f_1)^{-1}$.
+\end{proof}
+\end{dem}
+
+\begin{definition}{\textbf{(Monomorphism)}}
+    Given a category $\textbf{C}$, the morphism $m:X\rightarrow Y$ is called monomorphism if for any object $A$, with a pair of morphism $f,g:A\rightarrow X$, the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJBIl0sWzEsMCwiWCJdLFsyLDAsIlkiXSxbMSwyLCJtIl0sWzAsMSwiZiIsMCx7Im9mZnNldCI6LTF9XSxbMCwxLCJnIiwyLHsib2Zmc2V0IjoxfV1d
+    \begin{tikzcd}
+        A & X & Y
+        \arrow["m", from=1-2, to=1-3]
+        \arrow["f", shift left, from=1-1, to=1-2]
+        \arrow["g"', shift right, from=1-1, to=1-2]
+    \end{tikzcd}
+    \end{equation*}
+    and that $m\circ f = m\circ g$ implies $f=g$.
+\end{definition}
+
+\begin{proposition}
+    Every isomorphism of $\textbf{C}$ is monomorphism of $\textbf{C}$
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    Given the isomorphism $m:X\rightarrow Y$, and given any morphism $f,g:A\rightarrow X$, then we have:
+    $$
+    \begin{aligned}
+    &m\circ f = m\circ g \\
+    \implies&m^{-1}\circ m\circ f = m^{-1}\circ m\circ g \\
+    \implies&\operatorname{id}_X\circ f = \operatorname{id}_X\circ g \implies f = g \\
+    \end{aligned}
+    $$
+\end{proof}
+\end{dem}
+
+\begin{definition}{\textbf{(Left-Inverse/Retraction/Split-Monomorphism)}}
+    Given a category $\textbf{C}$, the morphism $m:X\rightarrow Y$, the left-inverse or retraction of $m$ is a morphism $r:Y\rightarrow X$ such that $r\circ m=\operatorname{id}_X$ i.e the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJYIl0sWzEsMCwiWSJdLFsxLDEsIlgiXSxbMSwyLCJyIl0sWzAsMSwibSJdLFswLDIsIlxcdGV4dHtpZH1fWCIsMl1d
+    \begin{tikzcd}
+        X & Y \\
+        & X
+        \arrow["r", from=1-2, to=2-2]
+        \arrow["m", from=1-1, to=1-2]
+        \arrow["{\text{id}_X}"', from=1-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    If $m$ has a left-inverse, then we call it split monomorphism and $r$ is called its splitting.
+\end{definition}
+
+\begin{proposition}
+    Every split monomorphism of $\textbf{C}$ is a monomorphism of $\textbf{C}$
+\end{proposition}
+
+\begin{proposition}
+    Every isomorphism of $\textbf{C}$ is a split monomorphism of $\textbf{C}$
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:mono-iff-injective}
+    Given function $f:A\to B$, it is mono iff it is injective in $\textbf{Set}$
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    $(\implies):$ We can have the function $a:1\to A$ and $b:1\to A$ picking the element $a,b\in A$, then we have that $f(a)=f(b)$ implies that $a=b$ by it being mono, so $f$ is also injective.
+
+    $(\impliedby):$ We note that every injective function has a left inverse i.e $f^{-1}\circ f=\operatorname{id}_A$, which can be constructed as follows:
+    \begin{equation*}
+        f^{-1}(b) = \begin{cases}
+            a \text{ where } f(a) = b & \text{ for } b \in \operatorname{im}(f) \\
+            1 & \text{ otherwise }
+        \end{cases}
+    \end{equation*}
+    where $1$ is an arbitrary element of $A$. Note that the first condition is well-defined as if there is another $a'$ such that $f(a')=b$ then $f(a)=f(a')$ or $a=a'$. Thus, $f$ is in fact \textit{split} monomorphism, thus a monomorphism.
+\end{proof}
+\end{dem}
+
+As we have seen, if the monomorphism is a generalization of injectivity, then the epimorphism is the generalization of the surjectivity. We have the following notion.
+
+\begin{definition}{\textbf{(Epimorphism)}}
+    Given a category $\textbf{C}$, the morphism $e:X\rightarrow Y$ is called epimorphism if for any object $A$, with a pair of morphism $f,g:Y\rightarrow A$, the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJYIl0sWzEsMCwiWSJdLFsyLDAsIkEiXSxbMCwxLCJlIl0sWzEsMiwiZiIsMCx7Im9mZnNldCI6LTF9XSxbMSwyLCJnIiwyLHsib2Zmc2V0IjoxfV1d
+    \begin{tikzcd}
+        X & Y & A
+        \arrow["e", from=1-1, to=1-2]
+        \arrow["f", shift left, from=1-2, to=1-3]
+        \arrow["g"', shift right, from=1-2, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    and that $f\circ e = g\circ e$ implies $f=g$.
+\end{definition}
+
+\begin{proposition}
+    We can show that $f:X\rightarrow Y$ is epi in $\textbf{C}$ iff $f^\text{op}:Y\rightarrow X$ is mono in $\textbf{C}^\text{op}$
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    $(\implies):$ Give any morphism $m,n:Y\to A$ since $f$ is epi, we have that if $m\circ f = n\circ f$ then $m=n$. By proposition above, we also have that: $(m\circ f)^\text{op}=(n\circ f)^\text{op}$ or $f^\text{op}\circ m^\text{op}=f^{\text{op}}\circ n^\text{op}$ then $m^\text{op}=n^{op}$ meaning that $f^\text{op}$ is mono. The other direction is proven in similar manners.
+\end{proof}
+\end{dem}
+
+\begin{proposition}
+    Every isomorphism is an epimorphism.
+\end{proposition}
+
+\begin{definition}{\textbf{(Right-Inverse/Section/Split-Epimorphism)}}
+    Given a category $\textbf{C}$, the morphism $e:X\rightarrow Y$, the right-inverse or section of $m$ is a morphism $s:Y\rightarrow X$ such that $e\circ s=\operatorname{id}_Y$ i.e the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJZIl0sWzEsMCwiWCJdLFsxLDEsIlkiXSxbMCwxLCJzIl0sWzEsMiwiZSJdLFswLDIsIlxcdGV4dHtpZH1fWSIsMl1d
+    \begin{tikzcd}
+        Y & X \\
+        & Y
+        \arrow["s", from=1-1, to=1-2]
+        \arrow["e", from=1-2, to=2-2]
+        \arrow["{\text{id}_Y}"', from=1-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    If $e$ has a right-inverse, then we call it split epimorphism and $s$ is called its splitting.
+\end{definition}
+
+And we have the following dual statements (can be proved using the statement in the opposite category) to monomorphism:
+
+\begin{proposition}
+    Every split epimorphism of $\textbf{C}$ is a epimorphism of $\textbf{C}$
+\end{proposition}
+
+\begin{proposition}
+    Every isomorphism of $\textbf{C}$ is a split epimorphism of $\textbf{C}$
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:epi-iff-surjective}
+    Given a function $f:A\to B$, it is epi iff it is surjective in $\textbf{Set}$
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    $(\impliedby)$ Given any $a\in A$, by definition of surjective, we have that if $f(e(a))=g(e(a))$, for any $a\in A$, would implies that $f(b)=g(b)$ for all $b\in B$. That is because $e(A)=B$. 
+
+    $(\implies)$ We will proof that if $e$ isn't surjective then $e$ isn't epi. That is there exists $b'\in B$ such that for all $a\in A$, $e(a)\ne b'$. It is easy to find the function $f$ and $g$ such that $f(b')\ne g(b')$ but $f(b)=g(b)$ for $b=e(a)$ for any $a\in A$. Then, $f(e(a))=g(e(a))$ for all $A$ but it doesn't implies that $f(b)=g(b)$ for all $b\in B$
+\end{proof}
+\end{dem}
+
+Finally, we have the following results of compositions of various special morphism.
+
+\begin{proposition}
+    We have the following list of results on the composition of various morphism:
+    \begin{itemize}
+        \item If $g\circ f$ is mono, then $f$ is mono
+        \item If $f\circ g$ is epi, then $f$ is epi
+        \item If $f$ and $g$ are mono, then $g\circ f$ is mono
+        \item If $f$ and $g$ are epi, then $g\circ f$ is epi
+        \item If $f$ is isomorphism, then $f$ is epi and mono
+    \end{itemize}
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    Let's provide a proof for each of them: 
+    and that $f\circ e = g\circ e$ implies $f=g$.
+    \begin{itemize}
+        \item We will prove via negation, assume that $f$ isn't mono, that is there exists a morphism $a\ne b$ but $f\circ a=f\circ b$. Then we have that: $g\circ f\circ a=g\circ f\circ b$ and $a\ne b$ i.e $g\circ f$ isn't mono.
+        \item Similarly, assume that $f$ isn't epi, that is there is a morphism $a\circ f=b\circ f$ but $a\ne b$. Then we have that $a\circ f\circ g=b\circ f\circ g$ and $a\ne b$ i.e $f\circ g$ isn't epi.
+        \item Given a morphism $a, b$ such that $g\circ f\circ a = g\circ f\circ a$, since $g$ is mono, we have that $f\circ a = f\circ b$ and since $f$ is epi, we have that $a=b$. 
+        \item Given a morphism $a, b$ such that $a\circ g \circ f = b\circ g \circ f$, since $f$ is epi, we have that $a\circ g= b\circ g$ and since $g$ is epi, we have that $a=b$. 
+    \end{itemize}
+    The last part follows from the fact that isomorphism is split mono and split epi, which implies that it is both mono and epi as needed.
+\end{proof}
+\end{dem}
+
+% \todo Add Free category.
+
+\subsection{Functor + Presheaf}
+
+Now, we will consider the morphism between category, which we called functor:
+
+\begin{definition}{\textbf{(Functor)}}
+    Given a category $\textbf{C}$ and $\textbf{D}$, the functor $F:\textbf{C}\rightarrow\textbf{D}$ transforms the objects and morphism of category $\textbf{C}$ as:
+    \begin{itemize}
+        \item The functors maps the object $X$ of $\textbf{C}$ to an object $FX$ of $\textbf{D}$
+        \item The functors maps The morphism $f:X\rightarrow Y$ of $\textbf{C}$ to a morphism $Ff:FX\rightarrow FY$ of $\textbf{D}$
+    \end{itemize}
+    With the following conditions.
+    \begin{itemize}
+        \item \textit{Unitality} For every object $X$ of $\textbf{C}$ the functor have the following mapping $F(\operatorname{id}_X)=\operatorname{id}_{FX}$
+        \item \textit{Compositionality} For the morphism $f:X\rightarrow Y$ and $g:Y\rightarrow Z$ in $\textbf{C}$, we have that $F(g\circ f) = Fg\circ Ff$ i.e the following diagram commutes: 
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsMyxbMSwwLCJGWSJdLFswLDEsIkZYIl0sWzIsMSwiRloiXSxbMSwyLCJGKGdcXGNpcmMgZikiLDJdLFsxLDAsIkZmIl0sWzAsMiwiRmciXV0=
+        \begin{tikzcd}
+            & FY \\
+            FX && FZ
+            \arrow["{F(g\circ f)}"', from=2-1, to=2-3]
+            \arrow["Ff", from=2-1, to=1-2]
+            \arrow["Fg", from=1-2, to=2-3]
+        \end{tikzcd}
+        \end{equation*}
+    \end{itemize}
+\end{definition}
+
+Since functor preserves composition, we have that:
+
+\begin{proposition}
+    Functor preserves commutative diagram. For example, if a diagram commutes in $\textbf{C}$, its image under a functor $F:\textbf{C}\rightarrow\textbf{D}$ commutes in $\textbf{D}$
+\end{proposition}
+
+in the specific case of isomorphism, as functor also preserves identity morphism:
+
+\begin{proposition}
+    Given a functor $F:\textbf{C}\rightarrow\textbf{D}$, within the category $\textbf{C}$, and we have the following isomorphism (shown in LHS):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzEsMCwiWSJdLFszLDAsIkZYIl0sWzQsMCwiRlkiXSxbMCwxLCJmIiwwLHsib2Zmc2V0IjotMX1dLFsxLDAsImZeey0xfSIsMCx7Im9mZnNldCI6LTF9XSxbMiwzLCJGZiIsMCx7Im9mZnNldCI6LTF9XSxbMywyLCJGZl57LTF9IiwwLHsib2Zmc2V0IjotMX1dXQ==
+    \begin{tikzcd}
+        X & Y && FX & FY
+        \arrow["f", shift left, from=1-1, to=1-2]
+        \arrow["{f^{-1}}", shift left, from=1-2, to=1-1]
+        \arrow["Ff", shift left, from=1-4, to=1-5]
+        \arrow["{Ff^{-1}}", shift left, from=1-5, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+    Then, after applying the functors, we have that, in the category $\textbf{D}$ (shown in RHS), which is an isomorphism in $\textbf{D}$. Thus, The functors maps isomorphic objects (and morphism) of the category $\textbf{C}$ to isomorphic (and morphism) of the category $\textbf{D}$.
+\end{proposition}
+
+Similar observation can be used for the case of split 
+
+\begin{proposition}
+    The functor preserves split monomorphism and split epimorphism. Given functor $F:\textbf{C}\rightarrow\textbf{D}$:
+    \begin{itemize}
+        \item Given a split monomorphism $m:X\rightarrow Y$ with a retraction $r:Y\rightarrow X$, then $Fm$ is a split monomorphism with retraction of $Fr$.
+        \item Dually, given a split epimorphism $e:X\rightarrow Y$ with a section $s:Y\rightarrow X$, then $Fe$ is a split epimorphism with section of $Fs$.
+    \end{itemize}
+\end{proposition}
+
+However, this doesn't apply to the case of non-split epi and mono. Now, we are going to consider a special kind of functor called presheaves, in which it can be motivated from the probing action, defined in definition \ref{def:prob-action-nat}.
+
+\begin{remark}{\textbf{(Motivation for Presheaves)}}
+    \label{remark:presheaf-opposite}
+    Given the category $\textbf{C}$, in which we get the hom-set of the morphism $X\rightarrow Y$ as $\operatorname{Hom}_\textbf{C}(X,A)$, where the object $A$ is fixed. We will make use the opposite category more explicit here.
+    
+    Given $g^\text{op}:X\to Y$, we can have the map $(-\circ g):\operatorname{Hom}_\textbf{C}(X,A)\to \operatorname{Hom}_\textbf{C}(Y, A)$, see the left triangle:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzIsMCwiWSJdLFs0LDAsIloiXSxbMiwxLCJBIl0sWzAsMywiayIsMl0sWzEsMCwiZyIsMl0sWzIsMSwiZiIsMl0sWzIsMywia1xcY2lyYyBnXFxjaXJjIGYiXSxbMSwzXSxbNCw4LCIoLVxcY2lyYyBnKSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sImxldmVsIjoxLCJjb2xvdXIiOlswLDYwLDYwXSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fSxbMCw2MCw2MCwxXV0sWzgsNywiKC1cXGNpcmMgZikiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6MSwiY29sb3VyIjpbMCw2MCw2MF0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX0sWzAsNjAsNjAsMV1dXQ==
+    \begin{tikzcd}
+        X && Y && Z \\
+        && A
+        \arrow[""{name=0, anchor=center, inner sep=0}, "k"', from=1-1, to=2-3]
+        \arrow["g"', from=1-3, to=1-1]
+        \arrow["f"', from=1-5, to=1-3]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "{k\circ g\circ f}", from=1-5, to=2-3]
+        \arrow[""{name=2, anchor=center, inner sep=0}, from=1-3, to=2-3]
+        \arrow["{(-\circ g)}", color={rgb,255:red,214;green,92;blue,92}, shorten <=6pt, shorten >=6pt, dashed, from=0, to=2]
+        \arrow["{(-\circ f)}", color={rgb,255:red,214;green,92;blue,92}, shorten <=6pt, shorten >=6pt, dashed, from=2, to=1]
+    \end{tikzcd}
+    \end{equation*}
+    Actually, this is a functor of $\textbf{C}^\text{op}\to\operatorname{Set}$ (opposite because after apply the functor we have the ``map of $X\to Y$'' (although it is in $\textbf{Set}$)) On can also consider the composition as:
+    \begin{equation*}
+        (-\circ f)\circ (-\circ g) = (-\circ g\circ f)
+    \end{equation*}
+    This is the characteristic of opposite category. Finally, the signature of the functor is: $\operatorname{Hom}_\textbf{C}(-,A):\textbf{C}^\text{op}\rightarrow\textbf{Set}$, where when acts on the morphism, we have that $\operatorname{Hom}_\textbf{C}(-,A)[g^\text{op}] = (-\circ g):\operatorname{Hom}_\textbf{C}(X,A)\to\operatorname{Hom}_\textbf{C}(Y,A)$. The way to look at this is that the functor $\textbf{C}^\text{op}\to\textbf{Set}$ accepts $g^\text{op}$ as an ``input'', but the action on the hom-set has to be done in $\textbf{C}$ because that hom-set is in $\textbf{C}$.
+\end{remark}
+
+\begin{definition}{\textbf{(Presheaf)}}
+    Given a category $\textbf{C}$, the presheaf on $\textbf{C}$ is a functor $\textbf{C}^\text{op}\rightarrow\textbf{Set}$
+\end{definition}
+
+\begin{definition}{\textbf{(Contravariant Functors)}}
+    Given the category $\textbf{C}$ and $\textbf{D}$, contravariant functor is the functor with reversed arrow as $\textbf{C}^\text{op}\rightarrow\textbf{D}$ or $\textbf{C}\rightarrow\textbf{D}^\text{op}$ (noted that they are the same)
+\end{definition}
+
+
+\subsection{Natural Transformation}
+
+\begin{definition}{\textbf{(Natural Transformation)}}
+    Given the categories $\textbf{C}$ and $\textbf{D}$ with a functors $F,G:\textbf{C}\rightarrow\textbf{D}$. We define the natural transformation $\alpha:F\Rightarrow G$ as follows:
+    \begin{itemize}
+        \item For each object, $C$ of $\textbf{C}$, we have $\alpha_C:FC\rightarrow GC$, which is a morphism in $\textbf{D}$, and it is called a component at $C$, or we can denoted the natural transformation as a collection of morphism $$(\alpha_C:FC\rightarrow GC)_{C\in\textbf{C}_0}$$
+        \item Given a morphism $f:C\rightarrow C'$ of category $\textbf{C}$, we have the following commutative diagram, which represents the naturality condition (as seen in LHS).
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCJGQyJdLFsxLDAsIkZDJyJdLFswLDEsIkdDIl0sWzEsMSwiR0MnIl0sWzAsMSwiRmYiXSxbMiwzLCJHZiIsMl0sWzEsMywiXFxhbHBoYV97Qyd9Il0sWzAsMiwiXFxhbHBoYV97Q30iLDJdXQ==
+        \begin{tikzcd}
+            FC & {FC'} \\
+            GC & {GC'}
+            \arrow["Ff", from=1-1, to=1-2]
+            \arrow["Gf"', from=2-1, to=2-2]
+            \arrow["{\alpha_{C'}}", from=1-2, to=2-2]
+            \arrow["{\alpha_{C}}"', from=1-1, to=2-1]
+        \end{tikzcd}
+        \qquad \quad
+        % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXHRleHRiZntDfSJdLFsxLDAsIlxcdGV4dGJme0R9Il0sWzAsMSwiRiIsMCx7ImN1cnZlIjotMn1dLFswLDEsIkciLDIseyJjdXJ2ZSI6Mn1dLFsyLDMsIiIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+        \begin{tikzcd}
+            {\textbf{C}} & {\textbf{D}}
+            \arrow[""{name=0, anchor=center, inner sep=0}, "F", curve={height=-12pt}, from=1-1, to=1-2]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "G"', curve={height=12pt}, from=1-1, to=1-2]
+            \arrow[shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}
+        \end{equation*}
+        Note that in the diagram, we also denote the natural condition on the RHS.
+    \end{itemize}
+\end{definition}
+
+\begin{remark}{\textbf{(Revising Naturality Condition)}}
+    Please observe that the naturality condition does go along with what we have defined in definition \ref{def:prob-action-nat} leads naturally to the following natural transformation (LHS) together with the commutative diagram (RHS):
+    \begin{equation*}
+        \gamma:\operatorname{Hom}_\textbf{C}(X,-)\Rightarrow\operatorname{Hom}_\textbf{C}(Y,-) \qquad \quad % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFgsIEEpIl0sWzMsMCwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShYLCBCKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oWSwgQSkiXSxbMywxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KFksIEIpIl0sWzAsMSwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShYLCAtKVtmXT0oZlxcY2lyYyAtKSJdLFsyLDMsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7Q30oWSwgLSlbZl09KGZcXGNpcmMgLSkiLDJdLFsxLDMsIigtXFxjaXJjIGcpIl0sWzAsMiwiKC1cXGNpcmMgZykiLDJdXQ==
+        \begin{tikzcd}
+            {\operatorname{Hom}_\textbf{C}(X, A)} &&& {\operatorname{Hom}_\textbf{C}(X, B)} \\
+            {\operatorname{Hom}_\textbf{C}(Y, A)} &&& {\operatorname{Hom}_\textbf{C}(Y, B)}
+            \arrow["{\operatorname{Hom}_\textbf{C}(X, -)[f]=(f\circ -)}", from=1-1, to=1-4]
+            \arrow["{\operatorname{Hom}_\textbf{C}(Y, -)[f]=(f\circ -)}"', from=2-1, to=2-4]
+            \arrow["{(-\circ g)}", from=1-4, to=2-4]
+            \arrow["{(-\circ g)}"', from=1-1, to=2-1]
+        \end{tikzcd}
+    \end{equation*}
+    where the pre-composition of $g$ is the component of the natural transformation (hence the use of $\gamma$), for any object. One can also have the natural transformation of $\phi:\operatorname{Hom}_\textbf{C}(-,A)\Rightarrow\operatorname{Hom}_\textbf{C}(-,B)$, whose component is $(f\circ-)$ for any object.
+\end{remark}
+
+
+\begin{definition}{\textbf{(Natural Isomorphism)}}
+    Given category $\textbf{C}$ and $\textbf{D}$, and the functors $F,G:\textbf{C}\rightarrow\textbf{D}$ with natural transformation of $\alpha:F\Rightarrow G$. This $\alpha$ is called *natural isomorphism* if for each object $C$ of $\textbf{C}$ the components are all $\alpha_C:FC\rightarrow GC$ is isomorphism.
+\end{definition}
+
+We can see that natural transformation can be seen as morphism between functor, leading to
+
+\begin{definition}{\textbf{(Functor Category/Vertical Composition)}}
+    Given $\textbf{C}$ and $\textbf{D}$ be category, we can define the functor category $[\textbf{C},\textbf{D}]$ can be constructed as:
+    \begin{itemize}
+        \item Objects: Functors $F:\textbf{C}\rightarrow\textbf{D}$
+        \item Morphism: Natural Transformation, given the functors $F,G:\textbf{C}\rightarrow\textbf{D}$, we have $\alpha:\textbf{F}\Rightarrow\textbf{G}$
+        \begin{itemize}
+            \item The identity of the $F$ is the natural transformation with components as $\operatorname{id}_{FC}:FC\rightarrow FC$
+            \item The \textbf{vertical} composition between 2 natural transformation $\alpha:F\Rightarrow G$ and $\beta:G\Rightarrow H$ is a natural transformation $\beta\circ\alpha:F\Rightarrow H$ as: $FC\xrightarrow{\alpha_C}GC\xrightarrow{\beta_C}HC$This is clearly associative.
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
+\begin{proposition}
+    Given 2 objects in the functor category $F$ and $G$ (between category $\textbf{C}$ and $\textbf{D}$), the natural isomorphism between them is isomorphic wrt the functor category.
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    To show that natural isomorphism, let's call it $\alpha:F\Rightarrow G$ is isomorphism, we will define its inverse to be $\alpha^{-1}:G\Rightarrow F$, where its component is an inverse of $\alpha_C$ (which exists because of $\alpha$ being isomorphism) i.e $\alpha^{-1}_C:GC\to FC$ where $\alpha_C\circ \alpha_C^{-1} = \operatorname{id}_{GC}$ and $\alpha_C^{-1}\circ \alpha_C = \operatorname{id}_{FC}$. Thus, by definition, we have that $\alpha^{-1}\circ\alpha=\operatorname{id}\alpha\circ\alpha^{-1}$, as needed.
+\end{proof}
+\end{dem}
+
+\begin{definition}{\textbf{(Diagram/Category of Diagrams)}}
+    Given a category $\textbf{C}$ with small category $\textbf{I}$, the diagram in $\textbf{C}$ of shape $\textbf{I}$ is a functor $\textbf{I}\rightarrow\textbf{C}$. The category of $I$-shaped diagram in $\textbf{C}$ is a functor category $[\textbf{I},\textbf{C}]$.
+\end{definition}
+
+Now, we will consider how the natural transformation are composed.
+
+\begin{definition}{\textbf{(Vertical Composition)}}
+    The way we compose natural transformation within the definition of functor category is called vertical composition: given category $\textbf{C}$ and $\textbf{D}$ together with functors $F,G,H:\textbf{C}\rightarrow\textbf{D}$ and natural transformation $\alpha:F\Rightarrow G$ and $\beta:G\Rightarrow H$, we have:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJcXHRleHRiZntDfSJdLFsyLDAsIlxcdGV4dGJme0R9Il0sWzMsMCwiIFxccmlnaHRzcXVpZ2Fycm93Il0sWzQsMCwiXFx0ZXh0YmZ7Q30iXSxbNiwwLCJcXHRleHRiZntEfSJdLFswLDEsIkYiLDAseyJjdXJ2ZSI6LTN9XSxbMCwxLCJIIiwyLHsiY3VydmUiOjN9XSxbMCwxLCJHIiwxXSxbMyw0LCJGIiwwLHsiY3VydmUiOi0zfV0sWzMsNCwiSCIsMix7ImN1cnZlIjozfV0sWzcsNiwiXFxiZXRhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFs1LDcsIlxcYWxwaGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzgsOSwiXFxiZXRhXFxjaXJjXFxhbHBoYSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+    \begin{tikzcd}
+        {\textbf{C}} && {\textbf{D}} & { \rightsquigarrow} & {\textbf{C}} && {\textbf{D}}
+        \arrow[""{name=0, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-1, to=1-3]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "H"', curve={height=18pt}, from=1-1, to=1-3]
+        \arrow[""{name=2, anchor=center, inner sep=0}, "G"{description}, from=1-1, to=1-3]
+        \arrow[""{name=3, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-5, to=1-7]
+        \arrow[""{name=4, anchor=center, inner sep=0}, "H"', curve={height=18pt}, from=1-5, to=1-7]
+        \arrow["\beta", shorten <=2pt, shorten >=2pt, Rightarrow, from=2, to=1]
+        \arrow["\alpha", shorten <=2pt, shorten >=2pt, Rightarrow, from=0, to=2]
+        \arrow["\beta\circ\alpha", shorten <=5pt, shorten >=5pt, Rightarrow, from=3, to=4]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Left/Right Whiskering and Horizontal Composition)}}
+    Given the category $\textbf{C}, \textbf{D}$ and $\textbf{E}$ with the functor $F,G:\textbf{C}\rightarrow\textbf{D}$ and $H,I:\textbf{D}\rightarrow\textbf{E}$ together with a natural transformation $\alpha:F\Rightarrow G$ or $\beta:H\Rightarrow I$, giving rise to $\beta F: HF\Rightarrow IF$ (LHS), called left whiskering:
+    \begin{equation*}
+        % https://q.uiver.app/#q=WzAsOSxbMCwwLCJcXHRleHRiZntDfSJdLFsxLDAsIlxcdGV4dGJme0R9Il0sWzIsMCwiXFx0ZXh0YmZ7RX0iXSxbNCwwLCJcXHRleHRiZntDfSJdLFs1LDAsIlxcdGV4dGJme0R9Il0sWzYsMCwiXFx0ZXh0YmZ7RX0iXSxbOCwwLCJcXHRleHRiZntDfSJdLFs5LDAsIlxcdGV4dGJme0R9Il0sWzEwLDAsIlxcdGV4dGJme0V9Il0sWzAsMSwiRiJdLFsxLDIsIkgiLDAseyJjdXJ2ZSI6LTN9XSxbMSwyLCJJIiwyLHsiY3VydmUiOjN9XSxbMyw0LCJGIiwwLHsiY3VydmUiOi0zfV0sWzMsNCwiRyIsMix7ImN1cnZlIjozfV0sWzQsNSwiSCJdLFs2LDcsIkYiLDAseyJjdXJ2ZSI6LTN9XSxbNiw3LCJHIiwyLHsiY3VydmUiOjN9XSxbNyw4LCJIIiwwLHsiY3VydmUiOi0zfV0sWzcsOCwiSSIsMix7ImN1cnZlIjozfV0sWzEwLDExLCJcXGJldGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzEyLDEzLCJcXGFscGhhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFsxNSwxNiwiXFxhbHBoYSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XSxbMTcsMTgsIlxcYmV0YSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+        \begin{tikzcd}
+            {\textbf{C}} & {\textbf{D}} & {\textbf{E}} && {\textbf{C}} & {\textbf{D}} & {\textbf{E}} && {\textbf{C}} & {\textbf{D}} & {\textbf{E}}
+            \arrow["F", from=1-1, to=1-2]
+            \arrow[""{name=0, anchor=center, inner sep=0}, "H", curve={height=-18pt}, from=1-2, to=1-3]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "I"', curve={height=18pt}, from=1-2, to=1-3]
+            \arrow[""{name=2, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-5, to=1-6]
+            \arrow[""{name=3, anchor=center, inner sep=0}, "G"', curve={height=18pt}, from=1-5, to=1-6]
+            \arrow["H", from=1-6, to=1-7]
+            \arrow[""{name=4, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-9, to=1-10]
+            \arrow[""{name=5, anchor=center, inner sep=0}, "G"', curve={height=18pt}, from=1-9, to=1-10]
+            \arrow[""{name=6, anchor=center, inner sep=0}, "H", curve={height=-18pt}, from=1-10, to=1-11]
+            \arrow[""{name=7, anchor=center, inner sep=0}, "I"', curve={height=18pt}, from=1-10, to=1-11]
+            \arrow["\beta", shorten <=5pt, shorten >=5pt, Rightarrow, from=0, to=1]
+            \arrow["\alpha", shorten <=5pt, shorten >=5pt, Rightarrow, from=2, to=3]
+            \arrow["\alpha", shorten <=5pt, shorten >=5pt, Rightarrow, from=4, to=5]
+            \arrow["\beta", shorten <=5pt, shorten >=5pt, Rightarrow, from=6, to=7]
+        \end{tikzcd}
+        \end{equation*}
+    On the middle diagram, we have similar composition, which is called right whiskering $H\alpha: HF\Rightarrow HG$. One can combine 2 different kinds of whiskering to get the horizontal composition $\beta\alpha:HF\Rightarrow IG$. Note that we didn't use $\circ$ to denote the composition as we reserve for vertical composition.
+\end{definition}
+
+\begin{remark}{\textbf{(Example of Whiskering)}}
+    Let's use the left whiskering as given in the definition above. To see how the natural transformation acts, we have to given it either an object $C$ or function $f:C\to C'$. We have its component to be $\beta_{FC}:HFC\to IFC$. And, the  commutative diagram is given to be:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJIRkMiXSxbMCwxLCJJRkMiXSxbMSwwLCJIRkMnIl0sWzEsMSwiSUZDJyJdLFsxLDMsIklGZiIsMl0sWzAsMiwiSEZmIl0sWzIsMywiXFxiZXRhX3tGQyd9Il0sWzAsMSwiXFxiZXRhX3tGQ30iLDJdXQ==
+    \begin{tikzcd}
+        HFC & {HFC'} \\
+        IFC & {IFC'}
+        \arrow["IFf"', from=2-1, to=2-2]
+        \arrow["HFf", from=1-1, to=1-2]
+        \arrow["{\beta_{FC'}}", from=1-2, to=2-2]
+        \arrow["{\beta_{FC}}"', from=1-1, to=2-1]
+    \end{tikzcd}
+    \end{equation*}
+    and the diagram commute because $\beta$ is a natural transformation (which acts on $Ff:FC\to FC'$)
+\end{remark}
+
+Let's see that the horizontal composition makes sense.
+
+\begin{proposition}
+    The horizontal composition can be described in two ways as the vertical composition of left whiskering and composition of right whiskering (but different ways at the start), but are equal to each other:
+    \begin{equation*}
+        \beta\alpha = (\beta G)\circ(H\alpha) = (I\alpha)\circ(\beta F)
+    \end{equation*}
+\end{proposition}
+\begin{dem}
+\begin{proof}
+    Let's consider how both LHS and RHS acts on object $C$, which we have the following signatures: $\beta_{GC}\circ H\alpha_C : HFC\to HGC \to IGC$ and $I\alpha_C\circ \beta_{FC} : HFC\to IFC \to IGC$. When apply the naturality condition of $\beta$ on the morphism $\alpha_C:FC\to GC$, we have the following commutative diagram.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJIRkMiXSxbMSwwLCJIR0MiXSxbMSwxLCJJR0MiXSxbMCwxLCJJRkMiXSxbMCwzLCJcXGJldGFfe0ZDfSIsMl0sWzEsMiwiXFxiZXRhX3tHQ30iXSxbMCwxLCJIXFxhbHBoYV9DIl0sWzMsMiwiSVxcYWxwaGFfQyIsMl1d
+    \begin{tikzcd}
+        HFC & HGC \\
+        IFC & IGC
+        \arrow["{\beta_{FC}}"', from=1-1, to=2-1]
+        \arrow["{\beta_{GC}}", from=1-2, to=2-2]
+        \arrow["{H\alpha_C}", from=1-1, to=1-2]
+        \arrow["{I\alpha_C}"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJIRkMiXSxbMSwwLCJIR0MiXSxbMiwwLCJJR0MiXSxbMCwxLCJIRkMnIl0sWzEsMSwiSEdDJyJdLFsyLDEsIklHQyciXSxbMCwxLCJIXFxhbHBoYV9DIl0sWzEsMiwiXFxiZXRhX3tHQ30iXSxbMCwzLCJIRmYiLDJdLFsxLDQsIkhHZiJdLFsyLDUsIklHZiJdLFszLDQsIkhcXGFscGhhX3tDJ30iLDJdLFs0LDUsIlxcYmV0YV97R0MnfSIsMl1d
+    \begin{tikzcd}
+        HFC & HGC & IGC \\
+        {HFC'} & {HGC'} & {IGC'}
+        \arrow["{H\alpha_C}", from=1-1, to=1-2]
+        \arrow["{\beta_{GC}}", from=1-2, to=1-3]
+        \arrow["HFf"', from=1-1, to=2-1]
+        \arrow["HGf", from=1-2, to=2-2]
+        \arrow["IGf", from=1-3, to=2-3]
+        \arrow["{H\alpha_{C'}}"', from=2-1, to=2-2]
+        \arrow["{\beta_{GC'}}"', from=2-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    which is equivalent to see that $\beta_{GC}\circ H\alpha_C = I\alpha_C\circ \beta_{FC}$, as needed. On the RHS diagram, we have shown how one of the acts on $f:C\to C'$, and implies that is indeed satisfies the naturality condition over (following from naturality of each sub-square), see RHS diagram.
+\end{proof}
+\end{dem}
+
+\begin{proposition}{\textbf{(Interchange Law)}}
+    Given the following diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJcXHRleHRiZntDfSJdLFsxLDAsIlxcdGV4dGJme0R9Il0sWzIsMCwiXFx0ZXh0YmZ7RX0iXSxbMCwxLCJGIiwwLHsiY3VydmUiOi0zfV0sWzAsMSwiRyIsMV0sWzEsMiwiSCIsMCx7ImN1cnZlIjotM31dLFsxLDIsIkkiLDFdLFswLDEsIlAiLDIseyJjdXJ2ZSI6M31dLFsxLDIsIlEiLDIseyJjdXJ2ZSI6M31dLFszLDQsIlxcYWxwaGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzUsNiwiXFxiZXRhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFs2LDgsIlxcZGVsdGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzQsNywiXFxnYW1tYSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+    \begin{tikzcd}
+        {\textbf{C}} & {\textbf{D}} & {\textbf{E}}
+        \arrow[""{name=0, anchor=center, inner sep=0}, "F", curve={height=-18pt}, from=1-1, to=1-2]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "G"{description}, from=1-1, to=1-2]
+        \arrow[""{name=2, anchor=center, inner sep=0}, "H", curve={height=-18pt}, from=1-2, to=1-3]
+        \arrow[""{name=3, anchor=center, inner sep=0}, "I"{description}, from=1-2, to=1-3]
+        \arrow[""{name=4, anchor=center, inner sep=0}, "P"', curve={height=18pt}, from=1-1, to=1-2]
+        \arrow[""{name=5, anchor=center, inner sep=0}, "Q"', curve={height=18pt}, from=1-2, to=1-3]
+        \arrow["\alpha", shorten <=2pt, shorten >=2pt, Rightarrow, from=0, to=1]
+        \arrow["\beta", shorten <=2pt, shorten >=2pt, Rightarrow, from=2, to=3]
+        \arrow["\delta", shorten <=2pt, shorten >=2pt, Rightarrow, from=3, to=5]
+        \arrow["\gamma", shorten <=2pt, shorten >=2pt, Rightarrow, from=1, to=4]
+    \end{tikzcd}
+    \end{equation*}
+    This diagram isn't ambiguous in the sense that: $(\delta\gamma)\circ(\beta\alpha) = (\delta\circ\beta)(\gamma\circ\alpha)$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    Let's consider its component on $C$ on the LHS we have that both of them have signature $HFC\to IGC$. Following from proposition above, on how one define the horizontal composition and their equality:
+    \begin{equation*}
+    \begin{aligned}
+        \beta\alpha &= (\beta G)\circ(H\alpha) = (I\alpha)\circ(\beta F) \\
+        \delta\gamma &= (\delta P)\circ(I\gamma) = (Q\gamma) \circ (\delta G) \\
+        \beta\gamma &= (I\gamma)\circ(\beta G) = (\beta P)\circ (H\gamma) \\
+        \delta\alpha &= (\delta G) \circ (I\alpha) = (Q\alpha)\circ(\delta F) \\
+    \end{aligned}
+    \qquad \quad
+    \begin{aligned}[t]
+        (\delta\circ\beta)(\gamma\circ\alpha) &=(Q(\gamma\circ\alpha))\circ((\delta\circ\beta)F)  \\
+        &=((\delta\circ\beta)P)\circ(H(\gamma\circ\alpha)) \\
+    \end{aligned}
+    \end{equation*}
+    The last equality comes from horizontal composition of $\beta\gamma$. The one highlighted in red are equality that are needed. Thus, we have:
+    \begin{equation*}
+    \begin{aligned}
+        (\delta\gamma)\circ(\beta\alpha) &= (\delta P)\circ \big[(I\gamma) \circ (\beta G)\big]\circ(H\alpha) \\
+        &= (\delta P)\circ \big[(\beta P)\circ (H\gamma)\big]\circ(H\alpha) \\ 
+        &= (\delta\circ\beta)(\gamma\circ\alpha)
+    \end{aligned} \qquad \quad
+    \begin{aligned}
+        (\delta\gamma)\circ(\beta\alpha) 
+        &= (Q\gamma) \circ \big[(\delta G) \circ (I\alpha)\big]\circ(\beta F) \\
+        &= (Q\gamma) \circ \big[(Q\alpha)\circ(\delta F)\big]\circ(\beta F) \\
+        &= (\delta\circ\beta)(\gamma\circ\alpha)
+    \end{aligned}
+    \end{equation*}
+    Similarly, we can have the RHS proof of similar technique. Everything can be displayed in the following diagram (where the sub-square represents the naturality condition tht gives rises to the equality related to $\beta\gamma$ and $\delta\alpha$)
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiSEZDIl0sWzIsMCwiSEdDIl0sWzMsMCwiSUdDIl0sWzMsMSwiSVBDIl0sWzMsMiwiUVBDIl0sWzAsMSwiSUZDIl0sWzAsMiwiSUdDIl0sWzEsMiwiUUdDIl0sWzEsMSwiUUZDIl0sWzIsMSwiSFBDIl0sWzAsMSwiSFxcYWxwaGFfQyJdLFsxLDIsIlxcYmV0YV97R0N9Il0sWzIsMywiSVxcZ2FtbWFfQyJdLFszLDQsIlxcZGVsdGFfe1BDfSJdLFswLDUsIlxcYmV0YV97RkN9IiwyXSxbNSw2LCJJXFxhbHBoYV9DIiwyXSxbNiw3LCJcXGRlbHRhX3tHQ30iLDJdLFs3LDQsIlFcXGdhbW1hX0MiLDJdLFs1LDgsIlxcZGVsdGFfe0ZDfSJdLFs4LDcsIlFcXGFscGhhX0MiXSxbOSwzLCJcXGJldGFfe1BDfSIsMl0sWzEsOSwiSFxcZ2FtbWFfQyIsMl1d
+    \begin{tikzcd}
+        HFC && HGC & IGC \\
+        IFC & QFC & HPC & IPC \\
+        IGC & QGC && QPC
+        \arrow["{H\alpha_C}", from=1-1, to=1-3]
+        \arrow["{\beta_{GC}}", from=1-3, to=1-4]
+        \arrow["{I\gamma_C}", from=1-4, to=2-4]
+        \arrow["{\delta_{PC}}", from=2-4, to=3-4]
+        \arrow["{\beta_{FC}}"', from=1-1, to=2-1]
+        \arrow["{I\alpha_C}"', from=2-1, to=3-1]
+        \arrow["{\delta_{GC}}"', from=3-1, to=3-2]
+        \arrow["{Q\gamma_C}"', from=3-2, to=3-4]
+        \arrow["{\delta_{FC}}", from=2-1, to=2-2]
+        \arrow["{Q\alpha_C}", from=2-2, to=3-2]
+        \arrow["{\beta_{PC}}"', from=2-3, to=2-4]
+        \arrow["{H\gamma_C}"', from=1-3, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+\end{proof}
+\end{dem}
+
+\subsection{Types of Category}
+
+We are now going to give the various types of categories. Let's start with the more general one:
+
+\begin{definition}{\textbf{(Category of Categories):}}
+    The category of categories called $\textbf{Cat}$ is an category with the following elements:
+    \begin{itemize}
+        \item \textit{Objects:} Small Categories
+        \item \textit{Morphism:} Functor between 2 Categories.
+    \end{itemize}
+    The identity morphism is an identity functor, and the compositions are done by the composition of functors.
+\end{definition}
+
+Note that $\textbf{Cat}$ isn't much used, but a more refine notion of $\textbf{Cat}$ in which hom-space $\operatorname{Hom}_\textbf{Cat}(C,D)$ are themselves category and not just set, which is called \textit{2-category} is more used. 
+
+We also have the notion of sub-category as:
+
+\begin{definition}{\textbf{(Category of Categories):}}
+    Given a category $\mathbf{C}$, the sub-category $\mathcal{S}$ of $\mathbf{C}$ consists of sub-collection of objects and morphism of $\mathbf{C}$ such that:
+    \begin{itemize}
+        \item \textit{Identity Morphism:} There is identity morphism of object $S$ in $\mathbf{S}$
+        \item \textit{Composition:} Given a composable arrrow $f:X\rightarrow Y$ and $g:Y\rightarrow Z$ in $\mathbf{S}$, then $g\circ f$ also in $\mathbf{S}$
+    \end{itemize}
+\end{definition}
+
+The sub-category can have further different types depend on the what kind of morphism contains or the objects within.
+
+\begin{definition}{\textbf{(Wide/Full Sub-Category)}}
+    We have following different types of sub-categories:
+    \begin{itemize}
+        \item \textit{Wide Sub-Category:} A sub-category $\mathbf{S}$ of $\mathbf{C}$ is called wide if all objects of $\mathbf{C}$ are also object of $\mathbf{S}$ but should have less morphism. 
+        \item \textit{Full Sub-Category:} A sub-category $\mathbf{S}$ of $\mathbf{C}$ is called full if given 2 objects $X$ of $Y$ of $\mathbf{S}$, all their morphism in $\mathbf{C}$ is also morphism in $\mathbf{S}$ as: $\operatorname{Hom}_\mathbf{S}(X,Y)\cong\operatorname{Hom}_\mathbf{C}(X,Y)$. But not all objects of $\textbf{C}$ have to be in $\textbf{S}$
+    \end{itemize}
+\end{definition}
+
+\subsection{Type of Functors and Equivalent of Category}
+
+\begin{definition}{\textbf{(Faithful/Full/Essentially Surjective Functor)}}
+    Given a functor $F:\textbf{C}\rightarrow\textbf{D}$, which can have the following properties:
+    \begin{itemize}
+        \item \textit{Faithful:} Given object $C,C'$ of $\textbf{C}$ with any arrow $f,f':C\rightarrow C'$ of $\textbf{C}$, the functor is faithful if $Ff=Ff'$ for $\textbf{D}$ then $f=f'$ for $\textbf{C}$.
+        \item \textit{Full:} Given object $C,C'$ of $\textbf{C}$ and for arrow $g:FC\rightarrow FC'$ of $\textbf{D}$, the functor is full if there is an arrow $f:C\rightarrow C'$ such that $Ff=g$
+        \item \textit{Faithful:} The functor $F$ is fully faithful,if it is full and faithful.
+        \item \textit{Essentially Surjective:} For any object $D$ of $\textbf{D}$, the functor is essentially surjective if there exists an object $C$ of $\mathbf{C}$ such that there is isomorphism $FC\rightarrow D$. 
+    \end{itemize}
+\end{definition}
+
+We can link the notion to the injectivity and surjectivity of the hom-set:
+
+\begin{remark}
+    With object $C,C'$ of $\textbf{C}$ and functor $F:\textbf{C}\rightarrow\textbf{D}$ gives the following morphism (on $\textbf{Set}$) as: $\operatorname{Hom}_\textbf{C}(C,C') \rightarrow \operatorname{Hom}_\textbf{D}(FC,FC')$. We have that:
+    \begin{itemize}
+        \item If $F$ is faithful, then the function above is injective, for all $C,C'$.
+        \item If $F$ is full, then the function above is surjective, for all $C,C'$.
+        \item If $F$ is fully faithful, then the function above is bijective, for all $C,C'$.
+        \item For the essentially surjective, it is the surjective up to isomorphism. 
+    \end{itemize}
+    
+    Note that for the last point, this is the only version of surjectivity that we need, as we look at isomorphic object rather than equal.
+\end{remark}
+
+\begin{proposition}
+    Given fully faithful functor $F:\textbf{C}\rightarrow\textbf{D}$ with objects $C,C'$ of $\textbf{C}$ and isomorphism $\phi:FC\rightarrow FC'$ of $\textbf{D}$. There is an unique isomorphism $\widetilde{\phi}:C\rightarrow C'$ such that: $F\widetilde{\phi}=\phi$
+\end{proposition}
+
+\begin{dem}
+\begin{proof}
+    \textbf{(Isomorphism):} By the fact that the functor is full, thus, there is an arrow $\widetilde{\phi}:C\to C'$ such that $F\widetilde{\phi}=\phi$. Since $\phi$ is isomorphism, there is an (unique) inverse $\phi^{-1}:FC'\to FC$, and by the fact that functor is full, there is $g:C'\to C$ such that $Fg=\phi^{-1}$. We note that:
+    \begin{equation*}
+        F(g\circ \widetilde{\phi}) = Fg\circ F\widetilde{\phi} = \phi^{-1}\circ \phi = \operatorname{id}_{FC} = F(\operatorname{id}_{C})
+    \end{equation*}
+    Since $F$ is faithful, we have that $g\circ \widetilde{\phi} = \operatorname{id}_{C}$. The other direction $\widetilde{\phi}\circ g = \operatorname{id}_{C'}$ is proven similarly. 
+
+    \textbf{(Unique):} Assume that there is another isomorphism $f:C\to C'$ such that $Ff=\phi$, then we have $Ff=F\widetilde{\phi}$. By the fact that $F$ is faithful $f=\widetilde{\phi}$ i.e it is unique.
+\end{proof}
+\end{dem}
+
+\begin{definition}{\textbf{(Equivalence of Categories)}}
+    Given a category $\textbf{C}$ and $\textbf{D}$, the \textit{equivalence of category} between both category consists of a pair $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$ and natural isomorphism as: $\eta:G\circ F\Rightarrow\operatorname{id}_C$ and $\varepsilon:F\circ G\Rightarrow\operatorname{id}_D$. We call $G$ the pseudo-inverse of $F$ and vice versa.
+\end{definition}
+
+To proof important theorem below, we need the following useful lemma:
+
+\begin{lemma}
+    \label{lemma:morph-from-isos}
+    Given a category $\textbf{C}$ with morphism $f:X\rightarrow Y$ with isomorphisms $\phi:X\rightarrow X'$ and $\psi:Y\rightarrow Y'$, then there is unique morphism $X'\rightarrow Y'$ such that:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzEsMCwiWSJdLFswLDEsIlgnIl0sWzEsMSwiWSciXSxbMCwxLCJmIl0sWzAsMiwiXFxwaGkiLDJdLFsxLDMsIlxccHNpIiwyXSxbMSwzLCJcXGNvbmciXSxbMCwyLCJcXGNvbmciXSxbMiwzLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        X & Y \\
+        {X'} & {Y'}
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["\phi"', from=1-1, to=2-1]
+        \arrow["\psi"', from=1-2, to=2-2]
+        \arrow["\cong", from=1-2, to=2-2]
+        \arrow["\cong", from=1-1, to=2-1]
+        \arrow[dashed, from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    commutes, and this morphism is given by: $\psi\circ f\circ \phi^{-1}$.
+\end{lemma}
+
+\begin{dem}
+\begin{proof}
+    We note that such morphism exists, by reversing the arrow of $\phi$, giving us $g:X'\to Y'$ equal to $\psi\circ f\circ \phi^{-1}$. Now, we are left to show that it is unique, assume that there is another morphism $g':X'\to Y'$, then by commutativity: $g'\circ\phi = \psi \circ f$ or $g'= \psi\circ f\circ \phi^{-1} = g$.
+\end{proof}
+\end{dem}
+
+\begin{theorem}
+    \label{thm:full-faithful-essentially-surj-equiv}
+    The functor $F:\textbf{C}\rightarrow\textbf{D}$ is fully faithful and essentially surjective iff it defines an equivalence of category. 
+\end{theorem}
+
+\begin{dem}
+\begin{proof}
+    $\boldsymbol{(\implies)}:$ We have to find the functor $G:\boldsymbol{D}\to\boldsymbol{C}$. We will have to see how it interacts with object and morphism in $\boldsymbol{D}$. Given $g:D\to D'$, since $F$ is essentially surjective, there is an object $C$ and $C'$ with isomorphisms $\varepsilon_{D}:FC\to D$ and $\varepsilon_{D'}:FC'\to D'$. And from lemma above, there is a unique morphism $h:FC\to FC'$:
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJGQyJdLFsxLDAsIkZDJyJdLFswLDEsIkQiXSxbMSwxLCJEJyJdLFsyLDMsImciLDJdLFsxLDMsIlxcY29uZyIsMl0sWzAsMiwiXFxjb25nIl0sWzAsMiwiXFx2YXJlcHNpbG9uX0QiLDJdLFswLDEsImgiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMSwzLCJcXHZhcmVwc2lsb25fe0QnfSJdXQ==
+    \begin{tikzcd}
+        FC & {FC'} \\
+        D & {D'}
+        \arrow["g"', from=2-1, to=2-2]
+        \arrow["\cong"', from=1-2, to=2-2]
+        \arrow["\cong", from=1-1, to=2-1]
+        \arrow["{\varepsilon_D}"', from=1-1, to=2-1]
+        \arrow["h", dashed, from=1-1, to=1-2]
+        \arrow["{\varepsilon_{D'}}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+
+    where $h=\varepsilon^{-1}_{D'}\circ g\circ\varepsilon_D$. Since $F$ is fully faithful, there is unique $f_h:C\to C'$ such that $Ff_h=h$ and define such morphism as the result of applying $G$ i.e $f_h=Gg$. But we also have that $FGg=h$. Therefore, given the map $\varepsilon_D,\varepsilon_{D'}$, there is a unique pair between $(f_h, g)$ with $GD=C$ and $GD'=C'$.  We will also have to show that $G$ is a functor.
+    \begin{itemize}
+        \item \textit{(Acting on Identity Morphism):} Given $\operatorname{id}_D$, we have that $h=\operatorname{id}_D$ and the morphism $f_h$ is $\operatorname{id}_C$ due to it being unique. Thus, $G(\operatorname{id}_D)=\operatorname{id}_C$
+        \item \textit{(Acting on Composition):} Given 2 morphism $g_1:D\to D'$ and $g_2:D'\to D''$, then we have that $h_1=\varepsilon_{D'}^{-1}\circ g_1\circ\varepsilon_D$ and $h_2=\varepsilon_{D''}^{-1}\circ g_2\circ\varepsilon_{D'}$, $Gg_1=f_{h_1}$ and $Gg_2=f_{h_2}$ where $Ff_{h_1}=h_1$ and $Ff_{h_2}=h_2$. On the other hand, consider $g_3=g_2\circ g_1$, in which the corresponding morphism is $h_3 = \varepsilon_{D''}^{-1}\circ g_2 \circ g_1 \circ\varepsilon_{D}=h_2\circ h_1$. Note that $Ff_{h_3} = h_3=h_2\circ h_1 = F(f_{h_2})\circ F(f_{h_1}) =F(f_{h_2}\circ f_{h_1})$, and since $F$ is full $f_{h_3}=f_{h_2}\circ F_{h_1}$. Thus: $$G(g_2\circ g_1)=Gg_3 = f_{h_3} = f_{h_2}\circ f_{h_1}=G(g_2)\circ G(g_1)$$
+    \end{itemize}
+    Leading to a natural isomorphism of $\varepsilon:FG\Rightarrow\operatorname{id}_D$ (The naturality condition follows from the commutative diagram above).
+
+    On the other hand, given the morphism $Fg:FC\to FC'$, for $g:C\to C'$, then since $F$ is essentially surjective, there is an object $C_n$ and $C_n'$ such that there is isomorphism $\phi:FC_n\to FC$ and $\psi:FC_n'\to FC'$ (note that $C_n$ and $C_n'$ might as well be $C$ and $C'$, and $\phi$ and $\psi$ would be identity morphism but there can be other choices). We can use our construction of $G$ above, which gives us $GFC=C_n$ and $GFC'=C_n'$, and the following commutative diagram (LHS):
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJGR0ZDIl0sWzIsMCwiRkdGQyciXSxbMCwxLCJGQyJdLFsyLDEsIkZDJyJdLFsyLDMsIkZnIiwyXSxbMCwxLCJrPUZHRmciLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwyLCJcXHBoaSIsMl0sWzEsMywiXFxwc2kiXV0=
+    \begin{tikzcd}
+        FGFC && {FGFC'} \\
+        FC && {FC'}
+        \arrow["Fg"', from=2-1, to=2-3]
+        \arrow["{k=FGFg}", dashed, from=1-1, to=1-3]
+        \arrow["\phi"', from=1-1, to=2-1]
+        \arrow["\psi", from=1-3, to=2-3]
+    \end{tikzcd} 
+    \qquad\quad \rightsquigarrow\qquad \quad 
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJHRkMiXSxbMSwwLCJHRkMnIl0sWzAsMSwiQyJdLFsxLDEsIkMnIl0sWzIsMywiZyIsMl0sWzAsMSwiR0ZnIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMiwiXFxldGFfe0N9IiwyXSxbMSwzLCJcXGV0YV97Qyd9Il1d
+    \begin{tikzcd}
+        GFC & {GFC'} \\
+        C & {C'}
+        \arrow["g"', from=2-1, to=2-2]
+        \arrow["GFg", dashed, from=1-1, to=1-2]
+        \arrow["{\eta_{C}}"', from=1-1, to=2-1]
+        \arrow["{\eta_{C'}}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+
+    For morphism $k$, following from above, we have that since $F$ is fully faithful there is $a$ where $Fa=k$ and we define $G$ acting on the morphism $Fg$ to be $a=GFg$, thus $FGFg=k$. By the fact that $F$ is fully faithful, we can have the unique commutative diagram without $F$ in front, where now, we define isomorphism $\eta_C$ and $\eta_{C'}$ to be $F\eta_C=\phi$ and $F\eta_{C'}=\psi$. This gives us the RHS part. Thus, we have $\eta:G\circ F\to \operatorname{id}_C$ (the naturality condition follows from the diagram).
+
+    $\boldsymbol{(\impliedby)}:$ Given equivalent of category, we have $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$ and natural isomorphism as: $\eta:G\circ F\Rightarrow\operatorname{id}_C$ and $\varepsilon:F\circ G\Rightarrow\operatorname{id}_D$.
+
+    \textit{(Faithful):} Given $f,f':C\to C'$ and assume that $Ff=Ff'$, then $GFf=GFf'$, but then by the naturality condition, we get two diagrams:
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwxLCJHRkMiXSxbMSwxLCJHRkMnIl0sWzAsMCwiQyJdLFsxLDAsIkMnIl0sWzMsMSwiR0ZDIl0sWzQsMSwiR0ZDJyJdLFszLDAsIkMiXSxbNCwwLCJDJyJdLFsyLDMsImYiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMSwzLCJcXGV0YV97Qyd9IiwyXSxbMCwyLCJcXGV0YV97Q30iXSxbMCwxLCJHRmYiLDJdLFs0LDYsIlxcZXRhX3tDfSJdLFs1LDcsIlxcZXRhX3tDJ30iLDJdLFs2LDcsImYnIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzQsNSwiR0ZmJyIsMl0sWzAsMiwiXFxjb25nIiwyXSxbMSwzLCJcXGNvbmciXSxbNCw2LCJcXGNvbmciLDJdLFs1LDcsIlxcY29uZyJdXQ==
+    \begin{tikzcd}
+        C & {C'} && C & {C'} \\
+        GFC & {GFC'} && GFC & {GFC'}
+        \arrow["f", dashed, from=1-1, to=1-2]
+        \arrow["{\eta_{C'}}"', from=2-2, to=1-2]
+        \arrow["{\eta_{C}}", from=2-1, to=1-1]
+        \arrow["GFf"', from=2-1, to=2-2]
+        \arrow["{\eta_{C}}", from=2-4, to=1-4]
+        \arrow["{\eta_{C'}}"', from=2-5, to=1-5]
+        \arrow["{f'}", dashed, from=1-4, to=1-5]
+        \arrow["{GFf'}"', from=2-4, to=2-5]
+        \arrow["\cong"', from=2-1, to=1-1]
+        \arrow["\cong", from=2-2, to=1-2]
+        \arrow["\cong"', from=2-4, to=1-4]
+        \arrow["\cong", from=2-5, to=1-5]
+    \end{tikzcd}
+    \end{equation*}
+    by the fact that $\eta$ is natural isomorphism and lemma above, we are required to have a unique map i.e $f=f'$.
+
+    \textit{(Fully):} Given $g:FC\to FC'$, let' consider $Gg:GFC\to GFC'$, in which using the component of $\eta_C$ and $\eta_{C'}$, we can find the morphism $f'=\eta_{C'}\circ Gg\circ \eta_C^{-1}$ (LHS):
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJHRkMiXSxbMSwwLCJHRkMnIl0sWzAsMSwiQyJdLFsxLDEsIkMnIl0sWzMsMCwiRkdGQyJdLFs0LDEsIkZDJyJdLFszLDEsIkZDIl0sWzQsMCwiRkdGQyciXSxbMCwxLCJHZyJdLFswLDIsIlxcZXRhX0MiLDJdLFsxLDMsIlxcZXRhX3tDJ30iXSxbMiwzLCJmJyIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDcsIkZHZyIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDYsIlxcdmFyZXBzaWxvbl97RkN9IiwyXSxbNiw1LCJnIiwyXSxbNyw1LCJcXHZhcmVwc2lsb25fe0ZDJ30iXV0=
+    \begin{tikzcd}
+        GFC & {GFC'} && FGFC & {FGFC'} \\
+        C & {C'} && FC & {FC'}
+        \arrow["Gg", from=1-1, to=1-2]
+        \arrow["{\eta_C}"', from=1-1, to=2-1]
+        \arrow["{\eta_{C'}}", from=1-2, to=2-2]
+        \arrow["{f'}"', dashed, from=2-1, to=2-2]
+        \arrow["FGg", dashed, from=1-4, to=1-5]
+        \arrow["{\varepsilon_{FC}}"', from=1-4, to=2-4]
+        \arrow["g"', from=2-4, to=2-5]
+        \arrow["{\varepsilon_{FC'}}", from=1-5, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+
+    On the other hand (RHS), we will also consider the naturality condition of $\varepsilon$ on $g$. We will claim that $Ff'=g$. Before we doing that, for any $f:C\to C'$, using functor $F$ on the naturality condition of $\eta$ and using naturality condition on $Ff$, the following diagram commutes:
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMiwwLCJGQyJdLFsxLDAsIkZHRkMiXSxbMSwxLCJGR0ZDIl0sWzAsMCwiRkMiXSxbMCwxLCJGQyciXSxbMiwxLCJGQyciXSxbMCw1LCJGZiJdLFswLDEsIkZcXGV0YV9DIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwyLCJGR0ZmIiwxXSxbMSwzLCJcXHZhcmVwc2lsb25fe0ZDfV57LTF9IiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbNSwyLCJGXFxldGFfe0MnfSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzIsNCwiXFx2YXJlcHNpbG9uX3tGQyd9IiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMyw0LCJGZiIsMl1d
+    \begin{tikzcd}
+        FC & FGFC & FC \\
+        {FC'} & FGFC & {FC'}
+        \arrow["Ff", from=1-3, to=2-3]
+        \arrow["{F\eta_C}"', tail reversed, no head, from=1-3, to=1-2]
+        \arrow["FGFf"{description}, from=1-2, to=2-2]
+        \arrow["{\varepsilon_{FC}^{-1}}"', tail reversed, no head, from=1-2, to=1-1]
+        \arrow["{F\eta_{C'}}", tail reversed, no head, from=2-3, to=2-2]
+        \arrow["{\varepsilon_{FC'}}", tail reversed, no head, from=2-2, to=2-1]
+        \arrow["Ff"', from=1-1, to=2-1]
+    \end{tikzcd}
+    \end{equation*}
+
+    Then we have that $Ff' = F\eta_{C'}\circ FGg\circ F\eta_C^{-1}$, then since $FGg=\varepsilon_{FC'}^{-1}\circ g \circ \varepsilon_{FC}$, we have: $F\eta_{C'}^{-1}\circ Ff'\circ F\eta_C = \varepsilon_{FC'}^{-1}\circ g \circ \varepsilon_{FC}$ or, which we have used the commutative diagram above.
+    \begin{equation*}
+    \begin{aligned}
+        g &= \varepsilon_{FC'} \circ F\eta_{C'}^{-1}\circ \big(Ff'\circ F\eta_C\circ\varepsilon_{FC}^{-1}\big)\\
+        &= \varepsilon_{FC'} \circ F\eta_{C'}^{-1}\circ F\eta_{C'}\circ \varepsilon_{FC'}^{-1}\circ Ff' = Ff'
+    \end{aligned}
+    \end{equation*}
+
+    \textit{(Essentially Surjective):} Using the component of $\varepsilon$, we can have the object $GD$ such that $FGC\xrightarrow{\cong} D$, for any object $D$ in $\textbf{D}$.
+\end{proof}
+\end{dem}

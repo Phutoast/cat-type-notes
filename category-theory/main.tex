@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{blindtext}
+\usepackage{appendix}
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+    top=20mm,
+}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{quiver}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{mathtools}
+\usepackage{multicol}
+
+\usepackage{versions}
+\includeversion{dem}
+% \excludeversion{dem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.3em}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{axiom}{Axiom} 
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+\newcommand*{\review}{\textcolor{red}{\textbf{(TO REVIEW)}}}
+\newcommand*{\todo}{\textcolor{red}{\textbf{(TO DO)}}}
+\newcommand*{\checkproof}{\textcolor{red}{\textbf{(TO CHECK)}}}
+\newcommand*{\brackc}[1]{\ensuremath{\left\langle{#1}\right\rangle}}
+\newcommand*{\profunct}{ \to\!\!\!\!\!\!\rule{.1pt}{1.3ex} \ \ }
+
+\usepackage[utf8]{inputenc}
+
+\title{Category Theory: Primer (WIP)}
+\date{2024}
+\author{Phu Sakulwongtana}
+
+\begin{document}
+
+\maketitle
+
+\input{contents/part1.tex}
+\input{contents/part2.tex}
+\input{contents/part3.tex}
+\input{contents/part4.tex}
+\input{contents/part5.tex}
+\input{contents/part6.tex}
+\input{contents/part7.tex}
+\input{contents/part8.tex}
+
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{refs} % Entries are in the refs.bib file
+
+
+\end{document}

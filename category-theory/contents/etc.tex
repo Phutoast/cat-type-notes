@@ -1,0 +1,29 @@
+% (for example the blue map is defined by the lower diagram):
+% \begin{equation*}
+% % https://q.uiver.app/#q=WzAsMTIsWzAsMSwiXFxpbnRfQyBQXFxsYW5nbGV7WVxcdGltZXMgQ1xcdGltZXMgQSwgWVxcdGltZXMgQ1xcdGltZXMgQlxccmFuZ2xlfSJdLFsyLDEsIlxcaW50X0MgUFxcbGFuZ2xle1hcXHRpbWVzIENcXHRpbWVzIEEsIFhcXHRpbWVzIENcXHRpbWVzIEJcXHJhbmdsZX0iXSxbMSwyLCJcXGludF9DIFBcXGxhbmdsZXtYXFx0aW1lcyBDXFx0aW1lcyBBLCBZXFx0aW1lcyBDXFx0aW1lcyBCXFxyYW5nbGV9Il0sWzEsMSwiXFxpbnRfe0MnfVxcaW50X0MgUFxcbGFuZ2xle0MnXFx0aW1lcyBDXFx0aW1lcyBBLCBDJ1xcdGltZXMgQ1xcdGltZXMgQlxccmFuZ2xlfSJdLFsxLDAsIlxcaW50X0MgUFxcbGFuZ2xle0NcXHRpbWVzIEEsIENcXHRpbWVzIEJcXHJhbmdsZX0iXSxbMSw1LCJcXGludF9DIFBcXGxhbmdsZXtZXFx0aW1lcyBDXFx0aW1lcyBBLCBZXFx0aW1lcyBDXFx0aW1lcyBCXFxyYW5nbGV9Il0sWzAsNSwiUFxcbGFuZ2xle1lcXHRpbWVzIEZcXHRpbWVzIEEsIFlcXHRpbWVzIEZcXHRpbWVzIEJcXHJhbmdsZX0iXSxbMiw1LCJQXFxsYW5nbGV7WVxcdGltZXMgR1xcdGltZXMgQSwgWVxcdGltZXMgR1xcdGltZXMgQlxccmFuZ2xlfSJdLFsxLDQsIlxcaW50X0MgUFxcbGFuZ2xle0NcXHRpbWVzIEEsIENcXHRpbWVzIEJcXHJhbmdsZX0iXSxbMCw0LCJQXFxsYW5nbGV7RlxcdGltZXMgQSwgRlxcdGltZXMgQlxccmFuZ2xlfSJdLFsyLDQsIlBcXGxhbmdsZXtHXFx0aW1lcyBBLCBHXFx0aW1lcyBCXFxyYW5nbGV9Il0sWzEsNiwiUFxcbGFuZ2xle1lcXHRpbWVzIEZcXHRpbWVzIEEsIFlcXHRpbWVzIEdcXHRpbWVzIEJcXHJhbmdsZX0iXSxbMSwyXSxbMCwzLCJcXHBpX1kiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJhcnJvd2hlYWQifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxLDMsIlxccGlfWCIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzAsMl0sWzQsMCwiIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX1dLFs0LDFdLFs0LDMsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs1LDYsIlxccGlfRiIsMl0sWzUsNywiXFxwaV9HIl0sWzgsNSwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzgsOSwiXFxwaV9GIiwyXSxbOCwxMCwiXFxwaV9HIl0sWzksNiwiXFxsYW5nbGUgWVxcdGltZXMtLFlcXHRpbWVzLVxccmFuZ2xlIiwxXSxbMTAsNywiXFxsYW5nbGUgWVxcdGltZXMtLFlcXHRpbWVzLVxccmFuZ2xlIiwxXSxbNiwxMSwiXFxsYW5nbGUgXFxvcGVyYXRvcm5hbWV7aWR9ICwgKFxcb3BlcmF0b3JuYW1le2lkfSwgZlxcY2lyYy0sIFxcb3BlcmF0b3JuYW1le2lkfSApIFxccmFuZ2xlIiwxXSxbNywxMSwiXFxsYW5nbGUgKFxcb3BlcmF0b3JuYW1le2lkfSwgLVxcY2lyYyBmLCBcXG9wZXJhdG9ybmFtZXtpZH0gKSwgXFxvcGVyYXRvcm5hbWV7aWR9IFxccmFuZ2xlIiwxXV0=
+% \begin{tikzcd}
+% 	& {\int_C P\langle{C\times A, C\times B\rangle}} \\
+% 	{\int_C P\langle{Y\times C\times A, Y\times C\times B\rangle}} & {\int_{C'}\int_C P\langle{C'\times C\times A, C'\times C\times B\rangle}} & {\int_C P\langle{X\times C\times A, X\times C\times B\rangle}} \\
+% 	& {\int_C P\langle{X\times C\times A, Y\times C\times B\rangle}} \\
+% 	\\
+% 	{P\langle{F\times A, F\times B\rangle}} & {\int_C P\langle{C\times A, C\times B\rangle}} & {P\langle{G\times A, G\times B\rangle}} \\
+% 	{P\langle{Y\times F\times A, Y\times F\times B\rangle}} & {\int_C P\langle{Y\times C\times A, Y\times C\times B\rangle}} & {P\langle{Y\times G\times A, Y\times G\times B\rangle}} \\
+% 	& {P\langle{Y\times F\times A, Y\times G\times B\rangle}}
+% 	\arrow[color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=2-1]
+% 	\arrow[dashed, from=1-2, to=2-2]
+% 	\arrow[from=1-2, to=2-3]
+% 	\arrow["{\pi_Y}", tail reversed, no head, from=2-1, to=2-2]
+% 	\arrow[from=2-1, to=3-2]
+% 	\arrow["{\pi_X}"', tail reversed, no head, from=2-3, to=2-2]
+% 	\arrow[from=2-3, to=3-2]
+% 	\arrow["{\langle Y\times-,Y\times-\rangle}"{description}, from=5-1, to=6-1]
+% 	\arrow["{\pi_F}"', from=5-2, to=5-1]
+% 	\arrow["{\pi_G}", from=5-2, to=5-3]
+% 	\arrow[dashed, from=5-2, to=6-2]
+% 	\arrow["{\langle Y\times-,Y\times-\rangle}"{description}, from=5-3, to=6-3]
+% 	\arrow["{\langle \operatorname{id} , (\operatorname{id}, f\circ-, \operatorname{id} ) \rangle}"{description}, from=6-1, to=7-2]
+% 	\arrow["{\pi_F}"', from=6-2, to=6-1]
+% 	\arrow["{\pi_G}", from=6-2, to=6-3]
+% 	\arrow["{\langle (\operatorname{id}, -\circ f, \operatorname{id} ), \operatorname{id} \rangle}"{description}, from=6-3, to=7-2]
+% \end{tikzcd}
+% \end{equation*}

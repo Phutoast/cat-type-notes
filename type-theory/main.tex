@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage{blindtext}
+\usepackage{appendix}
+\usepackage{geometry}
+\usepackage{booktabs}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+    top=20mm,
+}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{quiver}
+\usepackage{tikz-cd}
+\usepackage{cancel}
+\usepackage{hyperref}
+\usepackage{versions}
+\includeversion{dem}
+% \excludeversion{dem}
+\usepackage{textcomp}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.3em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{axiom}{Axiom} 
+\newtheorem{postulate}{Postulate} 
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\renewcommand*{\d}{\ensuremath{\operatorname{d}\!}}
+\newcommand*{\type}{\ensuremath{\operatorname{Type}}}
+\newcommand*{\elem}{\ensuremath{\operatorname{Elem}}}
+\newcommand*{\obseq}{\ensuremath{\operatorname{Eq}_\mathbb{N}}}
+\newcommand*{\succnat}{\ensuremath{\operatorname{succ}_\mathbb{N}}}
+\newcommand*{\norm}[1]{\ensuremath{\left\|{#1}\right\|}}
+\newcommand*{\abs}[1]{\ensuremath{\left|{#1}\right|}}
+\newcommand*{\review}{\textcolor{red}{\textbf{(TO REVIEW) }}}
+\newcommand*{\checkans}{\textcolor{red}{\textbf{(TO CHECK) }}}
+\newcommand*{\todo}{\textcolor{red}{\textbf{(TO DO)} }}
+\newcommand*{\lcm}{\ensuremath{\operatorname{lcm}}}
+\newcommand*{\bracka}[1]{\ensuremath{\left[\left[{#1}\right]\right]}}
+% \usepackage{blkarray}
+
+\usepackage[utf8]{inputenc}
+
+\title{Type Theory (WIP)}
+\date{2024}
+\author{Phu Sakulwongtana}
+
+\begin{document}
+
+\maketitle
+
+Notes from \textit{Introduction to Homotopy Type Theory
+} by Egbert Rijke.
+
+% \input{contents/part0.tex}
+\input{contents/part1.tex}
+\input{contents/part2.tex}
+\input{contents/part3.tex}
+
+% Ex 1.1 lemma:element-conv-rule
+% Ex 2.1 lemma:equal-function-eval-equal
+% Ex 2.3.a def:const-funct
+% Ex 2.3.b/2.3.c lemma:const-funct-compose
+% Ex 2.4.a def:swap-funct
+% Ex 2.4.b lemma:swap-two-time
+
+
+\end{document}

@@ -1,0 +1,315 @@
+
+\section{Adjunction}
+
+\begin{definition}{\textbf{(Adjunction)}}
+    Given the category $\textbf{C}$ and $\textbf{D}$, with the functor $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$, then the adjunction between $F$ and $G$ is natural bijection (on both object):
+    \begin{equation*}
+        \operatorname{Hom}_\textbf{D}(FC, D) \xrightarrow{\cong}\operatorname{Hom}_\textbf{C}(C, GD)       
+    \end{equation*}
+    for each objects $C$ of $\textbf{C}$ and $D$ of $\textbf{D}$. Furthermore, we have the following additional notations: 
+    \begin{itemize}
+        \item We call $F$ left-adjoint and $G$ right-adjoint and the adjunction between them is denoted by $F\dashv G$.
+        \item With 2 maps $f^\sharp:FC\rightarrow D$ and $f^\flat:C\rightarrow GD$, that are related by bijection are called transpose or adjunct to each other.
+    \end{itemize}
+\end{definition}
+
+\begin{remark}{\textit{(Exploration on Adjunction)}}
+    Given the categories $\textbf{C},\textbf{D}$ with functors $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$, in which $F\dashv G$. Then we can fixed the object $C$, leading to the following functors:
+    \begin{equation*}
+        \operatorname{Hom}_\textbf{D}(FC, -), \operatorname{Hom}_\textbf{C}(C, G-):\textbf{D}\rightarrow\textbf{Set}
+    \end{equation*}
+    This means that the functor $\operatorname{Hom}_\textbf{C}(C,G-)$ can be represented by $FC$. We can interpret this as. Given functor $\operatorname{Hom}_\textbf{C}(C,G-)$, we can probe into object $D$ by the mapping between $C\to GD$, and using $C$ to judge its properties. But since they are natural isomorphism, then the judging procedure can be done using $FC$ directly.
+
+\end{remark}
+
+\begin{remark}{\textit{(Adjunction and Yoneda Lemma)}}
+    By Yoneda embedding, the set of natural \textbf{isomorphism} given on the LHS is isomorphic to:
+    \begin{equation*}
+        \operatorname{Hom}_{[\textbf{D}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{D}(FC, -), \operatorname{Hom}_\textbf{C}(C, G-) \Big)\cong\operatorname{Hom}_\textbf{C}(C, GFC)
+    \end{equation*}
+    where each of the natural isomorphism is governed by its action on identity morphism of $FC$. Furthermore, each of the natural isomorphism gives us the component of $\operatorname{Hom}_\textbf{D}(FC,FC)\xrightarrow{\cong}\operatorname{Hom}_\textbf{C}(C,GFC)$
+\end{remark}
+
+\subsection{Unit \& Co-Unit}
+
+The following two remarks leads to the following notion of unit:
+
+\begin{definition}{\textbf{(Unit of Adjunction)}}
+    The image of $\operatorname{id}_{FC}$ on the function $\operatorname{Hom}_\textbf{D}(FC, FC)\xrightarrow{\cong}\operatorname{Hom}_\textbf{C}(C, GFC)$ defined above is called unit of the adjunction (at $C$) is denoted by $(\operatorname{id}_{FC})^\flat=\eta_C:C\rightarrow GFC$
+\end{definition}
+
+\begin{remark}{(Notes on Unit)}
+    \label{remark:note-unit}
+    One can also see the Unit as the representation of the adjunction as a whole, due to the fact that the action on identity of a natural transformation is enough to determine the whole natural transformation. Suppose we are given $f^\sharp:FC\to D$ we can get $f^\flat$ by the following LHS diagram.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMywwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0R9KEZDLCBGQykiXSxbMywxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KEMsIEdGQykiXSxbNiwxLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0N9KEMsIEdEKSJdLFs2LDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7RH0oRkMsIEQpIl0sWzAsMCwiQyJdLFsxLDAsIkdGQyJdLFsxLDEsIkdEIl0sWzMsMiwiXFxjb25nIl0sWzAsMSwiXFxjb25nIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMCwzLCJmXlxcc2hhcnBcXGNpcmMtIl0sWzEsMiwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntDfShDLEctKVtmXlxcc2hhcnBdPUdmXlxcc2hhcnBcXGNpcmMtIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNSw2LCJHZl5cXHNoYXJwIl0sWzQsNSwiXFxldGFfQyJdLFs0LDYsImZeXFxmbGF0IiwyXV0=
+    \begin{tikzcd}
+        C & GFC && {\operatorname{Hom}_\textbf{D}(FC, FC)} &&& {\operatorname{Hom}_\textbf{D}(FC, D)} \\
+        & GD && {\operatorname{Hom}_\textbf{C}(C, GFC)} &&& {\operatorname{Hom}_\textbf{C}(C, GD)}
+        \arrow["\cong", from=1-7, to=2-7]
+        \arrow["\cong"', color={rgb,255:red,214;green,92;blue,92}, from=1-4, to=2-4]
+        \arrow["{f^\sharp\circ-}", from=1-4, to=1-7]
+        \arrow["{\operatorname{Hom}_\textbf{C}(C,G-)[f^\sharp]=Gf^\sharp\circ-}"', color={rgb,255:red,214;green,92;blue,92}, from=2-4, to=2-7]
+        \arrow["{Gf^\sharp}", from=1-2, to=2-2]
+        \arrow["{\eta_C}", from=1-1, to=1-2]
+        \arrow["{f^\flat}"', from=1-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    For the RHS diagram, we make use of the natural transformation and Yoneda's trick. The arrow moving down represents the ``transposition'', and the red represents the path of the LHS diagram when we start with $\operatorname{id}_{FC}$.
+\end{remark}
+
+Now we have only consider the unit at $C$, so let's try varying $C$. This is given in the following lemma:
+
+\begin{lemma}
+    \label{lemma:adj-commutative-diagram}
+    {\color{purple} Given the pair of adjunction $f^\sharp:FC\rightarrow D$ and $g^\sharp:FC'\rightarrow D'$ with morphism $h:C\rightarrow C'$ and $k:D\rightarrow D'$, then by the naturality condition of adjunction shows that the following diagrams are commutes iff they are of each other:}
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJGQyJdLFsxLDAsIkQiXSxbMCwxLCJGQyciXSxbMSwxLCJEJyJdLFszLDAsIkMiXSxbNCwwLCJHRCJdLFs0LDEsIkdEJyJdLFszLDEsIkMnIl0sWzIsMywiZ15cXHNoYXJwIiwyXSxbMCwxLCJmXlxcc2hhcnAiXSxbMCwyLCJGaCIsMl0sWzEsMywiayJdLFs1LDYsIkdrIl0sWzQsNSwiZl5cXGZsYXQiXSxbNyw2LCJnXlxcZmxhdCIsMl0sWzQsNywiaCIsMl1d
+    \begin{tikzcd}
+        FC & D && C & GD \\
+        {FC'} & {D'} && {C'} & {GD'}
+        \arrow["{g^\sharp}"', from=2-1, to=2-2]
+        \arrow["{f^\sharp}", from=1-1, to=1-2]
+        \arrow["Fh"', from=1-1, to=2-1]
+        \arrow["k", from=1-2, to=2-2]
+        \arrow["Gk", from=1-5, to=2-5]
+        \arrow["{f^\flat}", from=1-4, to=1-5]
+        \arrow["{g^\flat}"', from=2-4, to=2-5]
+        \arrow["h"', from=1-4, to=2-4]
+    \end{tikzcd}
+    \end{equation*}
+\end{lemma}
+
+\begin{dem}
+\begin{proof}
+    $\boldsymbol{(\implies)}:$ We start by consider the following commutative diagram that are created from the naturality condition of the adjunction:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X1xcdGV4dGJme0R9KEZDLCBEKSJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7RH0oRkMsIEQnKSJdLFsyLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7RH0oQywgR0QnKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7RH0oQywgR0QpIl0sWzQsMCwiXFxvcGVyYXRvcm5hbWV7SG9tfV9cXHRleHRiZntEfShGQycsIEQnKSJdLFs0LDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fXFx0ZXh0YmZ7RH0oQycsIEdEJykiXSxbMCwxLCJrXFxjaXJjLSJdLFsxLDIsIlxcY29uZyIsMV0sWzAsMywiXFxjb25nIiwyXSxbMywyLCJHa1xcY2lyYy0iLDJdLFs0LDEsIi1cXGNpcmMgRmgiLDJdLFs1LDIsIi1cXGNpcmMgaCJdLFs0LDUsIlxcY29uZyJdXQ==
+    \begin{tikzcd}
+        {\operatorname{Hom}_\textbf{D}(FC, D)} && {\operatorname{Hom}_\textbf{D}(FC, D')} && {\operatorname{Hom}_\textbf{D}(FC', D')} \\
+        {\operatorname{Hom}_\textbf{D}(C, GD)} && {\operatorname{Hom}_\textbf{D}(C, GD')} && {\operatorname{Hom}_\textbf{D}(C', GD')}
+        \arrow["{k\circ-}", from=1-1, to=1-3]
+        \arrow["\cong"{description}, from=1-3, to=2-3]
+        \arrow["\cong"', from=1-1, to=2-1]
+        \arrow["{Gk\circ-}"', from=2-1, to=2-3]
+        \arrow["{-\circ Fh}"', from=1-5, to=1-3]
+        \arrow["{-\circ h}", from=2-5, to=2-3]
+        \arrow["\cong", from=1-5, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+    We see that $f^\sharp\in\operatorname{Hom}_\textbf{D}(FC, D)$ and $g^\sharp\in\operatorname{Hom}_\textbf{D}(FC', D')$, by the hypothesis, we have that $k\circ f^\sharp = g^\sharp\circ Fh$, and the fact that it is commuting we can take a different path, in which we have that $Gk\circ f^\flat=f^\flat\circ h$.
+
+    The other direction is the same.
+\end{proof}
+\end{dem}
+
+\begin{lemma}
+    With the maps $\eta_C:C\rightarrow GFC$ can be put together to define the natural transformation $\eta:\operatorname{id}_\textbf{C}\Rightarrow G\circ F$ of endofunctors $\textbf{C}\rightarrow\textbf{C}$
+\end{lemma}
+\begin{dem}
+\begin{proof}
+    We note that, since the LHS is obviously commutes, using the lemma above.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJGQyJdLFsxLDAsIkZDIl0sWzAsMSwiRkMnIl0sWzEsMSwiRkMnIl0sWzMsMCwiQyJdLFszLDEsIkMnIl0sWzQsMCwiR0ZDIl0sWzQsMSwiR0ZDJyJdLFswLDEsIlxcb3BlcmF0b3JuYW1le2lkfV97RkN9Il0sWzIsMywiXFxvcGVyYXRvcm5hbWV7aWR9X3tGQyd9IiwyXSxbMCwyLCJGZiIsMl0sWzEsMywiRmYiXSxbNSw3LCJcXGV0YV97RkMnfSIsMl0sWzQsNiwiXFxldGFfe0ZDfSJdLFs0LDUsImYiLDJdLFs2LDcsIkdGZiJdXQ==
+    \begin{tikzcd}
+        FC & FC && C & GFC \\
+        {FC'} & {FC'} && {C'} & {GFC'}
+        \arrow["{\operatorname{id}_{FC}}", from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_{FC'}}"', from=2-1, to=2-2]
+        \arrow["Ff"', from=1-1, to=2-1]
+        \arrow["Ff", from=1-2, to=2-2]
+        \arrow["{\eta_{FC'}}"', from=2-4, to=2-5]
+        \arrow["{\eta_{FC}}", from=1-4, to=1-5]
+        \arrow["f"', from=1-4, to=2-4]
+        \arrow["GFf", from=1-5, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+\end{proof}
+\end{dem}
+
+\begin{remark}{(Co-Units Formulation)}
+    Let's variate $D$ in the natural bijection of $\operatorname{Hom}_\textbf{D}(FC,D) \xrightarrow{\cong}\operatorname{Hom}_\textbf{C}(C,GD)$ consider the natural isomorphism between presheaves $\operatorname{Hom}_\textbf{D}(F-,D), \operatorname{Hom}_\textbf{C}(C,G-):\textbf{C}^\text{op}\rightarrow\textbf{Set}$. Repeating the analysis above, we have the universal morphism $\varepsilon_D:FGD\rightarrow D$, and natural transformation $\varepsilon:F\circ G\Rightarrow\operatorname{id}_\textbf{D}$
+\end{remark}
+
+\begin{definition}{\textbf{(Counit)}}
+    The adjunction $F\dashv G$ induced the natural isomorphism $\varepsilon:F\circ G\Rightarrow\operatorname{id}_\textbf{D}$  of endofunctors $\textbf{D}\rightarrow\textbf{D}$ is called counit of the adjunction.
+\end{definition}
+
+\begin{remark}
+    \label{remark:note-counit}
+    Similar to the case of unit, one can see that the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMixbMCwxLCJHRCJdLFswLDAsIkMiXSxbMSwwLCJnXlxcZmxhdCIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        C \\
+        GD
+        \arrow["{g^\flat}"', dashed, from=1-1, to=2-1]
+    \end{tikzcd}
+    \longmapsto
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJGQyJdLFswLDEsIkZHRCJdLFsxLDEsIkQiXSxbMCwyLCJnXlxcc2hhcnAiXSxbMCwxLCJGZ15cXGZsYXQiLDJdLFsxLDIsIlxcdmFyZXBzaWxvbl9EIiwyXV0=
+    \begin{tikzcd}
+        FC \\
+        FGD & D
+        \arrow["{Fg^\flat}"', from=1-1, to=2-1]
+        \arrow["{g^\sharp}", from=1-1, to=2-2]
+        \arrow["{\varepsilon_D}"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{remark}
+
+\subsection{Alternative Definition of Adjunction}
+
+We have the following question: Given the pair of functors $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$, the pair of natural transformations $\eta:\operatorname{id}_\textbf{C}\Rightarrow G\circ F$ and $\varepsilon:G\circ F\Rightarrow\operatorname{id}_\textbf{D}$ induces an adjunction $F\dashv G$ ? The answer is almost yes, but there is a problem. However, the Yoneda embedding doesn't guranteed the natural isomorphism, so we need additional condition.
+
+\begin{lemma}{\textbf{(Triangle Identities):}}
+    \label{lemma:triangle-id-adjoint}
+    Given the unit $\eta:\operatorname{id}_\textbf{C}\Rightarrow G\circ F$ and co-unit $\varepsilon:F\circ G\Rightarrow\operatorname{id}_\textbf{D}$ for adjunction $F\dashv G$. Then the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJGIl0sWzEsMCwiRkdGIl0sWzEsMSwiRiJdLFszLDAsIkciXSxbNCwwLCJHRkciXSxbNCwxLCJHIl0sWzAsMSwiRlxcZXRhIiwwLHsibGV2ZWwiOjJ9XSxbMSwyLCJcXHZhcmVwc2lsb24gRiIsMCx7ImxldmVsIjoyfV0sWzAsMiwiXFxvcGVyYXRvcm5hbWV7aWR9X0YiLDIseyJsZXZlbCI6Mn1dLFszLDUsIlxcb3BlcmF0b3JuYW1le2lkfV9HIiwyLHsibGV2ZWwiOjJ9XSxbMyw0LCJcXGV0YSBHIiwwLHsibGV2ZWwiOjJ9XSxbNCw1LCJHXFx2YXJlcHNpbG9uIiwwLHsibGV2ZWwiOjJ9XV0=
+    \begin{tikzcd}
+        F & FGF && G & GFG \\
+        & F &&& G
+        \arrow["F\eta", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_F}"', Rightarrow, from=1-1, to=2-2]
+        \arrow["{\varepsilon F}", Rightarrow, from=1-2, to=2-2]
+        \arrow["{\eta G}", Rightarrow, from=1-4, to=1-5]
+        \arrow["{\operatorname{id}_G}"', Rightarrow, from=1-4, to=2-5]
+        \arrow["G\varepsilon", Rightarrow, from=1-5, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+\end{lemma}
+\begin{proof}
+    For the LHS diagram, given an object $C$, we have to show that $\varepsilon_{FC}\circ F\eta_C=\operatorname{id}_{FC}$. We starts by note that, from the remark \ref{remark:note-counit}, when using $\eta_C:FC\to GFC$ and turn it to its transpose, i.e $(\eta_C)^\sharp=\operatorname{id}_FC$, that is:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMixbMCwxLCJHRkMiXSxbMCwwLCJDIl0sWzEsMCwiXFxldGFfQyIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        C \\
+        GFC
+        \arrow["{\eta_C}"', dashed, from=1-1, to=2-1]
+    \end{tikzcd}
+    \longmapsto
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJGQyJdLFswLDEsIkZHRkMiXSxbMSwxLCJGQyJdLFswLDIsIlxcb3BlcmF0b3JuYW1le2lkfV97RkN9Il0sWzAsMSwiRlxcZXRhX0MiLDJdLFsxLDIsIlxcdmFyZXBzaWxvbl97RkN9IiwyXV0=
+    \begin{tikzcd}
+        FC \\
+        FGFC & FC
+        \arrow["{F\eta_C}"', from=1-1, to=2-1]
+        \arrow["{\operatorname{id}_{FC}}", from=1-1, to=2-2]
+        \arrow["{\varepsilon_{FC}}"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \qquad \qquad 
+    % https://q.uiver.app/#q=WzAsMixbMCwxLCJEIl0sWzAsMCwiRkdEIl0sWzEsMCwiXFx2YXJlcHNpbG9uX0QiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        FGD \\
+        D
+        \arrow["{\varepsilon_D}", dashed, from=1-1, to=2-1]
+    \end{tikzcd}
+    \longmapsto
+    % https://q.uiver.app/#q=WzAsMyxbMCwxLCJHRCJdLFswLDAsIkdGR0QiXSxbMSwwLCJHRCJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le2lkfV97R0R9Il0sWzEsMCwiR1xcdmFyZXBzaWxvbl9EIiwyXSxbMiwxLCJcXGV0YV97R0R9IiwyXV0=
+    \begin{tikzcd}
+        GFGD & GD \\
+        GD
+        \arrow["{G\varepsilon_D}"', from=1-1, to=2-1]
+        \arrow["{\eta_{GD}}"', from=1-2, to=1-1]
+        \arrow["{\operatorname{id}_{GD}}", from=1-2, to=2-1]
+    \end{tikzcd}
+    \end{equation*}
+    and we have used the horizontal composition of natural transformation. The second diagram is done in similar manners, where we consider the unit diagram instead as shown in the RHS of the diagram above.
+\end{proof}
+
+This is the condition that the natural transformations have to satisfy to get the adjunction i.e:
+
+\begin{lemma}
+    Given functors $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$, the pair of natural transformation $\eta:\operatorname{id}_\textbf{C}\Rightarrow G\circ F$ and $\varepsilon:F\circ G\Rightarrow\operatorname{id}_\textbf{D}$ that satisfying the triangle identity. then the assignment:
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{Hom}_\textbf{D}(FC,D)\xrightarrow{\quad\flat\quad}&\operatorname{Hom}_\textbf{C}(C,GD) \\
+        f^\sharp\xmapsto{\qquad\quad}&f^\flat = Gf^\sharp\circ\eta_C
+    \end{aligned}
+    \qquad \qquad 
+    \begin{aligned}
+    \operatorname{Hom}_\textbf{C}(C,GD)\xrightarrow{\quad\sharp\quad}&\operatorname{Hom}_\textbf{D}(FC,D) \\
+    g^\flat\xmapsto{\qquad\quad}&g^\sharp = \varepsilon_D\circ Fg^\flat
+    \end{aligned}
+    \end{equation*}
+    are mutually inverse i.e there is bijection between $\operatorname{Hom}_\textbf{D}(FC,D)\rightarrow\operatorname{Hom}_\textbf{C}(C,GD)$, thus an adjunction $F\dashv G$. Note that the naturality on the argument is guranteed by the natural transformations used to defined such a mapping.
+\end{lemma}
+
+\begin{proof}
+    We have that, for LHS given $f:FC\to D$ we have: $f^\flat=Gf\circ\eta_C$, and given $g:C\to GD$ for the RHS with $g^\sharp=\varepsilon_D\circ Fg$
+    \begin{equation*}
+    \begin{aligned}
+        (f^\flat)^\sharp&=\varepsilon_D\circ Ff^\flat = \varepsilon_D\circ FGf\circ F\eta_C \\
+        &= f\circ\varepsilon_{FC}\circ F\eta_C = f\circ \operatorname{id}_{FC} = f
+    \end{aligned}
+    \qquad\quad
+    \begin{aligned}
+        (g^\sharp)^\flat&= Gg^\flat\circ\eta_C = G\varepsilon_D\circ GFg\circ \eta_C \\
+        &= G\varepsilon_D\circ\eta_{GD}\circ g = \operatorname{id}_{GD} \circ g = g
+    \end{aligned}
+    \end{equation*}
+    Note that the second equality follows from the naturality condition of $\varepsilon$ on the function $f:FC\to D$ as we have $\varepsilon_D\circ FGf=\varepsilon_{FC}\circ F\eta_C$. This is similar for the case of $(g^\sharp)^\flat$, as show on the RHS, where we use naturality condition of $\eta$ for which $GFg\circ\eta_C=\eta_{GD}\circ g$.
+\end{proof}
+
+\subsection{Adjunctions, Limits and Colimits}
+
+We are going to consider the connection betweet left/right adjunction and limits. We are going to show that right adjoint functor are continous. Let's consider a simplier example.
+
+\begin{proposition}
+    Given object $A$ and $B$ in $\textbf{D}$ with product $A\times B$, and right adjoint $R:\textbf{D}\rightarrow\textbf{C}$. We can show that: $R(A\times B) \cong RA\times RB$.
+\end{proposition}
+\begin{proof}
+    Consider the map $f_1:C\to RA$ and $f_2:C\to RB$, by the adjunction we also have a unique map of $f_1^\sharp:LC\to A$ and $f_2^\sharp:LC\to B$, then by univeral properties there is a unique map $f_1^\sharp\times f_2^\sharp=f^\sharp:LC\to A\times B$. And by adjunction, we have a unique map $f^\flat:C\to R(A\times B)$. Thus, $R(A\times B)$ is also has the universal property i.e a limit. Therefore, $R(A\times B)\cong RA\times RB$ as limtis are all isomorphic to each other.
+\end{proof}
+
+In a more general manners, we can consider the action of adjunction on cones. 
+
+\begin{lemma}
+Given the adjuntion $L\dashv R$, in which $L:\textbf{C}\rightarrow\textbf{D}$ and $R:\textbf{D}\rightarrow\textbf{C}$ with diagram $E:\textbf{J}\rightarrow\textbf{D}$. Then adjunction induces a bijection:
+\begin{equation*}
+    \operatorname{Cone}(LC, E) \cong \operatorname{Cone}(C, RE)
+\end{equation*}
+for all object $C$ and natural in $C$.
+\end{lemma}
+
+\begin{proof}
+    Note that $\alpha\in\operatorname{Cone}(LC, E)$ is a natural transformation between $LC\Rightarrow E$, where $LC:\boldsymbol{J}\to\boldsymbol{D}$ is a constant diagram where for all object $J$ of $\boldsymbol{J}$, we have $LC(J)=LC$. Then, for each object $J$, there is a component of $\alpha_J:LC\to EJ$ by the adjunction, we have a unique (per isomorphism of adjunction) $(\alpha_J)^\flat:C\to (RE)J$, which we take as the component of $\alpha$ to component of $\alpha^\flat\in \operatorname{Cone}(C, RE)$. Note that the naturality of $C$ follows from properties of adjunction.
+
+    We are left to show that $\alpha^\flat$ is a natural transformation, that is given a morphism $m:J_1\to J_2$ where $J_1,J_2$ are objects of $J$. Then, we we have that (following from the lemma \ref{lemma:adj-commutative-diagram}, where $f^\sharp$, $g^\sharp$, $Fh$ and $k$ in its case are $\alpha_{J_1}$, $\alpha_{J_2}$, $\operatorname{id}_{LC}$ and $Dm$, respectively):
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMSwwLCJMQyJdLFswLDEsIkVKXzEiXSxbMiwxLCJFSl8yIl0sWzAsMSwiXFxhbHBoYV97Sl8xfSIsMl0sWzAsMiwiXFxhbHBoYV97Sl8yfSJdLFsxLDIsIkVtIiwyXV0=
+    \begin{tikzcd}
+        & LC \\
+        {EJ_1} && {EJ_2}
+        \arrow["{\alpha_{J_1}}"', from=1-2, to=2-1]
+        \arrow["{\alpha_{J_2}}", from=1-2, to=2-3]
+        \arrow["Em"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \qquad\rightsquigarrow\qquad
+    % https://q.uiver.app/#q=WzAsMyxbMSwwLCJDIl0sWzAsMSwiUkVKXzEiXSxbMiwxLCJSRUpfMiJdLFswLDEsIlxcYWxwaGFfe0pfMX1eXFxmbGF0IiwyXSxbMCwyLCJcXGFscGhhX3tKXzJ9XlxcZmxhdCJdLFsxLDIsIlJFbSIsMl1d
+    \begin{tikzcd}
+        & C \\
+        {REJ_1} && {REJ_2}
+        \arrow["{\alpha_{J_1}^\flat}"', from=1-2, to=2-1]
+        \arrow["{\alpha_{J_2}^\flat}", from=1-2, to=2-3]
+        \arrow["REm"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    
+    this hows that $\alpha^\flat$ is natural transformation as needed. 
+\end{proof}
+
+\begin{theorem}
+    Right-adjoint functors are continous.
+\end{theorem}
+\begin{proof}
+    We want to show that (note that it isn't just isomorphism but also naturally isomorphic):
+    \begin{equation*}
+    \begin{aligned}
+        \operatorname{Hom}_\textbf{C}(-, \lim RF) &\cong \operatorname{Cone}(-, RF) \cong \operatorname{Cone}(L-,F) \\
+        &\cong \operatorname{Hom}_\textbf{D}(L-,\lim F) \cong \operatorname{Hom}_\textbf{D}(-,R\lim F)
+    \end{aligned}
+    \end{equation*}
+    And by Yoneda embedding, $\lim RF\cong R\lim F$ as needed.
+\end{proof}
+

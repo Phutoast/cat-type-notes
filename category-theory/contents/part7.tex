@@ -1,0 +1,1102 @@
+\section{Monad and Comonad}
+
+\subsection{Monad}
+
+\begin{definition}{\textbf{(Monad)}}
+    Given a category $\textbf{C}$, the monad on $\textbf{C}$ is $(T, \eta, \mu)$ where $T:\textbf{C}\to\textbf{C}$, an unit $\eta:\operatorname{id}_\textbf{C}\Rightarrow T$ and a composition or multiplication $\mu:TT\Rightarrow T$, making the following diagram commutes (they are called left and right unitality and associativity, respectively):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiVCJdLFsxLDAsIlRUIl0sWzEsMSwiVCJdLFszLDAsIlQiXSxbNCwwLCJUVCJdLFs0LDEsIlQiXSxbNiwwLCJUVFQiXSxbNywwLCJUVCJdLFs2LDEsIlRUIl0sWzcsMSwiVCJdLFswLDEsIlxcZXRhIFQiLDAseyJsZXZlbCI6Mn1dLFsxLDIsIlxcbXUiLDAseyJsZXZlbCI6Mn1dLFswLDIsIlxcb3BlcmF0b3JuYW1le2lkfSIsMix7ImxldmVsIjoyfV0sWzMsNCwiVFxcZXRhIiwwLHsibGV2ZWwiOjJ9XSxbNCw1LCJcXG11IiwwLHsibGV2ZWwiOjJ9XSxbMyw1LCJcXG9wZXJhdG9ybmFtZXtpZH0iLDIseyJsZXZlbCI6Mn1dLFs2LDcsIlRcXG11IiwwLHsibGV2ZWwiOjJ9XSxbNiw4LCJcXG11IFQiLDIseyJsZXZlbCI6Mn1dLFs4LDksIlxcbXUiLDIseyJsZXZlbCI6Mn1dLFs3LDksIlxcbXUiLDAseyJsZXZlbCI6Mn1dXQ==
+    \begin{tikzcd}
+        T & TT && T & TT && TTT & TT \\
+        & T &&& T && TT & T
+        \arrow["{\eta T}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\operatorname{id}}"', Rightarrow, from=1-1, to=2-2]
+        \arrow["\mu", Rightarrow, from=1-2, to=2-2]
+        \arrow["T\eta", Rightarrow, from=1-4, to=1-5]
+        \arrow["{\operatorname{id}}"', Rightarrow, from=1-4, to=2-5]
+        \arrow["\mu", Rightarrow, from=1-5, to=2-5]
+        \arrow["T\mu", Rightarrow, from=1-7, to=1-8]
+        \arrow["{\mu T}"', Rightarrow, from=1-7, to=2-7]
+        \arrow["\mu", Rightarrow, from=1-8, to=2-8]
+        \arrow["\mu"', Rightarrow, from=2-7, to=2-8]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Kleisli Category)}}
+    Given a monad $(T, \eta, \mu)$ on category $\textbf{C}$, a Kleisli category $\textbf{C}_T$ is defined to have the following components:
+    \begin{itemize}
+        \item \textbf{(Object):} The objects are objects of $\textbf{C}$.
+        \item \textbf{(Morphism):} The morphism between 2 objects $X$ to $Y$ is $k:X\to TY$, where the composition between this morphism and $h:Y\to TZ$ is given to be:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzEsMCwiVFkiXSxbMiwwLCJUVFoiXSxbMywwLCJUWiJdLFswLDEsImsiXSxbMSwyLCJUaCJdLFsyLDMsIlxcbXVfWiJdXQ==
+        \begin{tikzcd}
+            X & TY & TTZ & TZ
+            \arrow["k", from=1-1, to=1-2]
+            \arrow["Th", from=1-2, to=1-3]
+            \arrow["{\mu_Z}", from=1-3, to=1-4]
+        \end{tikzcd}
+        \end{equation*}
+        With $\eta_X:X\to TX$ being the identity morphism.
+    \end{itemize}
+\end{definition}
+
+\begin{proposition}
+    Kleisli Category is indeed a category.
+\end{proposition}
+\begin{proof}
+    There are 2 things we have to proof here: the composition of the identity morphism and the associativity of the composition. That are:
+
+    \textbf{(Identity Composition):} Consider $k:X\to TY$ and $\eta_X:X\to TX$, then $k\circ_{kl} \eta_X$ is given in the blue path of the LHS diagram, while the square represents the naturality of $\eta$.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJYIl0sWzAsMSwiVFgiXSxbMSwxLCJUVFkiXSxbMiwxLCJUWSJdLFsxLDAsIlRZIl0sWzEsMiwiVGsiLDIseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMiwzLCJcXG11X1kiLDIseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMCwxLCJcXGV0YV9YIiwyLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzAsNCwiayJdLFs0LDIsIlxcZXRhX3tUWX0iXV0=
+    \begin{tikzcd}
+        X & TY \\
+        TX & TTY & TY
+        \arrow["k", from=1-1, to=1-2]
+        \arrow["{\eta_X}"', color={rgb,255:red,92;green,92;blue,214}, from=1-1, to=2-1]
+        \arrow["{\eta_{TY}}", from=1-2, to=2-2]
+        \arrow["Tk"', color={rgb,255:red,92;green,92;blue,214}, from=2-1, to=2-2]
+        \arrow["{\mu_Y}"', color={rgb,255:red,92;green,92;blue,214}, from=2-2, to=2-3]
+    \end{tikzcd}
+    \qquad\quad
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzIsMCwiVFRZIl0sWzMsMCwiVFkiXSxbMSwwLCJUWSJdLFsxLDIsIlxcbXVfWSJdLFswLDMsImsiXSxbMywxLCJUXFxldGFfWSJdXQ==
+    \begin{tikzcd}
+        X & TY & TTY & TY
+        \arrow["k", from=1-1, to=1-2]
+        \arrow["{T\eta_Y}", from=1-2, to=1-3]
+        \arrow["{\mu_Y}", from=1-3, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+    The left unitality gives $\mu\circ \eta_{TY}=\operatorname{id}_Y$ and so the result is $k$, as needed. On the other hand, given $\eta_Y:Y\to TY$, then we have $\eta_Y\circ_{kl}k$ in the RHS diagram. With only right unitality, we get the final result as $k$ as needed.
+    
+    \textbf{(Associativity):} Given $k:X\to TY,h:Y\to TZ, l:Z\to TW$, then we want to show that 
+    
+    \begin{equation*}
+        {\color{rgb,255:red,92;green,92;blue,214} l\circ_{kl} (h\circ_{kl} k)} = {\color{rgb,255:red,214;green,92;blue,92} (l\circ_{kl} h)\circ_{kl} k} 
+    \end{equation*}
+
+    We have the commutative diagram, where the LHS is the composition represented by the colors, while the RHS shows the commutativity of 2 paths, where the first square is the naturality condition of $\mu$ and the second square is the associativity condition of monad.
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOSxbMCwwLCJYIl0sWzEsMCwiVFkiXSxbMiwwLCJUVFoiXSxbMywwLCJUWiJdLFs0LDAsIlRUVyJdLFs1LDAsIlRXIl0sWzIsMSwiVFRaIl0sWzMsMSwiVFRUVyJdLFs0LDEsIlRUVyJdLFswLDEsImsiXSxbMSwyLCJUaCJdLFsyLDMsIlxcbXVfWiIsMCx7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFszLDQsIlRsIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzQsNSwiXFxtdV9XIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzYsNywiVFRsIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNyw4LCJUXFxtdV9XIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMSw2LCJUaCIsMl0sWzgsNSwiXFxtdV9XIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXV0=
+    \begin{tikzcd}
+        X & TY & TTZ & TZ & TTW & TW \\
+        && TTZ & TTTW & TTW
+        \arrow["k", from=1-1, to=1-2]
+        \arrow["Th", from=1-2, to=1-3]
+        \arrow["Th"', from=1-2, to=2-3]
+        \arrow["{\mu_Z}", color={rgb,255:red,92;green,92;blue,214}, from=1-3, to=1-4]
+        \arrow["Tl", color={rgb,255:red,92;green,92;blue,214}, from=1-4, to=1-5]
+        \arrow["{\mu_W}", color={rgb,255:red,92;green,92;blue,214}, from=1-5, to=1-6]
+        \arrow["TTl"', color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=2-4]
+        \arrow["{T\mu_W}"', color={rgb,255:red,214;green,92;blue,92}, from=2-4, to=2-5]
+        \arrow["{\mu_W}"', color={rgb,255:red,214;green,92;blue,92}, from=2-5, to=1-6]
+    \end{tikzcd}
+    \quad
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJUVFoiXSxbMCwxLCJUWiJdLFsxLDAsIlRUVFciXSxbMSwxLCJUVFciXSxbMiwwLCJUVFciXSxbMiwxLCJUVyJdLFswLDIsIlRUbCIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzAsMSwiXFxtdV96IiwyLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzEsMywiVGwiLDIseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMiwzLCJcXG11X3tUV30iLDJdLFsyLDQsIlRcXG11X1ciLDAseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDUsIlxcbXVfVyIsMix7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs0LDUsIlxcbXVfVyIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV1d
+    \begin{tikzcd}
+        TTZ & TTTW & TTW \\
+        TZ & TTW & TW
+        \arrow["TTl", color={rgb,255:red,214;green,92;blue,92}, from=1-1, to=1-2]
+        \arrow["{\mu_z}"', color={rgb,255:red,92;green,92;blue,214}, from=1-1, to=2-1]
+        \arrow["{T\mu_W}", color={rgb,255:red,214;green,92;blue,92}, from=1-2, to=1-3]
+        \arrow["{\mu_{TW}}"', from=1-2, to=2-2]
+        \arrow["{\mu_W}", color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=2-3]
+        \arrow["Tl"', color={rgb,255:red,92;green,92;blue,214}, from=2-1, to=2-2]
+        \arrow["{\mu_W}"', color={rgb,255:red,92;green,92;blue,214}, from=2-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+
+\end{proof}
+
+\begin{example}{\textbf{(Monoid as Monad)}}
+    In the example below, we will consider monoid $(M, 0, +)$ to represet side effects. We can turn it into monad associated with $M$ to be $(T_M, \eta,\mu)$ on category $\textbf{Set}$:
+    \begin{itemize}
+        \item Functor: is defined as $T_MX=X\times M$ and given a function $f:X\rightarrow Y$, we lift it to $T_Mf=f\times\operatorname{id}_M:X\times M\rightarrow Y\times M$ i.e $(x, m)\mapsto(f(x), m)$
+        \item Unit: is defined to be, the map: $\eta_X:X\to X\times M$, where $x\mapsto(x, 0)$
+        \item Multiplication: is defined to be, the map $\mu_X:X\times M\times M\to X\times M$, where $(x, m, n)\mapsto(x, m+ n)$
+    \end{itemize}
+
+    Let's check that it is acually a monad:
+    \begin{itemize}
+        \item Left/Right Unitality: we have the following diagram for left and right law respectively:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNixbMCwwLCJYXFx0aW1lcyBNIl0sWzIsMCwiWFxcdGltZXMgTVxcdGltZXMgTSJdLFsyLDEsIlhcXHRpbWVzIE0iXSxbNCwwLCJYXFx0aW1lcyBNIl0sWzYsMCwiWFxcdGltZXMgTVxcdGltZXMgTSJdLFs2LDEsIlhcXHRpbWVzIE0iXSxbMSwyLCJcXG11X1giXSxbMCwxLCJcXGV0YV97WFxcdGltZXMgTX0iXSxbMCwyXSxbMyw0LCJcXGV0YV9YXFx0aW1lc1xcb3BlcmF0b3JuYW1le2lkfV9NIl0sWzQsNSwiXFxtdV9YIl0sWzMsNV1d
+        \begin{tikzcd}
+            {X\times M} && {X\times M\times M} && {X\times M} && {X\times M\times M} \\
+            && {X\times M} &&&& {X\times M}
+            \arrow["{\eta_{X\times M}}", from=1-1, to=1-3]
+            \arrow[from=1-1, to=2-3]
+            \arrow["{\mu_X}", from=1-3, to=2-3]
+            \arrow["{\eta_X\times\operatorname{id}_M}", from=1-5, to=1-7]
+            \arrow[from=1-5, to=2-7]
+            \arrow["{\mu_X}", from=1-7, to=2-7]
+        \end{tikzcd}
+        \end{equation*}
+        We can see that for the LHS diagram, we have $(x, m)\mapsto(x, m, 0)\mapsto(x,m +0)=(x,m)$. On the other hand, for the RHS diagram, we can have $(x, m)\mapsto(x, 0, m)\mapsto(x,0 +m)=(x,m)$, as needed.
+        \item Multiplication: We consider the diagram below:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYXFx0aW1lcyBNXFx0aW1lcyBNXFx0aW1lcyBNIl0sWzIsMCwiWFxcdGltZXMgTVxcdGltZXMgTSJdLFswLDEsIlhcXHRpbWVzIE1cXHRpbWVzIE0iXSxbMiwxLCJYXFx0aW1lcyBNIl0sWzIsMywiXFxtdV9YIiwyXSxbMSwzLCJcXG11X1giXSxbMCwxLCJcXG11X1hcXHRpbWVzXFxvcGVyYXRvcm5hbWV7aWR9X00iXSxbMCwyLCJcXG11X3tYXFx0aW1lcyBNfSIsMl1d
+        \begin{tikzcd}
+            {X\times M\times M\times M} && {X\times M\times M} \\
+            {X\times M\times M} && {X\times M}
+            \arrow["{\mu_X\times\operatorname{id}_M}", from=1-1, to=1-3]
+            \arrow["{\mu_{X\times M}}"', from=1-1, to=2-1]
+            \arrow["{\mu_X}", from=1-3, to=2-3]
+            \arrow["{\mu_X}"', from=2-1, to=2-3]
+        \end{tikzcd}
+        \end{equation*}
+        On the blue path, we have $(x, a, b, c)\mapsto(x, a+b, c)\mapsto(x, a+b+c)$ on the red path, we have $(x, a, b, c)\mapsto(x, a, b+c)\mapsto(x, a+b+C)$, and the associativity follows from associativity of monoid.
+    \end{itemize}
+\end{example}
+
+\begin{example}{\textbf{(Modeling Side-Effects with Monad)}}
+    In this example, we will consider the how monad is used in CS, where it can be used to model the side effect of the functions. With monad $(T_M,\eta,\mu)$, the Kleisli morphism $k:X\to T_MY=Y\times M$ computes the input and output $X\to Y$ and also emits the side effect $M$. Then with Kleisli composition with $h:Y\to Z\times M$, we can see how the side effects are ``accumulated'':
+
+    \begin{equation*}
+    \begin{matrix}
+    X & \xrightarrow{\quad k\quad} & Y\times M & \xrightarrow{h\times\operatorname{id}_M} & Z\times M\times M & \xrightarrow{\quad\mu\quad} &Z\times M \\
+    x & \xmapsto{\quad k\quad} & (y, m)& \xmapsto{h\times\operatorname{id}_M} & (z,n,m) & \xmapsto{\quad\mu\quad} &(z, n+m) \\
+    \end{matrix}
+    \end{equation*}
+
+    where we note that $T_Mh=h\times\operatorname{id}_M$
+\end{example}
+
+\begin{definition}{\textbf{(Left and Right Kleisli Adjunction)}}
+    Given a monad $(T, \eta, \mu)$ on category $\textbf{C}$, we have the following construction:
+    \begin{itemize}
+        \item Left Adjointion $L_T:\textbf{C}\to\textbf{C}_T$: (Object) we have $L_TX=X$. (Morphism) Given $f:X\rightarrow Y$, the functor creates Kleisli morphism $L_Tf:X\to TY$ by $L_Tf=\eta_Y\circ f$ i.e 
+        \begin{equation*}
+            X\xrightarrow{f}Y\xrightarrow{\eta_Y}TY
+        \end{equation*}
+        \item Right Adjointion $R_T:\textbf{C}_T\to\textbf{C}$: (Object) we have $R_TX=TX$. (Morphism) Given $f:X\to TY$, the functor gives creates $R_Tf:TX\to TY$ by $R_Tf=\mu_Y\circ Tf$ i.e:
+        \begin{equation*}
+            TX\xrightarrow{Tf}TTY\xrightarrow{\mu_Y}TY
+        \end{equation*}
+    \end{itemize}
+\end{definition}
+
+\begin{proposition}
+    Both $L_T$ and $R_T$ are functors
+\end{proposition}
+
+\begin{proof}
+    \textbf{(Part 1):} To show that $L_T$ is a functor, we first consider the identity $\operatorname{id}_X:X\to X$, then $L_T\operatorname{id}_X=\eta_X$, which is an identity arrow in $\textbf{C}_T$.
+
+    On the other hand, given $f:X\to Y$ and $g:Y\to Z$, we can see that: $L_Tg\circ_{kl} L_Tf = \big(\eta_Z\circ g\big)\circ_{kl}\big( \eta_Y\circ f \big)$ is given in the colored path of the diagram below
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJYIl0sWzEsMCwiWSJdLFsxLDEsIlRZIl0sWzIsMSwiVFoiXSxbMywxLCJUVFoiXSxbNCwxLCJUWiJdLFsyLDAsIloiXSxbMCwxLCJmIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzEsMiwiXFxldGFfWSIsMix7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFsyLDMsIlRnIiwyLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzMsNCwiVFxcZXRhX1oiLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFs0LDUsIlxcbXVfWiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsNiwiZyJdLFs2LDMsIlxcZXRhX1oiXSxbMyw1LCJcXG9wZXJhdG9ybmFtZXtpZH1fe1RafSIsMCx7ImN1cnZlIjotMiwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        X & Y & Z \\
+        & TY & TZ & TTZ & TZ
+        \arrow["f", color={rgb,255:red,92;green,92;blue,214}, from=1-1, to=1-2]
+        \arrow["g", from=1-2, to=1-3]
+        \arrow["{\eta_Y}"', color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=2-2]
+        \arrow["{\eta_Z}", from=1-3, to=2-3]
+        \arrow["Tg"', color={rgb,255:red,92;green,92;blue,214}, from=2-2, to=2-3]
+        \arrow["{T\eta_Z}"', color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=2-4]
+        \arrow["{\operatorname{id}_{TZ}}", curve={height=-12pt}, dotted, from=2-3, to=2-5]
+        \arrow["{\mu_Z}"', color={rgb,255:red,214;green,92;blue,92}, from=2-4, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+    Note that the red path is canceled per right unitality law, and the square is the naturality condition. Thus we have $L_Tg\circ_{kl}L_Tf=\eta_Z\circ g\circ f=L_T(g\circ f)$ as needed.
+
+    \textbf{(Part 2):} Given the identity in $\textbf{C}_T$ at object $X$, which is $\eta_X:X\to TX$, then we see that $R_T\eta_X=\mu_X\circ T\eta_X=\operatorname{id}_{TX}$ by the right unitality law.
+
+    On the other hand, consider the functor over composition between $f:X\to TY$ and $g:Y\to TZ$:
+
+    \begin{equation*}
+    \begin{aligned}
+        R_T(g\circ_{kl}f) &= R_T(\mu_Z\circ Tg\circ f) = \mu_Y\circ T\mu_Z\circ TTg\circ Tf \\
+        R_T(g)\circ R_T(f) &= \mu_Z\circ Tg\circ \mu_Y\circ Tf
+    \end{aligned}
+    \end{equation*}
+
+    The first line corresponds to the blue path on the diagram below, and the second line corresponds to the red path. Note that every things commutes because the square represents the naturality of $\mu$ and the triangle represented the associativity property of monad.
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJUWCJdLFsxLDAsIlRUWSJdLFsyLDAsIlRUVFoiXSxbMywwLCJUVFoiXSxbNCwwLCJUWiJdLFsxLDEsIlRZIl0sWzIsMSwiVFRaIl0sWzAsMSwiVGYiLDAseyJjb2xvdXIiOlsyNzAsNjAsNjBdfSxbMjcwLDYwLDYwLDFdXSxbMSwyLCJUVGciLDAseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMiwzLCJUXFxtdV9aIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzMsNCwiXFxtdV9aIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzEsNSwiXFxtdV9ZIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNSw2LCJUZyIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzYsNCwiXFxtdV9aIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMiw2LCJcXG11X3tUWX0iXV0=
+    \begin{tikzcd}
+        TX & TTY & TTTZ & TTZ & TZ \\
+        & TY & TTZ
+        \arrow["Tf", color={rgb,255:red,153;green,92;blue,214}, from=1-1, to=1-2]
+        \arrow["TTg", color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=1-3]
+        \arrow["{\mu_Y}"', color={rgb,255:red,214;green,92;blue,92}, from=1-2, to=2-2]
+        \arrow["{T\mu_Z}", color={rgb,255:red,92;green,92;blue,214}, from=1-3, to=1-4]
+        \arrow["{\mu_{TY}}", from=1-3, to=2-3]
+        \arrow["{\mu_Z}", color={rgb,255:red,92;green,92;blue,214}, from=1-4, to=1-5]
+        \arrow["Tg"', color={rgb,255:red,214;green,92;blue,92}, from=2-2, to=2-3]
+        \arrow["{\mu_Z}"', color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=1-5]
+    \end{tikzcd}
+    \end{equation*}
+
+\end{proof}
+
+\begin{proposition}
+    \label{prop:adjointion-kleisli}
+    Both functors are indeed adjunction. (1) The composition between functors $R_T\circ L_T:\textbf{C}\to\textbf{C}$ are naturality isomorphic to $T$. (2) The functor $L_T$ is left-adjoint to $R_T$ (3) unit of the adjunction is unit of monad given by $\eta$.
+\end{proposition}
+
+\begin{proof}
+    \textbf{(Part 1):} Let's consider what the composition between functors looks like. Given an object $X$ we have that $R_T\circ L_TX=TW$. On the other hand, given morphism $f:X\to Y$, then we have:
+    \begin{equation*}
+        R_T\circ L_Tf = \mu_Y\circ T(\eta_Y\circ f) = \mu_Y\circ T\eta_Y\circ Tf= Tf
+    \end{equation*}
+    We used the right unitality on the last equality. Thus, we can see that $R_T\circ L_T=T$ thus it is naturally isomorphic by the natual isomorphism of $\operatorname{id}_T$. 
+
+    \textbf{(Part 2):} To show that $L_T\dashv R_T$, we starts with showing that:
+    \begin{equation*}
+        \operatorname{Hom}_{\textbf{C}_T}(L_TC, D) \cong \operatorname{Hom}_{\textbf{C}}(C, R_TD)
+    \end{equation*}
+
+    Given $f\in \operatorname{Hom}_{\textbf{C}_T}(L_TC, D)=\operatorname{Hom}_{\textbf{C}_T}(C, D)$, we have that $f:C\to TD$ (morphism in $\textbf{C}$), in which we can define $f^\flat=f$. On the other hand, given $g\in\operatorname{Hom}_{\textbf{C}_T}(C, R_TD)$, we have that $g:C\to TD$, in which we can set $g^\sharp=g$. And, it is clear that $(f^\flat)^\sharp=f$ and $(g^\sharp)^\flat=g$. So we have the isomorphism.
+
+    Now, we will have to show the naturality on objects in $\textbf{C}$, that is, given $f^\text{op}:C\to C'$, we want to show that the following LHS commutative diagram commutes:
+
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJcXG9wZXJhdG9ybmFtZXtIb219X3tcXHRleHRiZntDfV9UfShMX1RDLCBEKSJdLFswLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9fShDLCBSX1REKSJdLFsyLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9X1R9KExfVEMnLCBEKSJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9fShDJywgUl9URCkiXSxbMCwyLCItXFxjaXJjX3trbH1MX1RmIiwyXSxbMCwxLCJcXGNvbmciLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJhcnJvd2hlYWQifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsyLDMsIlxcY29uZyIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzEsMywiLVxcY2lyYyBmIl1d
+    \begin{tikzcd}
+        {\operatorname{Hom}_{\textbf{C}}(C, R_TD)} && {\operatorname{Hom}_{\textbf{C}}(C', R_TD)} \\
+        {\operatorname{Hom}_{\textbf{C}_T}(L_TC, D)} && {\operatorname{Hom}_{\textbf{C}_T}(L_TC', D)}
+        \arrow["{-\circ f}", from=1-1, to=1-3]
+        \arrow["\cong", tail reversed, no head, from=2-1, to=1-1]
+        \arrow["{-\circ_{kl}L_Tf}"', from=2-1, to=2-3]
+        \arrow["\cong"', tail reversed, no head, from=2-3, to=1-3]
+    \end{tikzcd}
+    \qquad \quad
+    % https://q.uiver.app/#q=WzAsNixbMiwwLCJUVEQiXSxbMCwxLCJDJyJdLFsxLDEsIkMiXSxbMSwwLCJUQyJdLFszLDAsIlREIl0sWzIsMSwiVEQiXSxbMSwyLCJmIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzIsMywiXFxldGFfQyIsMCx7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFszLDAsIlRnIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzAsNCwiXFxtdV9EIiwwLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzIsNSwiZyIsMl0sWzUsMCwiXFxldGFfe1REfSJdLFs1LDQsIlxcb3BlcmF0b3JuYW1le2lkfV97VER9IiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        & TC & TTD & TD \\
+        {C'} & C & TD
+        \arrow["Tg", color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=1-3]
+        \arrow["{\mu_D}", color={rgb,255:red,92;green,92;blue,214}, from=1-3, to=1-4]
+        \arrow["f", color={rgb,255:red,92;green,92;blue,214}, from=2-1, to=2-2]
+        \arrow["{\eta_C}", color={rgb,255:red,92;green,92;blue,214}, from=2-2, to=1-2]
+        \arrow["g"', from=2-2, to=2-3]
+        \arrow["{\eta_{TD}}", from=2-3, to=1-3]
+        \arrow["{\operatorname{id}_{TD}}"', dotted, from=2-3, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+
+    Note that $\operatorname{Hom}_{\textbf{C}_T}(L_T-, D)[f^\text{op}]=-\circ_{kl}L_Tf$, as given in the arrow below. Similarly, for arrow above, we have $\operatorname{Hom}_{\textbf{C}}(-, R_TD)[f^\text{op}] = -\circ f$. Then given $g\in\operatorname{Hom}_\textbf{C}(C, R_TD)$ as $g:C\to TD$, where the blue path on the diagram on the RHS represents: $g\circ_{kl} L_Tf$ and with naturality of $\eta$ and the left unitality law (dotted line) shows that the composition is $g\circ f$.
+
+    On the other hand, consider the naturality on objects in $\textbf{D}$, that is given the arrow $h:D\to TD'$ for $h\in\operatorname{Hom}_{\textbf{C}_T}(D, D')$, then the following LHS diagram commutes
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG9wZXJhdG9ybmFtZXtIb219X3tcXHRleHRiZntDfV9UfShMX1RDLCBEKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9fShDLCBSX1REKSJdLFsyLDAsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9X1R9KExfVEMsIEQnKSJdLFsyLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9fShDLCBSX1REJykiXSxbMCwyLCJoXFxjaXJjX3trbH0tIl0sWzAsMSwiXFxjb25nIiwyXSxbMSwzLCJSX1RoXFxjaXJjLSIsMl0sWzMsMiwiXFxjb25nIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiYXJyb3doZWFkIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+    \begin{tikzcd}
+        {\operatorname{Hom}_{\textbf{C}_T}(L_TC, D)} && {\operatorname{Hom}_{\textbf{C}_T}(L_TC, D')} \\
+        {\operatorname{Hom}_{\textbf{C}}(C, R_TD)} && {\operatorname{Hom}_{\textbf{C}}(C, R_TD')}
+        \arrow["{h\circ_{kl}-}", from=1-1, to=1-3]
+        \arrow["\cong"', from=1-1, to=2-1]
+        \arrow["{R_Th\circ-}"', from=2-1, to=2-3]
+        \arrow["\cong"', tail reversed, no head, from=2-3, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    where $\operatorname{Hom}_{\textbf{C}_T}(L_TC, -)[h]=h\circ_{kl}-$ and $\operatorname{Hom}_{\textbf{C}}(C, R_T-)[h] = R_Th\circ-$. Then given $g\in\operatorname{Hom}_{\textbf{C}_T}(L_TC, D)$ we can see that: $h\circ_{kl}g = R_Th\circ g$ directly from the definition. Thus the diagram commutes.
+
+    \textbf{(Part 3):} Note that the identity morphism over object $L_TC$ in $\textbf{C}_T$ is $\eta_C$, and we have that $(\eta_C)^\flat=\eta_C$. Furthermore, it is a natual transformation with signature of $\operatorname{id}_T\Rightarrow T$ as $R_T\circ L_T=T$, as needed.
+    
+\end{proof}
+
+\begin{definition}{\textbf{(Idempotent)}}
+    Given a monad $(T, \eta, \mu)$ on category $\textbf{C}$, it is called idempotent if the multiplication $\mu:TT\Rightarrow T$ is natural isomorphism.
+\end{definition}
+
+\begin{remark}{(Interpretation of Monad and Kleisli)}
+    With the Kleisli morphism, one can view monad as the extension of spaces or objects with the equipped extended functions of Kleisli morphism (since it outputs $TY$ the extended space).
+\end{remark}
+
+We can, also, view the monad as ``consistence choice of formal expression together with way of evaluating them''. Let's consider the following definition:
+
+\begin{definition}{\textbf{(Free commutative Monoid Monad)}}
+    It is a monad $(F, \eta, \mu)$ operating on $\textbf{Set}$, where we defined each components as:
+    \begin{itemize}
+        \item Functor: Given a set $X$, then $FX$ is the set of formal sum of elements, for example, $x_1+\cdots+x_n$. Furthermore, with $f:X\to Y$, we can defined $Ff:FX\to FY$ as:
+        \begin{equation*}
+            Ff(x_1+\cdots+x_n) = f(x_1) + \cdots + f(x_n)
+        \end{equation*}
+        If $X$ is empty, then we will have empty expression, and $Ff$ on empty expression is empty expression. Thus, it is clear that it is functor.
+        \item Unit: We define $\eta_X:X\to FX$ as seting each element of $x\in X$ to its formal expression, being $x$. Note that it is natural in $X$ i.e 
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzEsMCwiWSJdLFswLDEsIkZYIl0sWzEsMSwiRlkiXSxbMCwyLCJcXGV0YV9YIiwyXSxbMSwzLCJcXGV0YV9ZIl0sWzIsMywiRmYiLDJdLFswLDEsImYiXV0=
+        \begin{tikzcd}
+            X & Y \\
+            FX & FY
+            \arrow["f", from=1-1, to=1-2]
+            \arrow["{\eta_X}"', from=1-1, to=2-1]
+            \arrow["{\eta_Y}", from=1-2, to=2-2]
+            \arrow["Ff"', from=2-1, to=2-2]
+        \end{tikzcd}
+        \end{equation*}
+        as we note that $f(x)\in Y$ will get turned to its formal expression of $f(x)\in FY$.
+        \item Multiplication: Note that $FFX$ is the formal expression of formal expression, constructed as adding the bracket i.e $(x_1+x_2)+(x_1+x_3)$. Then $\mu_X:FFX\to FX$, is the removal of bracket. It is natural as we consider the following diagram:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsOCxbMCwwLCJGRlgiXSxbMSwwLCJGRlkiXSxbMCwxLCJGWCJdLFsxLDEsIkZZIl0sWzMsMCwiKHhfMSt4XzIpK3hfMyJdLFs0LDAsIihmKHhfMSkgKyBmKHhfMikpK2YoeF8zKSJdLFszLDEsInhfMSt4XzIreF8zIl0sWzQsMSwiZih4XzEpICsgZih4XzIpK2YoeF8zKSJdLFswLDIsIlxcbXVfWCIsMl0sWzEsMywiXFxtdV9ZIl0sWzAsMSwiRkZmIl0sWzIsMywiRmYiLDJdLFs0LDUsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNCw2LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzYsNywiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs1LDcsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+        \begin{tikzcd}
+            FFX & FFY && {(x_1+x_2)+x_3} & {(f(x_1) + f(x_2))+f(x_3)} \\
+            FX & FY && {x_1+x_2+x_3} & {f(x_1) + f(x_2)+f(x_3)}
+            \arrow["FFf", from=1-1, to=1-2]
+            \arrow["{\mu_X}"', from=1-1, to=2-1]
+            \arrow["{\mu_Y}", from=1-2, to=2-2]
+            \arrow[maps to, from=1-4, to=1-5]
+            \arrow[maps to, from=1-4, to=2-4]
+            \arrow[maps to, from=1-5, to=2-5]
+            \arrow["Ff"', from=2-1, to=2-2]
+            \arrow[maps to, from=2-4, to=2-5]
+        \end{tikzcd}
+        \end{equation*}
+    \end{itemize}
+    Now, we will consider the laws of the monad, and confirmed that they are satisfied (by consider the examples). Consider the following diagram for left, right unitality and associativity, respectively
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJ4XzEreF8yIl0sWzEsMCwiKHhfMSt4XzIpIl0sWzEsMSwieF8xK3hfMiJdLFswLDEsIlxcZXRhX3tGWH0iXSxbMSwyLCJcXG11X1giXSxbMCwyXV0=
+    \begin{tikzcd}
+        {x_1+x_2} & {(x_1+x_2)} \\
+        & {x_1+x_2}
+        \arrow["{\eta_{FX}}", from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-2]
+        \arrow["{\mu_X}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \quad
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJ4XzEreF8yIl0sWzEsMCwiKHhfMSkrKHhfMikiXSxbMSwxLCJ4XzEreF8yIl0sWzAsMl0sWzAsMSwiRlxcZXRhX1giXSxbMSwyLCJcXG11X1giXV0=
+    \begin{tikzcd}
+        {x_1+x_2} & {(x_1)+(x_2)} \\
+        & {x_1+x_2}
+        \arrow["{F\eta_X}", from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-2]
+        \arrow["{\mu_X}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \quad 
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCIoKHhfMSkrKHhfMikpIl0sWzAsMSwiKHhfMSkgKyAoeF8yKSJdLFsxLDAsIih4XzEreF8yKSJdLFsxLDEsInhfMSt4XzIiXSxbMCwyLCJUXFxtdV9YIl0sWzAsMSwiXFxtdV97VFh9IiwyXSxbMSwzLCJcXG11X1giLDJdLFsyLDMsIlxcbXVfWCJdLFsxLDNdLFsxLDNdXQ==
+    \begin{tikzcd}
+        {((x_1)+(x_2))} & {(x_1+x_2)} \\
+        {(x_1) + (x_2)} & {x_1+x_2}
+        \arrow["{T\mu_X}", from=1-1, to=1-2]
+        \arrow["{\mu_{TX}}"', from=1-1, to=2-1]
+        \arrow["{\mu_X}", from=1-2, to=2-2]
+        \arrow["{\mu_X}"', from=2-1, to=2-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+We can see that the formal expression doesn't give out the evaluation. By the ues of algebra over the monad, we can do something like this. 
+
+\begin{definition}{\textbf{(Eilenberg-Moore Algebras of Monad)}}
+    Given a monad $(T, \eta, \mu)$ on category $\textbf{C}$, we define algebra of/over $T$ or $T$-algebra or Eilenberg-Moore algebra to be a pair $(A, e)$ where $A$ is an object of $\textbf{C}$ and a morphism $e:TA\to A$ in $\textbf{C}$ that satisfies the unit and composition law, defined by:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJBIl0sWzEsMCwiVEEiXSxbMSwxLCJBIl0sWzMsMCwiVFRBIl0sWzQsMCwiVEEiXSxbNCwxLCJBIl0sWzMsMSwiVEEiXSxbMCwxLCJcXGV0YV9BIl0sWzEsMiwiZV9BIl0sWzAsMiwiXFxvcGVyYXRvcm5hbWV7aWR9X0EiLDJdLFszLDQsIlRlX0EiXSxbMyw2LCJcXG11X0EiLDJdLFs0LDUsImVfQSJdLFs2LDUsImVfQSIsMl1d
+    \begin{tikzcd}
+        A & TA && TTA & TA \\
+        & A && TA & A
+        \arrow["{\eta_A}", from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_A}"', from=1-1, to=2-2]
+        \arrow["{e_A}", from=1-2, to=2-2]
+        \arrow["{Te_A}", from=1-4, to=1-5]
+        \arrow["{\mu_A}"', from=1-4, to=2-4]
+        \arrow["{e_A}", from=1-5, to=2-5]
+        \arrow["{e_A}"', from=2-4, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}{(Algebra and Monoid)}
+    We can see that the unit law of algebra means, for free commutative monoid monda that the evaluation of a single element's formal expression is that element. On the other hand, the composition can be described in the following example:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCIoMiszKSsoMSsyKSJdLFswLDEsIjIrMysxKzIiXSxbMSwwLCI1KzMiXSxbMSwxLCI4Il0sWzAsMSwiXFxtdSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMCwyLCJGZSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMSwzLCJlIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFsyLDMsImUiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
+    \begin{tikzcd}
+        {(2+3)+(1+2)} & {5+3} \\
+        {2+3+1+2} & 8
+        \arrow["Fe", maps to, from=1-1, to=1-2]
+        \arrow["\mu"', maps to, from=1-1, to=2-1]
+        \arrow["e", maps to, from=1-2, to=2-2]
+        \arrow["e"', maps to, from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*} 
+    Thus, we see that every monoid is an $F$-algebra. On the other hand, $F$-algebra is an commutative monoid, as we can set the natural element to be empty expression, and the sum between elements are the formal expression.
+\end{remark}
+
+\begin{definition}\textbf{(Eilenberg-Moore Category/Category of Algebras of $T$)}
+    Given a monad $(T, \eta,\mu)$, then we can define Category of Algebras (denoted $\textbf{C}^T$) to have the objects being $(A, e_A)$ for each $A$ in $\textbf{C}$ with suitable $e_A:TA\to A$. The $T$-morphism $f:(A, e_A)\to(B, e_B)$ is an morphism $f:A\to B$ such that:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJUQSJdLFsxLDAsIlRCIl0sWzAsMSwiQSJdLFsxLDEsIkIiXSxbMCwxLCJUZiJdLFswLDIsImVfQSIsMl0sWzIsMywiZiIsMl0sWzEsMywiZV9CIl1d
+    \begin{tikzcd}
+        TA & TB \\
+        A & B
+        \arrow["Tf", from=1-1, to=1-2]
+        \arrow["{e_A}"', from=1-1, to=2-1]
+        \arrow["{e_B}", from=1-2, to=2-2]
+        \arrow["f"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    Clearly the identity morphism $\operatorname{id}_{(A,e_A)}$ is clearly $\operatorname{id}_A$, and the associativity of composition is clearly inherted from the category $\textbf{C}$ (and the commutativity is still valid). Note that $e_A:(A, e_A)\to(TA,\mu_A)$ is $T$-morphism as the multiplication law guarantee the commutativity.
+\end{definition}
+
+\begin{definition}{\textbf{(Free Algebra)}}
+    The $T$-algebra of the form $(TX,\mu_X)$ for some $X$ of $\textbf{C}$ is called free $T$-algebra.
+\end{definition}
+
+\begin{remark}
+    Note that free algebra is an algebra because the first 2 diagram specifices the condition of the algebra (which are left unitality, and associativity):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJUWCJdLFsxLDAsIlRUWCJdLFsxLDEsIlRYIl0sWzAsMSwiXFxldGFfe1RYfSJdLFswLDIsIlxcb3BlcmF0b3JuYW1le2lkfV97VFh9IiwyXSxbMSwyLCJcXG11X1giXV0=
+    \begin{tikzcd}
+        TX & TTX \\
+        & TX
+        \arrow["{\eta_{TX}}", from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_{TX}}"', from=1-1, to=2-2]
+        \arrow["{\mu_X}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \qquad 
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJUVFRYIl0sWzAsMSwiVFRYIl0sWzEsMSwiVFgiXSxbMSwwLCJUVFgiXSxbMCwzLCJUXFxtdV97WH0iXSxbMCwxLCJcXG11X3tUWH0iLDJdLFsxLDIsIlxcbXVfWCIsMl0sWzMsMiwiXFxtdV9YIl1d
+    \begin{tikzcd}
+        TTTX & TTX \\
+        TTX & TX
+        \arrow["{T\mu_{X}}", from=1-1, to=1-2]
+        \arrow["{\mu_{TX}}"', from=1-1, to=2-1]
+        \arrow["{\mu_X}", from=1-2, to=2-2]
+        \arrow["{\mu_X}"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \qquad
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJUWCJdLFsxLDEsIlRZIl0sWzEsMCwiVFRZIl0sWzAsMCwiVFRYIl0sWzAsMSwiVGYiLDJdLFszLDAsIlxcbXVfWCIsMl0sWzIsMSwiXFxtdV9ZIl0sWzMsMiwiVFRmIl1d
+    \begin{tikzcd}
+        TTX & TTY \\
+        TX & TY
+        \arrow["TTf", from=1-1, to=1-2]
+        \arrow["{\mu_X}"', from=1-1, to=2-1]
+        \arrow["{\mu_Y}", from=1-2, to=2-2]
+        \arrow["Tf"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    On the other hand, the morphism $f:X\to Y$ of $\textbf{C}$ is always a map between $(TX, \mu_X)\to(TY, \mu_Y)$ because of the naturality of $\mu$, as shown in the right most diagram.
+\end{remark}
+
+\begin{remark}
+    In the context of free commutative monoid monad $F$, the free algebra can be seen as the simplification of terms, for example:
+    \begin{equation*}
+    \begin{aligned}
+        (x_1&+\cdots+x_n) + (y_1+\cdots+y_n)  \\
+        &:= (x_1+\cdots+x_n + y_1+\cdots+y_n)
+    \end{aligned}
+    \end{equation*}
+\end{remark}
+
+Now, with similar move to the Kleisli category, one can define the Eilenberg-Moore adjunction. 
+
+\begin{definition}{\textbf{(Left and Right Eilenberg-Moore Adjunction)}}
+    Given the monad $(T,\eta,\mu)$ of category $\textbf{C}$, we define the fully faithful ``forgetful'' functor of $R^T:\textbf{C}^T\rightarrow\textbf{C}$, and the functor $L^T:\textbf{C}\to\textbf{C}^T$, in which: $L^TX=(TX, \mu_X)$ being the free algebra. On the other hand, given morphism $f:X\to Y$, we have the lifted function to be $Tf:(TX,\mu_X)\to(TY,\mu_Y)$ (which is a $T$-morphism due to naturality of $\mu$)
+\end{definition}
+
+Note that the functorial properties follows directly from the functoriality of $T$. 
+
+\begin{proposition}
+    Both functors are indeed adjunction. (1) The composition between functors $R^T\circ L^T:\textbf{C}\to\textbf{C}$ are naturality isomorphic to $T$. (2) The functor $L^T$ is left-adjoint to $R^T$ (3) unit of the adjunction is unit of comonad given by $\eta$, while its counit is the structure map $e:L^T\circ R^T\Rightarrow\operatorname{id}_{\textbf{C}^T}$
+\end{proposition}
+\begin{proof}
+    \textbf{(Part 1):} Let's consider how the composed function $R^T\circ L^T$ acts on $X$, we have that $R^T(L^TX)=R^T(TX,\mu_X)=TX$. On the other hand, given morphism $f:X\to Y$, then $R^T(L^Tf)=R^T(Tf)=Tf$. Thus $R^T\circ L^T=T$ and so naturally isomorphic between them.
+
+    \textbf{(Part 2):} We want to show that:
+    \begin{equation*}
+        \operatorname{Hom}_{\textbf{C}^T}((TC, \mu_C),(D, e_D)) = \operatorname{Hom}_{\textbf{C}^T}(L^TC,(D, e_D)) \cong \operatorname{Hom}_{\textbf{C}}(C, R^T(D, e_D)) = \operatorname{Hom}_{\textbf{C}}(C, D)
+    \end{equation*}
+
+    That is given $f^\sharp:(TC, \mu_C)\to(D, e_D)$ and send it to $f^\flat:C\to D$, then we will define $R^Tf^\sharp\circ\eta_C=f^\flat$, and we also define its inverse to be $e\circ L^Tf^\flat=f^\sharp$ (the $e$ here is the structure map of the \textbf{co-domain}). To show that they are inverse of each other, we have:
+    \begin{itemize}
+        \item Given $f:C\to D$, then we have $f^\sharp=e_c\circ L^T = e_D\circ Tf$ (where the structure map is $e_{TD}=\mu_D$, for the middle $T$-algebra), and this is given in the diagram within category $\textbf{C}^T$ below as:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsMyxbMCwwLCIoVEMsXFxtdV9DKSJdLFsxLDAsIihURCxcXG11X0QpIl0sWzIsMCwiKEQsZV9EKSJdLFswLDEsIlRmIl0sWzEsMiwiZV9EIl1d
+        \begin{tikzcd}
+            {(TC,\mu_C)} & {(TD,\mu_D)} & {(D,e_D)}
+            \arrow["Tf", from=1-1, to=1-2]
+            \arrow["{e_D}", from=1-2, to=1-3]
+        \end{tikzcd}
+        \end{equation*}
+        By passing this through $R^T$, we forgot the structure, thus giving us the map of $e_D\circ Tf:TC\to D$ but now we are back to category $\textbf{C}^T$, in which $(f^\sharp)^\flat=e_D\circ Tf\circ\eta_C=e_D\circ\eta_{D}\circ f=f$ following from the the naturality of $\eta$ and unit law of algebra.
+        \item Given $g:(TC, \mu_C)\to(D, e_D)$, then we note that $R^Tg:TC\to D$, then we see that $g^\flat=g\circ\eta_C$, then we have $(g^\flat)^\sharp=e\circ L^T(g\circ\eta_C) = e_D\circ Tg\circ T\eta_C$, which is given in the LHS diagram
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsOCxbMCwwLCIoVEMsIFxcbXVfQykiXSxbMSwwLCIoVFRDLC0pIl0sWzIsMCwiKFRELFxcbXVfRCkiXSxbMiwxLCIoRCwgZV9EKSJdLFs0LDAsIlRUQyJdLFs1LDAsIlREIl0sWzUsMSwiRCJdLFs0LDEsIlRDIl0sWzEsMiwiVGciXSxbMCwxLCJUXFxldGFfQyJdLFsyLDMsImVfRCJdLFs0LDUsIlRnIl0sWzUsNiwiZV9EIl0sWzQsNywiXFxtdV9DIiwyXSxbNyw2LCJnIiwyXV0=
+        \begin{tikzcd}
+            {(TC, \mu_C)} & {(TTC,-)} & {(TD,\mu_D)} && TTC & TD \\
+            && {(D, e_D)} && TC & D
+            \arrow["{T\eta_C}", from=1-1, to=1-2]
+            \arrow["Tg", from=1-2, to=1-3]
+            \arrow["{e_D}", from=1-3, to=2-3]
+            \arrow["Tg", from=1-5, to=1-6]
+            \arrow["{\mu_C}"', from=1-5, to=2-5]
+            \arrow["{e_D}", from=1-6, to=2-6]
+            \arrow["g"', from=2-5, to=2-6]
+        \end{tikzcd}
+        \end{equation*}
+        Note that $e_D\circ Tg=g\circ\mu_C$ because $e_D$ is an morphism of algebra which makes the RHS diagram commutes. Thus, we have $(g^\flat)^\sharp=g\circ\mu_C\circ T\eta_c=g$ per right commutativity law.
+    \end{itemize}
+    Then we can see that we have defined the uniit and counit of adjunction to be unit $\eta$ and structure map $e$. Note that this works for any kinds of $e_D$ (although we should keep in fixed for each unique objects).
+
+    \textbf{(Part 3):} With the result of part above, we have determined how the actions works in details. To show that $e$ are unit and co-unit, we starts with showing that $e$ is an natural transformation that is $e:L^T\circ R^T\Rightarrow\operatorname{id}_{\textbf{C}^T}$. This is clear, as given a $T$-morphism $f:(A, e_A)\to(B, e_B)$, we have $f\circ e_A=e_B\circ Tf$. 
+    
+    Now, we are left to show the triangle identities. We have the following diagrams, where the LHS we consider the component for object $C$, while the RHS we consider the component for object $(C,e_C)$
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJMXlQiXSxbMSwwLCJMXlRSXlRMXlQiXSxbMiwwLCJMXlQiXSxbMCwxLCIoVEMsIFxcbXVfQykiXSxbMSwxLCIoVFRDLFxcbXVfe1RDfSkiXSxbMiwxLCIoVEMsXFxtdV9DKSJdLFswLDEsIkxeVFxcZXRhIiwwLHsibGV2ZWwiOjJ9XSxbMSwyLCJlTF5UIiwwLHsibGV2ZWwiOjJ9XSxbMyw0LCJMXlRcXGV0YV9DIl0sWzQsNSwiZV97VEN9Il0sWzMsNCwiVFxcZXRhX0MiLDJdLFs0LDUsIlxcbXVfQyIsMl0sWzMsNSwiXFxvcGVyYXRvcm5hbWV7aWR9X3tUQ30iLDIseyJjdXJ2ZSI6NCwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        {L^T} & {L^TR^TL^T} & {L^T} \\
+        {(TC, \mu_C)} & {(TTC,\mu_{TC})} & {(TC,\mu_C)}
+        \arrow["{L^T\eta}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{eL^T}", Rightarrow, from=1-2, to=1-3]
+        \arrow["{L^T\eta_C}", from=2-1, to=2-2]
+        \arrow["{T\eta_C}"', from=2-1, to=2-2]
+        \arrow["{\operatorname{id}_{TC}}"', curve={height=24pt}, dotted, from=2-1, to=2-3]
+        \arrow["{e_{TC}}", from=2-2, to=2-3]
+        \arrow["{\mu_C}"', from=2-2, to=2-3]
+    \end{tikzcd}
+    \quad\quad
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJSXlQiXSxbMSwwLCJSXlRMXlRSXlQiXSxbMiwwLCJSXlQiXSxbMCwxLCJDIl0sWzEsMSwiQyJdLFsyLDEsIkMiXSxbMCwxLCJcXGV0YSBSXlQiLDAseyJsZXZlbCI6Mn1dLFsxLDIsIlJeVGUiLDAseyJsZXZlbCI6Mn1dLFszLDQsIlxcZXRhX0MiXSxbNCw1LCJlX0MiXSxbMyw1LCJcXG9wZXJhdG9ybmFtZXtpZH1fe0N9IiwyLHsiY3VydmUiOjMsInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRvdHRlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        {R^T} & {R^TL^TR^T} & {R^T} \\
+        C & C & C
+        \arrow["{\eta R^T}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{R^Te}", Rightarrow, from=1-2, to=1-3]
+        \arrow["{\eta_C}", from=2-1, to=2-2]
+        \arrow["{\operatorname{id}_{C}}"', curve={height=18pt}, dotted, from=2-1, to=2-3]
+        \arrow["{e_C}", from=2-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    Both are composed to identity because for LHS, we have the right unitality law, while the left has the unit law for $T$-algebra, as needed.
+\end{proof}
+
+\begin{corollary}
+    For each object $X$ and $T$-algebra $(A, e_A)$, and the morphism $f:X\rightarrow A$, there is a unique $T$-morphism $TX\rightarrow A$ such that following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJYIl0sWzAsMSwiVFgiXSxbMSwxLCJBIl0sWzAsMSwiXFxldGFfWCIsMl0sWzEsMiwiIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMiwiZiJdXQ==
+    \begin{tikzcd}
+        X \\
+        TX & A
+        \arrow["{\eta_X}"', from=1-1, to=2-1]
+        \arrow["f", from=1-1, to=2-2]
+        \arrow[dashed, from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{corollary}
+\begin{proof}
+    Due to the adjunction (see remark \ref{remark:note-unit}), the pair of morphism $f$ and $f^\sharp$ are unique, where we note that $f^\sharp=R^Tf\circ \eta_X=f\circ eta_X$ that is why $f$ has to be a $T$-morphism.
+\end{proof}
+
+\subsection{Comonad}
+
+\begin{definition}{\textbf{(Comonad)}}
+    Given a category $\textbf{C}$, the monad on $\textbf{C}$ is $(C, \varepsilon, \nu)$ where $T:\textbf{C}\to\textbf{C}$, an unit $\varepsilon:C\Rightarrow\operatorname{id}_\textbf{C}$ and a composition or multiplication $\nu:C\Rightarrow CC$, making the following diagram commutes (they are called left and right co-unitality and co-associativity, respectively):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiQyJdLFsxLDAsIkNDIl0sWzEsMSwiQyJdLFszLDAsIkMiXSxbNCwwLCJDQyJdLFs0LDEsIkMiXSxbNiwwLCJDIl0sWzcsMCwiQ0MiXSxbNiwxLCJDQyJdLFs3LDEsIkNDQyJdLFswLDEsIlxcbnUiLDAseyJsZXZlbCI6Mn1dLFsxLDIsIlxcdmFyZXBzaWxvbiBDIiwwLHsibGV2ZWwiOjJ9XSxbMCwyLCJcXG9wZXJhdG9ybmFtZXtpZH0iLDIseyJsZXZlbCI6Mn1dLFszLDQsIlxcbnUiLDAseyJsZXZlbCI6Mn1dLFs0LDUsIkNcXHZhcmVwc2lsb24iLDAseyJsZXZlbCI6Mn1dLFszLDUsIlxcb3BlcmF0b3JuYW1le2lkfSIsMix7ImxldmVsIjoyfV0sWzYsNywiXFxudSIsMCx7ImxldmVsIjoyfV0sWzYsOCwiXFxudSIsMix7ImxldmVsIjoyfV0sWzgsOSwiQ1xcbnUiLDIseyJsZXZlbCI6Mn1dLFs3LDksIlxcbnUgQyIsMCx7ImxldmVsIjoyfV1d
+    \begin{tikzcd}
+        C & CC && C & CC && C & CC \\
+        & C &&& C && CC & CCC
+        \arrow["\nu", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\operatorname{id}}"', Rightarrow, from=1-1, to=2-2]
+        \arrow["{\varepsilon C}", Rightarrow, from=1-2, to=2-2]
+        \arrow["\nu", Rightarrow, from=1-4, to=1-5]
+        \arrow["{\operatorname{id}}"', Rightarrow, from=1-4, to=2-5]
+        \arrow["C\varepsilon", Rightarrow, from=1-5, to=2-5]
+        \arrow["\nu", Rightarrow, from=1-7, to=1-8]
+        \arrow["\nu"', Rightarrow, from=1-7, to=2-7]
+        \arrow["{\nu C}", Rightarrow, from=1-8, to=2-8]
+        \arrow["C\nu"', Rightarrow, from=2-7, to=2-8]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Co-Kleisli Category)}}
+    Given a comonad $(C, \varepsilon, \nu)$ on category $\textbf{C}$, then the co-Kleisli category denoted as $\textbf{C}_C$ is defined to have the following component:
+    \begin{itemize}
+        \item \textbf{(Object):} The objects are objects in $C$.
+        \item \textbf{(Morphism):} The morphism between 2 objects $X$ to $Y$ is $k:CX\to Y$, where the composition between this morphism and $h:CY\to Z$ is i.e $h\circ_{ck}k:CX\to Z$ is:
+        \begin{equation*}
+            CX\xrightarrow{\ \nu_X \ } CCX \xrightarrow{\ Ck\ } CY\xrightarrow{\ h\ } Z
+        \end{equation*}
+        With $\varepsilon:CX\to X$ being identity morphism.
+    \end{itemize}
+\end{definition}
+
+\begin{proposition}
+    Co-Kleisli Category is indeed a category.
+\end{proposition}
+\begin{proof}
+    There are 2 things we have to proof here: the composition of the identity morphism and the associativity of the composition. That are:
+
+    \textbf{(Identity Composition):} Given $k:CX\to Y$ and $\varepsilon_Y:CY\to Y$, then we have the following composition on the LHS diagram, where we have used the naturality of $\varepsilon$. We can see here, by left co-unitality law i.e $\varepsilon_{CX}\circ\nu_X=\operatorname{id}_{CX}$, thus we have only $k$ left:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNSxbMCwxLCJDWCJdLFsxLDEsIkNDWCJdLFsyLDEsIkNZIl0sWzIsMCwiWSJdLFsxLDAsIkNYIl0sWzIsMywiXFx2YXJlcHNpbG9uX1kiLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFsxLDIsIkNrIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMCwxLCJcXG51X1giLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFsxLDQsIlxcdmFyZXBzaWxvbl97Q1h9Il0sWzQsMywiayJdLFswLDQsIlxcb3BlcmF0b3JuYW1le2lkfV97Q1h9IiwwLHsiY3VydmUiOi0yLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XV0=
+    \begin{tikzcd}
+        & CX & Y \\
+        CX & CCX & CY
+        \arrow["k", from=1-2, to=1-3]
+        \arrow["{\operatorname{id}_{CX}}", curve={height=-12pt}, dotted, from=2-1, to=1-2]
+        \arrow["{\nu_X}"', color={rgb,255:red,214;green,92;blue,92}, from=2-1, to=2-2]
+        \arrow["{\varepsilon_{CX}}", from=2-2, to=1-2]
+        \arrow["Ck"', color={rgb,255:red,214;green,92;blue,92}, from=2-2, to=2-3]
+        \arrow["{\varepsilon_Y}"', color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=1-3]
+    \end{tikzcd}
+    \qquad
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJDWCJdLFsxLDAsIkNDWCJdLFsyLDAsIkNYIl0sWzMsMCwiWSJdLFswLDEsIlxcbnVfWCIsMl0sWzIsMywiayIsMl0sWzEsMiwiQ1xcdmFyZXBzaWxvbl9YIiwyXSxbMCwyLCJcXG9wZXJhdG9ybmFtZXtpZH1fe0NYfSIsMCx7ImN1cnZlIjotMiwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        CX & CCX & CX & Y
+        \arrow["{\nu_X}"', from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_{CX}}", curve={height=-12pt}, dotted, from=1-1, to=1-3]
+        \arrow["{C\varepsilon_X}"', from=1-2, to=1-3]
+        \arrow["k"', from=1-3, to=1-4]
+    \end{tikzcd}
+    \end{equation*}
+    On the other hand, if we compute $k\circ\varepsilon_X$, we can use the co-right unitality law i.e $C\varepsilon_X\circ\nu_X=\operatorname{id}_{CX}$ so that we are left with $k$, as needed.
+
+    \textbf{(Commutativity):} Now, suppose we are given $a:CX\to Y, b:CY\to Z$ and $c:CZ\to W$, then we consider the composition of $c\circ_{ck}(b\circ_{ck}a)$ (represented in red path) and $(c\circ_{ck}b)\circ_{ck}a$ (represented in blue part), as:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJDQ1giXSxbMSwwLCJDQ0NYIl0sWzIsMCwiQ0NZIl0sWzMsMCwiQ1oiXSxbMiwxLCJDWSJdLFswLDEsIkNYIl0sWzQsMCwiVyJdLFsxLDEsIkNDWCJdLFsxLDIsIkNDYSIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzAsMSwiQ1xcbnVfWCIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzIsMywiQ2IiLDAseyJjb2xvdXIiOlsyNzAsNjAsNjBdfSxbMjcwLDYwLDYwLDFdXSxbNSwwLCJcXG51X1giLDAseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDYsImMiLDAseyJjb2xvdXIiOlsyNzAsNjAsNjBdfSxbMjcwLDYwLDYwLDFdXSxbNyw0LCJDYSIsMix7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs1LDcsIlxcbnVfWCIsMix7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs0LDIsIlxcbnVfWSIsMix7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs3LDEsIlxcbnVfe0NYfSJdXQ==
+    \begin{tikzcd}
+        CCX & CCCX & CCY & CZ & W \\
+        CX & CCX & CY
+        \arrow["{C\nu_X}", color={rgb,255:red,214;green,92;blue,92}, from=1-1, to=1-2]
+        \arrow["CCa", color={rgb,255:red,214;green,92;blue,92}, from=1-2, to=1-3]
+        \arrow["Cb", color={rgb,255:red,153;green,92;blue,214}, from=1-3, to=1-4]
+        \arrow["c", color={rgb,255:red,153;green,92;blue,214}, from=1-4, to=1-5]
+        \arrow["{\nu_X}", color={rgb,255:red,214;green,92;blue,92}, from=2-1, to=1-1]
+        \arrow["{\nu_X}"', color={rgb,255:red,92;green,92;blue,214}, from=2-1, to=2-2]
+        \arrow["{\nu_{CX}}", from=2-2, to=1-2]
+        \arrow["Ca"', color={rgb,255:red,92;green,92;blue,214}, from=2-2, to=2-3]
+        \arrow["{\nu_Y}"', color={rgb,255:red,92;green,92;blue,214}, from=2-3, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    We note that the LHS square comes from the co-commutativity law, while the RHS square is the naturality condition of $\nu$. Since every thing commutes, we can say that both compositions are equal to each other.
+\end{proof}
+
+\begin{definition}{\textbf{(co-Kleisli Adjunction)}}
+    Given a comonad $(C,\varepsilon,v)$ on category $\textbf{C}$, we have the following construction:
+    \begin{itemize}
+        \item Right Adjointion: $R_C:\textbf{C}\rightarrow\textbf{C}_C$: (Object) Given the object $X$, then $R_CX=X$ (Morphism) Given the morphism $f:X\rightarrow Y$, then $R_Cf=f\circ\varepsilon_X$ where $R_Cf:CX\rightarrow Y$
+        \item Left Adjointion: $L_C:\textbf{C}_C\to\textbf{C}$: (Object) Given the object $X$, then $L_CX=CX$ (Morphism) Given the co-Kleisli morphism $k:CX\rightarrow Y$, then $L_Ck=Ck\circ \nu_X$ where $L_Cf:CX\rightarrow CY$
+    \end{itemize}
+\end{definition}
+
+\begin{proposition}
+    Both $R_C$ and $L_C$ are functors
+\end{proposition}
+\begin{proof}
+    \textbf{(Right Adjunction):} Its action on identity is clear, as $R_C\operatorname{id}_X=\varepsilon_X$, which is an identities in co-Kleisli adjunction. Now, we are left to show that the functors preseves composition, in which, suppose we have $f:X\to Y$ and $g:Y\to Z$, then:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJDWCJdLFsxLDAsIkNDWCJdLFsyLDAsIkNYIl0sWzIsMSwiQ1kiXSxbMywxLCJZIl0sWzQsMSwiWiJdLFszLDAsIlgiXSxbMCwxLCJcXG51X1giLDAseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFsxLDIsIkNcXHZhcmVwc2lsb25fWCIsMCx7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzIsMywiQ2YiLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDQsIlxcdmFyZXBzaWxvbl9ZIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNCw1LCJnIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNiw0LCJmIl0sWzIsNiwiXFx2YXJlcHNpbG9uX1giXSxbMCwyLCJcXG9wZXJhdG9ybmFtZXtpZH1fWCIsMix7ImN1cnZlIjoyLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XV0=
+    \begin{tikzcd}
+        CX & CCX & CX & X \\
+        && CY & Y & Z
+        \arrow["{\nu_X}", color={rgb,255:red,214;green,92;blue,92}, from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_X}"', curve={height=12pt}, dotted, from=1-1, to=1-3]
+        \arrow["{C\varepsilon_X}", color={rgb,255:red,214;green,92;blue,92}, from=1-2, to=1-3]
+        \arrow["{\varepsilon_X}", from=1-3, to=1-4]
+        \arrow["Cf"', color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=2-3]
+        \arrow["f", from=1-4, to=2-4]
+        \arrow["{\varepsilon_Y}"', color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=2-4]
+        \arrow["g"', color={rgb,255:red,214;green,92;blue,92}, from=2-4, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+    Note that the red path is given to be $R_Cg\circ_{ck} R_Cf = (g\circ\varepsilon_Y)\circ_{ck}(f\circ\varepsilon_X)$, by the co-right unitality law and the naturality condition of $\varepsilon$.
+
+    \textbf{(Left Adjunction):} Given an identity on $\textbf{C}_C$ that is $\varepsilon$, we can see that $L_C\nu_X=C\varepsilon_X\circ\nu_X=\operatorname{id}_{CX}$ by the co-left unitality law, as needed. On the other hand, let's consider the composition, suppose we are given $f:CX\to Y$ and $g:CY\to Z$, then we have:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMiwxLCJDQ1kiXSxbMywxLCJDWiJdLFsyLDAsIkNZIl0sWzEsMCwiQ0NYIl0sWzAsMCwiQ1giXSxbMSwxLCJDQ0NYIl0sWzAsMSwiQ2ciXSxbMiwwLCJcXG51X1kiLDAseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMywyLCJDZiIsMCx7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs0LDMsIlxcbnVfWCJdLFs1LDAsIkNDZiIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzMsNSwiQ1xcbnVfWCIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV1d
+    \begin{tikzcd}
+        CX & CCX & CY \\
+        & CCCX & CCY & CZ
+        \arrow["{\nu_X}", from=1-1, to=1-2]
+        \arrow["Cf", color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=1-3]
+        \arrow["{C\nu_X}"', color={rgb,255:red,214;green,92;blue,92}, from=1-2, to=2-2]
+        \arrow["{\nu_Y}", color={rgb,255:red,92;green,92;blue,214}, from=1-3, to=2-3]
+        \arrow["CCf"', color={rgb,255:red,214;green,92;blue,92}, from=2-2, to=2-3]
+        \arrow["Cg", from=2-3, to=2-4]
+    \end{tikzcd}
+    \end{equation*}
+    Using the naturality condition of $\nu_X$, we can see that the blue path represented the composition $L_Cg\circ L_Cf = (Cg\circ\nu_Y)\circ(Cf\circ\nu_X)$, while $L_C(g\circ_{ck}f)$ is represented in the red path. Sicne the diagram commutes, they are all equal, as needed
+\end{proof}
+
+\begin{proposition}
+    This is a dual statement to \ref{prop:adjointion-kleisli}, where both functors above are indeed adjunction such that (1) $L_C\circ R_C=C$ (2) $L_C$ is left-adjoint to $R_C$ (3) The counit $\varepsilon$ of comomad is the counit of the adjunction.
+\end{proposition}
+\begin{proof}
+    \textbf{(Part 1):} Consider the action of $L_C\circ R_C$ on object $X$, we have that $L_C\circ R_CX=L_CX=X$. On the other hand, given morphism $f:X\to Y$, then we have $L_C\circ R_Cf=L_C(f\circ\varepsilon_X)=C(f\circ\varepsilon_X)\circ\nu_X=Cf$ where we have used co-right unitality.
+
+    \textbf{(Part 2):} We want to show that there is natual isomorphism between: $\operatorname{Hom}_{\textbf{C}}(L_CX, Y) \cong \operatorname{Hom}_{\textbf{C}_T}(X, R_CY)$. Please note that function on both sides has the signature of $CX\to Y$ in $\textbf{C}$, so we can consider the relation between them to be identity. However, we are left to show that they are natural under both argument. Starting with $X$, given $f^\text{op}:CX\to X'$ being a morphism in $\textbf{C}_C$, we want to show that:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCIgICAgICAgIFxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9fShMX0NYLCBZKSJdLFsyLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9X1R9KFgnLCBSX0NZKSJdLFsyLDAsIiAgICAgICAgXFxvcGVyYXRvcm5hbWV7SG9tfV97XFx0ZXh0YmZ7Q319KExfQ1gnLCBZKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9X1R9KFgsIFJfQ1kpIl0sWzAsMywiXFxjb25nIiwyXSxbMiwxLCJcXGNvbmciXSxbMCwyLCItXFxjaXJjIExfQ2YiXSxbMywxLCItXFxjaXJjX3tja30gZiIsMl1d
+    \begin{tikzcd}
+        {        \operatorname{Hom}_{\textbf{C}}(L_CX, Y)} && {        \operatorname{Hom}_{\textbf{C}}(L_CX', Y)} \\
+        {\operatorname{Hom}_{\textbf{C}_T}(X, R_CY)} && {\operatorname{Hom}_{\textbf{C}_T}(X', R_CY)}
+        \arrow["{-\circ L_Cf}", from=1-1, to=1-3]
+        \arrow["\cong"', from=1-1, to=2-1]
+        \arrow["\cong", from=1-3, to=2-3]
+        \arrow["{-\circ_{ck} f}"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    Note that $\operatorname{Hom}_{\textbf{C}}(L_C-, Y)[f]=-\circ L_Cf$ and similarly, $\operatorname{Hom}_{\textbf{C}_T}(-, R_CY)[f]=-\circ_{ck} f$. Then, we see that, given $g:CX\to Y$, we will have that: $g\circ L_Cf = g\circ Cf\circ\nu_X = g\circ_{ck}f$, thus the diagram commutes. On the other hand, we consider the LHS diagram, given $g:Y\to Z$
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCIgICAgICAgIFxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9fShMX0NYLCBZKSJdLFsyLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9X1R9KFgsIFJfQ1knKSJdLFsyLDAsIiAgICAgICAgXFxvcGVyYXRvcm5hbWV7SG9tfV97XFx0ZXh0YmZ7Q319KExfQ1gsIFknKSJdLFswLDEsIlxcb3BlcmF0b3JuYW1le0hvbX1fe1xcdGV4dGJme0N9X1R9KFgsIFJfQ1kpIl0sWzAsMywiXFxjb25nIiwyXSxbMiwxLCJcXGNvbmciXSxbMCwyLCJnXFxjaXJjIC0iXSxbMywxLCJSX0NnXFxjaXJjX3tja30tIiwyXV0=
+    \begin{tikzcd}
+        {        \operatorname{Hom}_{\textbf{C}}(L_CX, Y)} && {        \operatorname{Hom}_{\textbf{C}}(L_CX, Y')} \\
+        {\operatorname{Hom}_{\textbf{C}_T}(X, R_CY)} && {\operatorname{Hom}_{\textbf{C}_T}(X, R_CY')}
+        \arrow["{g\circ -}", from=1-1, to=1-3]
+        \arrow["\cong"', from=1-1, to=2-1]
+        \arrow["\cong", from=1-3, to=2-3]
+        \arrow["{R_Cg\circ_{ck}-}"', from=2-1, to=2-3]
+    \end{tikzcd}
+    \qquad
+    % https://q.uiver.app/#q=WzAsNixbMCwxLCJDWCJdLFsxLDEsIkNDWCJdLFsyLDEsIkNZIl0sWzIsMCwiWSJdLFszLDAsIloiXSxbMSwwLCJDWCJdLFswLDEsIlxcbnVfWCIsMix7ImNvbG91ciI6WzAsNjAsNjBdfSxbMCw2MCw2MCwxXV0sWzEsMiwiQ2siLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFsyLDMsIlxcdmFyZXBzaWxvbl9ZIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMyw0LCJnIiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMSw1LCJcXHZhcmVwc2lsb25fe0NYfSJdLFs1LDMsImsiXSxbMCw1LCJcXG9wZXJhdG9ybmFtZXtpZH1fe0NYfSIsMCx7ImN1cnZlIjotMiwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        & CX & Y & Z \\
+        CX & CCX & CY
+        \arrow["k", from=1-2, to=1-3]
+        \arrow["g", color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=1-4]
+        \arrow["{\operatorname{id}_{CX}}", curve={height=-12pt}, dotted, from=2-1, to=1-2]
+        \arrow["{\nu_X}"', color={rgb,255:red,214;green,92;blue,92}, from=2-1, to=2-2]
+        \arrow["{\varepsilon_{CX}}", from=2-2, to=1-2]
+        \arrow["Ck"', color={rgb,255:red,214;green,92;blue,92}, from=2-2, to=2-3]
+        \arrow["{\varepsilon_Y}"', color={rgb,255:red,214;green,92;blue,92}, from=2-3, to=1-3]
+    \end{tikzcd}
+    \end{equation*}
+    where we note that: $\operatorname{Hom}_{\textbf{C}_T}(X, R_C-)[g]=R_Cg\circ_{ck}-$. Given $k:CX\to Y$, then we see that, for $R_Cg\circ_{ck}\circ k$ is represented on the red path of the RHS diagram. Which by the co-left unitality law gives the identity. So $R_Cg\circ_{ck}\circ k=g\circ k$, which makes the LHS diagram commutes.
+
+    So we have showed that $L_C$ is left adjoint to $R_C$, then to consider the counit, which is $(\operatorname{id}_{R_TX})^\sharp$ where the identities is on the $\textbf{C}_T$ which is the $\varepsilon_X$ in $\textbf{C}$, and since the isomorphism is identity, then, we have that $(\operatorname{id}_{R_TX})^\sharp=\varepsilon_X$, as needed.
+\end{proof}
+
+\begin{definition}{\textbf{(Eilenberg-Moore Coalgebra)}}
+    Given a comonad $(C,\varepsilon,v)$ on category $\textbf{C}$, we define algebra of $C$ or $C$-coalgebra to be a pair $(A, i_A)$ where $A$ is an object of $\textbf{C}$ and a morphism $i_A:A\to CA$ in $\textbf{C}$ that satisfies the counit and comultiplication or coalgebra square law:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJBIl0sWzEsMCwiQ0EiXSxbMSwxLCJBIl0sWzMsMCwiQSJdLFs0LDAsIkNBIl0sWzMsMSwiQ0EiXSxbNCwxLCJDQ0EiXSxbMCwxLCJpIl0sWzEsMiwiXFx2YXJlcHNpbG9uX0EiXSxbMCwyLCJcXG9wZXJhdG9ybmFtZXtpZH1fQSIsMl0sWzUsNiwiQ2kiLDJdLFs0LDYsIlxcbnVfQSJdLFszLDUsImkiLDJdLFszLDQsImkiXV0=
+    \begin{tikzcd}
+        A & CA && A & CA \\
+        & A && CA & CCA
+        \arrow["i", from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_A}"', from=1-1, to=2-2]
+        \arrow["{\varepsilon_A}", from=1-2, to=2-2]
+        \arrow["i", from=1-4, to=1-5]
+        \arrow["i"', from=1-4, to=2-4]
+        \arrow["{\nu_A}", from=1-5, to=2-5]
+        \arrow["Ci"', from=2-4, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}{\textbf{(Eilenberg-Moore Category of Coalgebra)}}
+    \label{def:coalg-cat}
+    Given a comonad $(C,\varepsilon,\nu)$ on category $\textbf{C}$ (denoted as $\textbf{C}^C$) to have objects being $(A, i_A)$ for each $A$ in $\textbf{C}$ with suitable $i_A:TA\to A$. The $C$-morphism $f:(A, i_A)\to (B, i_B)$ is an morphism $f:A\to B$ such that:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzEsMCwiQiJdLFswLDEsIkNBIl0sWzEsMSwiQ0IiXSxbMCwxLCJmIl0sWzAsMiwiaV9BIiwyXSxbMiwzLCJDZiIsMl0sWzEsMywiaV9CIl1d
+    \begin{tikzcd}
+        A & B \\
+        CA & CB
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["{i_A}"', from=1-1, to=2-1]
+        \arrow["{i_B}", from=1-2, to=2-2]
+        \arrow["Cf"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    Clearly the identity morphism $\operatorname{id}_{(A, i_A)}$ is clearly $\operatorname{id}_A$, and the associativity of composition is clearly inherted from the category $\textbf{C}$ (and the commutativity is still valid). Observe that $i_A$ is an $C$-morphism of $(A, i_A)\to(CA,\nu_A)$ as the comultiplication law guarantee the commutativity.
+\end{definition}
+
+\begin{definition}{\textbf{(Free Coalgebra)}}
+    Given object $X$ in category $\textbf{C}$, the $C$-coalgebra of $(CX, \nu_X)$ of $\textbf{C}$ is called free $C$-coalgebra.
+\end{definition}
+
+\begin{remark}{(Free Coalgebra is Algebra)}
+    This can be checked using the counit and comultiplication, in which the following 2 left diagram commutes (follows from co-left unitality law and co-commutativity law):
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMTEsWzAsMCwiQ1giXSxbMSwwLCJDQ1giXSxbMSwxLCJDWCJdLFszLDAsIkNYIl0sWzQsMCwiQ0NYIl0sWzMsMSwiQ0NYIl0sWzQsMSwiQ0NDWCJdLFs2LDAsIkNYIl0sWzcsMCwiQ1kiXSxbNiwxLCJDQ1giXSxbNywxLCJDQ1kiXSxbMSwyLCJcXHZhcmVwc2lsb25fe0NYfSJdLFswLDEsIlxcbnVfWCJdLFswLDIsIlxcb3BlcmF0b3JuYW1le2lkfV97Q1h9IiwyXSxbMyw0LCJcXG51X1giXSxbMyw1LCJcXG51X1giLDJdLFs1LDYsIkNcXG51X1giLDJdLFs0LDYsIlxcbnVfe0NYfSJdLFs3LDksIlxcbnVfWCIsMl0sWzgsMTAsIlxcbnVfWSJdLFs5LDEwLCJDQ2YiLDJdLFs3LDgsIkNmIl1d
+    \begin{tikzcd}
+        CX & CCX && CX & CCX && CX & CY \\
+        & CX && CCX & CCCX && CCX & CCY
+        \arrow["{\nu_X}", from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_{CX}}"', from=1-1, to=2-2]
+        \arrow["{\varepsilon_{CX}}", from=1-2, to=2-2]
+        \arrow["{\nu_X}", from=1-4, to=1-5]
+        \arrow["{\nu_X}"', from=1-4, to=2-4]
+        \arrow["{\nu_{CX}}", from=1-5, to=2-5]
+        \arrow["Cf", from=1-7, to=1-8]
+        \arrow["{\nu_X}"', from=1-7, to=2-7]
+        \arrow["{\nu_Y}", from=1-8, to=2-8]
+        \arrow["{C\nu_X}"', from=2-4, to=2-5]
+        \arrow["CCf"', from=2-7, to=2-8]
+    \end{tikzcd}
+    \end{equation*}
+    On the other hand, any function $f:A\to B$ is a $C$-morphism due to the naturality of $\nu$, as shown in the right most diagram.
+\end{remark}
+
+\begin{definition}{\textbf{(Co-Algebra Adjunction)}}
+    Given comonad $(C, \varepsilon, v)$ on category $\textbf{C}$, then we can define the fully faithful ``forgetful'' functor $L^C:\textbf{C}^C\rightarrow \textbf{C}$, and the functor $R^C:\textbf{C}\rightarrow\textbf{C}^C$, in which: $R^CX=(CX,\nu_X)$ being free coalgebra. On the other hand, given morphism $f:X\to Y$, we lifted the morphism of $Cf:(CX,\nu_X)\to(CY, \nu_Y)$.
+\end{definition}
+
+\begin{proposition}
+    Both functors are indeed adjunction. (1) The composition between functors $L^C\circ R^C:\textbf{C}\to\textbf{C}$ are naturality isomorphic to $C$. (2) The functor $L^C$ is left-adjoint to $R^C$ (3) unit of the adjunction is the structure map $i:R^C\circ L^C\Rightarrow\operatorname{id}_{\textbf{C}^C}$ (and it is valid $C$-morphism because of naturality condition of $\nu$), while its counit is counit of comonad given by $\varepsilon$.
+\end{proposition}
+\begin{proof}
+    \textbf{(Part 1):} Let's consider $L^C\circ R^CC=L^C(CX,\nu_X)=CX$.  On the other hand, given $f:X\to Y$, then $L^C\circ R^Cf=L^CCf=Cf$. This mean that $L^C\circ R^C=C$.
+
+    \textbf{(Part 2):} We want to show that:
+    \begin{equation*}
+        \operatorname{Hom}_{\textbf{C}}(A, B)=\operatorname{Hom}_{\textbf{C}}\big( L^C(A, i_A), B \big) \cong \operatorname{Hom}_{\textbf{C}^C}\big( (A, i_A), R^CB \big) = \operatorname{Hom}_{\textbf{C}^C}\big( (A, i_A), (CB, \nu_B) \big)
+    \end{equation*}
+    That is given $f^\sharp:A\to B$ and can send it to $f^\flat:(A, i_A)\to(CB, \nu_B)$, then we will define $R^Cf^\sharp\circ i_A=f^\flat$ where we have the signature of $R^Cf^\sharp:(CA, \nu_A)\to(CB, \nu_B)$ and $i_A:(A, i_A)\to (CA, \nu_A)$. On the other hand, we have $\varepsilon_B\circ L^Cf^\flat=f^\sharp$. Let's see that they are inverse of each other:
+    \begin{itemize}
+        \item Given $f:A\to B$ in $\textbf{C}$, then we have $R^Cf\circ i_A=f^\flat$ and then we have:
+        \begin{equation*}
+        \begin{aligned}
+            (f^\flat)^\sharp=\varepsilon_B\circ L^C(R^Cf\circ i_A) &= \varepsilon_B\circ L^CR^Cf\circ L^Ci_A = \varepsilon_B\circ Cf\circ i_A \\
+            &= f\circ\varepsilon_A\circ i_A = f
+        \end{aligned}
+        \end{equation*}
+        where the second to last equation, we have used the naturality condition of $\varepsilon$ and the last equation, we have used the counit law of coalgebra.
+        \item Given $g:(A, i_A)\to(CB, \nu_B)$, then we have $\varepsilon_B\circ L^Cg=g^\sharp$ and then we have: $(g^\sharp)^\flat = R^C(\varepsilon_B\circ L^Cg)\circ i_A$, which will be represented by the red path of following diagram:
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNSxbMCwwLCIoQSwgaV9BKSJdLFswLDEsIihDQSxcXG51X0EpIl0sWzEsMSwiKENDQixcXG51X0IpIl0sWzIsMSwiKENCLFxcbnVfQikiXSxbMSwwLCIoQ0IsIFxcbnVfQikiXSxbMCwxLCJpX0EiLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFsxLDIsIkNnIiwyLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbMiwzLCJDXFx2YXJlcHNpbG9uX0IiLDIseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFswLDQsImciXSxbNCwyLCJcXG51X0IiXSxbNCwzLCJcXG9wZXJhdG9ybmFtZXtpZH1fe0NCfSIsMCx7ImN1cnZlIjotMiwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+        \begin{tikzcd}
+            {(A, i_A)} & {(CB, \nu_B)} \\
+            {(CA,\nu_A)} & {(CCB,\nu_B)} & {(CB,\nu_B)}
+            \arrow["g", from=1-1, to=1-2]
+            \arrow["{i_A}"', color={rgb,255:red,214;green,92;blue,92}, from=1-1, to=2-1]
+            \arrow["{\nu_B}", from=1-2, to=2-2]
+            \arrow["{\operatorname{id}_{CB}}", curve={height=-12pt}, dotted, from=1-2, to=2-3]
+            \arrow["Cg"', color={rgb,255:red,214;green,92;blue,92}, from=2-1, to=2-2]
+            \arrow["{C\varepsilon_B}"', color={rgb,255:red,214;green,92;blue,92}, from=2-2, to=2-3]
+\end{tikzcd}
+        \end{equation*}
+        where we note that $R^CL^Cg=Cg$ (the changes were happening at the structure map) and $R^C\varepsilon_B=C\varepsilon_B$. We use the fact that $g$ is an $C$-morphism to get the square. And by the right co-unitality law, we recovers $g$, as needed.
+    \end{itemize}
+    Before we move on, we note that the structure map $i$ is an natual transformation because any morphism $f$ in $\textbf{C}^C$ is $C$-morphism so the naturality condition holds. Now, we have confirmed the unit and counit of adjunction, we are left to show that they satisfies triangle identities.  In which we have:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJMXkMiXSxbMSwwLCJMXkNSXkNMXkMiXSxbMiwwLCJMXkMiXSxbMCwxLCJBIl0sWzEsMSwiQSJdLFsyLDEsIkEiXSxbMCwxLCJMXkNpIiwwLHsibGV2ZWwiOjJ9XSxbMSwyLCJcXHZhcmVwc2lsb24gTF5DIiwwLHsibGV2ZWwiOjJ9XSxbMyw0LCJpX0EiXSxbNCw1LCJcXHZhcmVwc2lsb25fQSJdLFszLDUsIlxcb3BlcmF0b3JuYW1le2lkfV9BIiwyLHsiY3VydmUiOjMsInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRvdHRlZCJ9fX1dXQ==
+    \begin{tikzcd}
+        {L^C} & {L^CR^CL^C} & {L^C} \\
+        A & A & A
+        \arrow["{L^Ci}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\varepsilon L^C}", Rightarrow, from=1-2, to=1-3]
+        \arrow["{i_A}", from=2-1, to=2-2]
+        \arrow["{\operatorname{id}_A}"', curve={height=18pt}, dotted, from=2-1, to=2-3]
+        \arrow["{\varepsilon_A}", from=2-2, to=2-3]
+    \end{tikzcd}
+    \qquad \qquad
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJSXkMiXSxbMSwwLCJSXkNMXkNSXkMiXSxbMiwwLCJSXkMiXSxbMCwxLCIoQ0EsIFxcbnVfQSkiXSxbMSwxLCIoQ0NBLCBcXG51X3tDQX0pIl0sWzIsMSwiKENBLFxcbnVfQSkiXSxbMCwxLCJpUl5DIiwwLHsibGV2ZWwiOjJ9XSxbMSwyLCJSXkNcXHZhcmVwc2lsb24iLDAseyJsZXZlbCI6Mn1dLFszLDQsIlxcbnVfe0F9IiwyXSxbNCw1LCJDXFx2YXJlcHNpbG9uX3tBfSIsMl0sWzMsNCwiaV97Q0F9Il0sWzMsNSwiXFxvcGVyYXRvcm5hbWV7aWR9X3tDQX0iLDIseyJjdXJ2ZSI6NCwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV1d
+    \begin{tikzcd}
+        {R^C} & {R^CL^CR^C} & {R^C} \\
+        {(CA, \nu_A)} & {(CCA, \nu_{CA})} & {(CA,\nu_A)}
+        \arrow["{iR^C}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{R^C\varepsilon}", Rightarrow, from=1-2, to=1-3]
+        \arrow["{\nu_{A}}"', from=2-1, to=2-2]
+        \arrow["{i_{CA}}", from=2-1, to=2-2]
+        \arrow["{\operatorname{id}_{CA}}"', curve={height=24pt}, dotted, from=2-1, to=2-3]
+        \arrow["{C\varepsilon_{A}}"', from=2-2, to=2-3]
+    \end{tikzcd}
+    \end{equation*}
+    where the LHS diagram, we consider the component of $(C, i_A)$ and use the counit law of coalgebra, while the RHS diagram we consider the component of $A$, which we have used the right counitality law. Therefore, the triangle identities is satisfied and so they are all adjunction.
+\end{proof}
+
+\begin{corollary}
+    Given the comonad $(C, \varepsilon, v)$ of category $\textbf{C}$ with object $X$, and $(A, i_A)$ in $C$-coalgebra. Given any morphism $f:A\to X$, there exists an unique morphism of coalgebras $(A, i)\rightarrow(CX,v)$ such that following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMyxbMCwxLCJBIl0sWzEsMCwiQ1giXSxbMSwxLCJYIl0sWzEsMiwiXFx2YXJlcHNpbG9uX1giXSxbMCwyLCJmIiwyXSxbMCwxLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        & CX \\
+        A & X
+        \arrow["{\varepsilon_X}", from=1-2, to=2-2]
+        \arrow[dashed, from=2-1, to=1-2]
+        \arrow["f"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{corollary}
+\begin{proof}
+    We note that the $f^\flat:(A,i_A)\to(CX,\nu_X)$, and we note that the diagram in remark \ref{remark:note-counit} gives (note that the pair $f^\flat$ and $f$ is unique by the isomorphism of adjunction), hence the uniqueness:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsMixbMCwwLCIoQSwgaV9BKSJdLFswLDEsIihDWCxcXG51X1gpIl0sWzAsMSwiZl5cXGZsYXQiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \begin{tikzcd}
+        {(A, i_A)} \\
+        {(CX,\nu_X)}
+        \arrow["{f^\flat}"', dashed, from=1-1, to=2-1]
+    \end{tikzcd}
+    \longmapsto
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJMXkNBPUEiXSxbMCwxLCJMXkNSXkNYPUNYIl0sWzEsMSwiWCJdLFswLDEsIkxeQ2ZeXFxmbGF0IiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMiwiZiJdLFsxLDIsIlxcdmFyZXBzaWxvbl9YIiwyXV0=
+    \begin{tikzcd}
+        {L^CA=A} \\
+        {L^CR^CX=CX} & X
+        \arrow["{L^Cf^\flat}"', dashed, from=1-1, to=2-1]
+        \arrow["f", from=1-1, to=2-2]
+        \arrow["{\varepsilon_X}"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+\end{proof}
+
+\subsection{Adjunction, Monads and Comonads}
+
+\begin{theorem}
+    \label{thm:adj-to-monad}
+    Given a category $\textbf{C}$ and $\textbf{D}$ and the adjoint functors $F:\textbf{C}\to\textbf{D}$ and $G:\textbf{D}\to\textbf{C}$ in which $F\dashv G$ where the units are $\eta:\operatorname{id}_\textbf{C}\Rightarrow G\circ F$ and $\varepsilon:F\circ G\Rightarrow \operatorname{id}_\textbf{D}$, then:
+    \begin{itemize}
+        \item $G\circ F$ is monad on $\textbf{C}$ with unit $\eta$ and multiplication $G\varepsilon F$
+        \item $F\circ G$ is comonad on $\textbf{D}$ with counit $\varepsilon$ and comultiplication $F\eta G$
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    \textbf{(Part 1):} It is clear that the unit and multiplication are natural transformation. We will show that they satisfies the law of monad, where we have, the left and right unitality:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJHRiJdLFsxLDAsIkdGR0YiXSxbMSwxLCJHRiJdLFszLDAsIkdGIl0sWzQsMCwiR0ZHRiJdLFs0LDEsIkdGIl0sWzAsMSwiXFxldGEgR0YiLDAseyJsZXZlbCI6Mn1dLFsxLDIsIkdcXHZhcmVwc2lsb24gRiIsMCx7ImxldmVsIjoyfV0sWzMsNCwiR0ZcXGV0YSIsMCx7ImxldmVsIjoyfV0sWzQsNSwiR1xcdmFyZXBzaWxvbiBGIiwwLHsibGV2ZWwiOjJ9XSxbMCwyLCJcXG9wZXJhdG9ybmFtZXtpZH1fe0dGfSIsMix7ImxldmVsIjoyfV0sWzMsNSwiXFxvcGVyYXRvcm5hbWV7aWR9X3tHRn0iLDIseyJsZXZlbCI6Mn1dXQ==
+    \begin{tikzcd}
+        GF & GFGF && GF & GFGF \\
+        & GF &&& GF
+        \arrow["{\eta GF}", Rightarrow, from=1-1, to=1-2]
+        \arrow["{\operatorname{id}_{GF}}"', Rightarrow, from=1-1, to=2-2]
+        \arrow["{G\varepsilon F}", Rightarrow, from=1-2, to=2-2]
+        \arrow["GF\eta", Rightarrow, from=1-4, to=1-5]
+        \arrow["{\operatorname{id}_{GF}}"', Rightarrow, from=1-4, to=2-5]
+        \arrow["{G\varepsilon F}", Rightarrow, from=1-5, to=2-5]
+    \end{tikzcd}
+    \end{equation*}
+    Both are results from triangle identities (lemma \ref{lemma:triangle-id-adjoint}). The LHS diagram commutes due to the second triangle identity if we pre-compose with a functor $F$ (i.e its components are of the for $FA$). The RHS diagram commutes due to the first triangle identities if we post-compose with functor $G$. For the multiplication, we have the following LHS diagram:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJHRkdGR0YiXSxbMiwwLCJHRkdGIl0sWzAsMSwiR0ZHRiJdLFsyLDEsIkdGIl0sWzYsMCwiRkdGQSJdLFs2LDEsIkZBIl0sWzQsMSwiRkdGQSJdLFs0LDAsIkZHRkdGQSJdLFswLDEsIkdGR1xcdmFyZXBzaWxvbiBGIiwwLHsibGV2ZWwiOjJ9XSxbMCwyLCJHXFx2YXJlcHNpbG9uIEZHRiIsMix7ImxldmVsIjoyfV0sWzIsMywiR1xcdmFyZXBzaWxvbiBGIiwyLHsibGV2ZWwiOjJ9XSxbMSwzLCJHXFx2YXJlcHNpbG9uIEYiLDAseyJsZXZlbCI6Mn1dLFs0LDUsIlxcdmFyZXBzaWxvbl9BIl0sWzcsNiwiXFx2YXJlcHNpbG9uX3tGR0ZBfSIsMl0sWzcsNCwiRkdcXHZhcmVwc2lsb25fe0ZBfSJdLFs2LDUsIlxcdmFyZXBzaWxvbl97RkF9IiwyXV0=
+    \begin{tikzcd}
+        GFGFGF && GFGF && FGFGFA && FGFA \\
+        GFGF && GF && FGFA && FA
+        \arrow["{GFG\varepsilon F}", Rightarrow, from=1-1, to=1-3]
+        \arrow["{G\varepsilon FGF}"', Rightarrow, from=1-1, to=2-1]
+        \arrow["{G\varepsilon F}", Rightarrow, from=1-3, to=2-3]
+        \arrow["{FG\varepsilon_{FA}}", from=1-5, to=1-7]
+        \arrow["{\varepsilon_{FGFA}}"', from=1-5, to=2-5]
+        \arrow["{\varepsilon_A}", from=1-7, to=2-7]
+        \arrow["{G\varepsilon F}"', Rightarrow, from=2-1, to=2-3]
+        \arrow["{\varepsilon_{FA}}"', from=2-5, to=2-7]
+    \end{tikzcd}
+    \end{equation*}
+    This follows from the naturality of $\varepsilon$ when acting on $\varepsilon_{FA}$ for any object $A$, and then lift the whole diagram using functor $G$ as show in the RHS diagram.
+
+    \textbf{(Part 2):} For the counit, we have similar proof as the left and right co-unitality law follows from the triangle identities, while the co-multiplication law follows from the naturality condition of $\eta$
+\end{proof}
+
+\begin{theorem}
+    Given categories $\textbf{C}$ and $\textbf{D}$ and the adjoint functors $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$ in which $F\dashv G$, where the unit $\eta$ and counit $\varepsilon$. Let's call the induced monad $G\circ F$ by $T$, then:
+    \begin{itemize}
+        \item There is canonical ``comparision'' functor $J$ from Kleisli category of $T$ to $\textbf{D}$, unique up to isomorphism, which makes the following diagram commutes (up to isomorphism):
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXHRleHRiZntDfV9UIl0sWzIsMCwiXFx0ZXh0YmZ7RH0iXSxbMSwxLCJcXHRleHRiZntDfSJdLFs0LDAsIlxcdGV4dGJme0N9X1QiXSxbNiwwLCJcXHRleHRiZntEfSJdLFs1LDEsIlxcdGV4dGJme0N9Il0sWzAsMiwiUl9UIiwyXSxbMSwyLCJHIl0sWzAsMSwiSiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDQsIkoiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSwzLCJMX1QiXSxbNSw0LCJGIiwyXV0=
+        \begin{tikzcd}
+            {\textbf{C}_T} && {\textbf{D}} && {\textbf{C}_T} && {\textbf{D}} \\
+            & {\textbf{C}} &&&& {\textbf{C}}
+            \arrow["J", dashed, from=1-1, to=1-3]
+            \arrow["{R_T}"', from=1-1, to=2-2]
+            \arrow["G", from=1-3, to=2-2]
+            \arrow["J", dashed, from=1-5, to=1-7]
+            \arrow["{L_T}", from=2-6, to=1-5]
+            \arrow["F"', from=2-6, to=1-7]
+        \end{tikzcd}
+        \end{equation*}
+        \item There is canonical ``comparision'' functor $K$ from $\textbf{D}$ to Eilenberg-Moore category of $T$, unique up to isomorphism, which makes the following diagram commutes (up to isomorphism):
+        \begin{equation*}
+        % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXHRleHRiZntEfSJdLFsyLDAsIlxcdGV4dGJme0N9XlQiXSxbMSwxLCJcXHRleHRiZntDfSJdLFs0LDAsIlxcdGV4dGJme0R9Il0sWzYsMCwiXFx0ZXh0YmZ7Q31eVCJdLFs1LDEsIlxcdGV4dGJme0N9Il0sWzAsMiwiRyIsMl0sWzEsMiwiUl5UIl0sWzAsMSwiSyIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDQsIksiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSwzLCJGIl0sWzUsNCwiTF5UIiwyXV0=
+        \begin{tikzcd}
+            {\textbf{D}} && {\textbf{C}^T} && {\textbf{D}} && {\textbf{C}^T} \\
+            & {\textbf{C}} &&&& {\textbf{C}}
+            \arrow["K", dashed, from=1-1, to=1-3]
+            \arrow["G"', from=1-1, to=2-2]
+            \arrow["{R^T}", from=1-3, to=2-2]
+            \arrow["K", dashed, from=1-5, to=1-7]
+            \arrow["F", from=2-6, to=1-5]
+            \arrow["{L^T}"', from=2-6, to=1-7]
+        \end{tikzcd}
+        \end{equation*}
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    \textbf{(Find Functor $J$ Definition):} Let's start with the first claim first.  Let's consider the $R_T:\textbf{C}_T\to\textbf{C}$ first. Given object $A$ of $C$, we have $R_TA=TA=GFA$, then we can expect $J$ to sends $JA=FA$. On the other hand, given $f:X\to GFY$ in $\textbf{C}_T$, then we have 
+    \begin{equation*}
+        R_Tf=\mu_Y\circ GFf=G\varepsilon_{FY}\circ GFf = G\big(\varepsilon_{FY}\circ Ff\big)
+    \end{equation*}
+    with this, we can see that $J$ lift the map $Jf = \varepsilon_{FY}\circ Ff=f^\sharp$. 
+    
+    \textbf{($J$ is a Functor):} Let's check that $J$ is ineeded a functor, first, consider the identities of $\textbf{C}^T$ on object $X$, which is $\eta_X$, in which, we have: $J\eta_X = \varepsilon_{FX}\circ F\eta_X = \operatorname{id}_{FX}$ because of the first triangle identities of adjunction. On the other hand, if we have $g:Y\to GFZ$, then we have the following diagram
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJGWCJdLFsxLDAsIkZHRlkiXSxbMiwwLCJGR0ZHRloiXSxbMywwLCJGR0ZaIl0sWzMsMSwiRloiXSxbMSwxLCJGWSJdLFsyLDEsIkZHRloiXSxbMCwxLCJGZiIsMCx7ImNvbG91ciI6WzI3MCw2MCw2MF19LFsyNzAsNjAsNjAsMV1dLFsxLDIsIkZHRmciLDAseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFsyLDMsIkZHXFx2YXJlcHNpbG9uX3tGWn0iLDAseyJjb2xvdXIiOlswLDYwLDYwXX0sWzAsNjAsNjAsMV1dLFszLDQsIlxcdmFyZXBzaWxvbl97Rlp9IiwwLHsiY29sb3VyIjpbMCw2MCw2MF19LFswLDYwLDYwLDFdXSxbNSw2LCJGZyIsMix7ImNvbG91ciI6WzI0MCw2MCw2MF19LFsyNDAsNjAsNjAsMV1dLFs2LDQsIlxcdmFyZXBzaWxvbl97Rlp9IiwyLHsiY29sb3VyIjpbMjQwLDYwLDYwXX0sWzI0MCw2MCw2MCwxXV0sWzEsNSwiXFx2YXJlcHNpbG9uX3tGWX0iLDIseyJjb2xvdXIiOlsyNDAsNjAsNjBdfSxbMjQwLDYwLDYwLDFdXSxbMiw2LCJcXHZhcmVwc2lsb25fe0ZHRlp9Il1d
+    \begin{tikzcd}
+        FX & FGFY & FGFGFZ & FGFZ \\
+        & FY & FGFZ & FZ
+        \arrow["Ff", color={rgb,255:red,153;green,92;blue,214}, from=1-1, to=1-2]
+        \arrow["FGFg", color={rgb,255:red,214;green,92;blue,92}, from=1-2, to=1-3]
+        \arrow["{\varepsilon_{FY}}"', color={rgb,255:red,92;green,92;blue,214}, from=1-2, to=2-2]
+        \arrow["{FG\varepsilon_{FZ}}", color={rgb,255:red,214;green,92;blue,92}, from=1-3, to=1-4]
+        \arrow["{\varepsilon_{FGFZ}}", from=1-3, to=2-3]
+        \arrow["{\varepsilon_{FZ}}", color={rgb,255:red,214;green,92;blue,92}, from=1-4, to=2-4]
+        \arrow["Fg"', color={rgb,255:red,92;green,92;blue,214}, from=2-2, to=2-3]
+        \arrow["{\varepsilon_{FZ}}"', color={rgb,255:red,92;green,92;blue,214}, from=2-3, to=2-4]
+    \end{tikzcd}
+    \end{equation*}
+    where the blue part represents $Jg\circ Jf$ on the red path represents $J(g\circ_{kl}f)$, where both square represents the naturality condition of $\varepsilon$ (the right square resemblance the associativity law of monad). 
+    
+    \textbf{($J$ gives the Commutativity):} Now we consider the RHS diagram, in which we want to show that $JL_T=F$. Let's start with the object, given $X$ in $\textbf{C}$, we have $JL_TX=JX=X$. On the other hand, given $f:X\to Y$:
+    \begin{equation*}
+        JL_Tf = J(\eta_Y\circ f) = \varepsilon_{FY}\circ F\eta_Y\circ Ff = Ff
+    \end{equation*}
+    The last equality follows from the triangle identity of an adjunction (the same as when we do $J\eta_Y$). \textit{Warning}, we can't just $J\eta_Y\circ Jf$ because $J$ is an functor on $\textbf{C}_T$ which distributed across $\circ_{kl}$ not $\circ$. Thus we see that $F=JL_T$ as needed.
+
+    \textbf{(Find Functor $K$ Definition):} 
+    Let's consider the object $D$ in $\textbf{D}$, then we have that $R^TKD=GD$, then we can sets $KD=(GD, e_{GD})$ as an object in $\textbf{C}^T$.  
+
+    On the other hand, given $f:D\to D'$, then we have (since $R^T$ is a forgetful functor) $T$-morphism of $Kf:(GD, e_{GD})\to(GD',e_{GD'})$, let's consider the commutativity condition of $T$-morphism to indicate the structure map. We requires the following diagram to commute:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsNCxbMCwxLCJHRCJdLFsxLDEsIkdEJyJdLFswLDAsIkdGR0QiXSxbMSwwLCJHRkdEIl0sWzIsMCwiZV97R0R9IiwyXSxbMywxLCJlX3tHRCd9Il0sWzAsMSwiR2YiLDJdLFsyLDMsIkdGR2YiXV0=
+    \begin{tikzcd}
+        GFGD & GFGD \\
+        GD & {GD'}
+        \arrow["GFGf", from=1-1, to=1-2]
+        \arrow["{e_{GD}}"', from=1-1, to=2-1]
+        \arrow["{e_{GD'}}", from=1-2, to=2-2]
+        \arrow["Gf"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \end{equation*}
+    We note that $e_{GD}:GFGD\to GD$ so the most natural way is to set it to be be $G\varepsilon_D=e_{GD}$. This would gives us the naturality condition for all $f$ in $\textbf{D}$. 
+    
+    \textbf{($K$ is a Functor):} It is clear that $K$ is a functor (as there is no fancy composition within $\textbf{C}^T$). 
+
+    \textbf{($K$ gives the Commutativity):} We are left to show that this definition of $K$ satisfies the commutativity on the RHS. Let give object $X$ in $C$, then $KFX=(GFX, e_{GFX})$ where $e_{GFX}=G\varepsilon_{FX}=\mu_X$ as needed. On the other hand, given function $f:X\to Y$, we have $KF:(GFX, \mu_X)\to(GFY, \mu_Y)$ as needed (as the structure map is already been proven, we don't need anything).
+\end{proof}
+
+\begin{definition}{\textbf{(Monandic Functor)}}
+    Given categories $\textbf{C}$ and $\textbf{D}$ and the adjoint functors $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$ in which $F\dashv G$, the adjunction is called monadic iff the comparision functor $\textbf{D}\rightarrow\textbf{C}^T$ is an equivalence of categories.
+
+    The right adjunction $G$, then is called monadic functor.
+\end{definition}
+
+\begin{remark}
+    Now, given the special case of monadic functor (most of ``free-forgetful'' adjunction we have considered, but in most Kleisli adjunctions of most monads, will not be monadic), we can consier the comparision functor $J:\textbf{C}_T\to \textbf{C}^T$ so that the following diagram commutes:
+    \begin{equation*}
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJcXHRleHRiZntDfV9UIl0sWzMsMCwiXFx0ZXh0YmZ7Q31eVCJdLFsxLDEsIlxcdGV4dGJme0N9Il0sWzUsMCwiXFx0ZXh0YmZ7Q31fVCJdLFs4LDAsIlxcdGV4dGJme0N9XlQiXSxbNiwxLCJcXHRleHRiZntDfSJdLFsyLDAsIlxcdGV4dGJme0R9Il0sWzcsMCwiXFx0ZXh0YmZ7RH0iXSxbMCwyLCJSX1QiLDJdLFsxLDIsIlJeVCJdLFs1LDMsIkxfVCJdLFs1LDQsIkxeVCIsMl0sWzAsNiwiSiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs2LDEsIksiXSxbNiwyLCJHIiwyXSxbMyw3LCJKIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzcsNCwiSyJdLFs1LDcsIkYiXV0=
+    \begin{tikzcd}
+        {\textbf{C}_T} && {\textbf{D}} & {\textbf{C}^T} && {\textbf{C}_T} && {\textbf{D}} & {\textbf{C}^T} \\
+        & {\textbf{C}} &&&&& {\textbf{C}}
+        \arrow["J", dashed, from=1-1, to=1-3]
+        \arrow["{R_T}"', from=1-1, to=2-2]
+        \arrow["K", from=1-3, to=1-4]
+        \arrow["G"', from=1-3, to=2-2]
+        \arrow["{R^T}", from=1-4, to=2-2]
+        \arrow["J", dashed, from=1-6, to=1-8]
+        \arrow["K", from=1-8, to=1-9]
+        \arrow["{L_T}", from=2-7, to=1-6]
+        \arrow["F", from=2-7, to=1-8]
+        \arrow["{L^T}"', from=2-7, to=1-9]
+    \end{tikzcd}
+    \end{equation*}
+\end{remark}
+
+This examples/observation leads us to the relationship between the Kleisli category and the (subcategory of) Eilenberg-Moore category.
+
+\begin{proposition}
+    Given the above comparision functor $KJ:\textbf{C}_T\rightarrow \textbf{C}^T$, it establishes an equivalence between Kleisli category $\textbf{C}_T$ and full subcategory of $\textbf{C}^T$ whose object are free algebras.
+\end{proposition}
+\begin{proof}
+    To show that $KJ$ is equivalence of categories we can show that it is fully faithful and essetially surjective, as given in theorem \ref{thm:full-faithful-essentially-surj-equiv}.
+
+    \textbf{(Fully):} Given arrow $f:(TA, \mu_A)\to(TB, \mu_B)$, we want to show that there is a morphism $g:A\to TB$ in $\textbf{C}_T$ such that $KJg=f$. By the fact that $K$ is an equivalence of categories, there is a morphism $h$ such that $Kh=f$, that is $h=Jg$ but note that $Jg=g^\sharp$, and by the isomorphism of adjunction, there is such a morphism $g$ that make the equality.
+
+    \textbf{(Faithful):} This also follows from the fact that $K$ is an equivalence of categories and $Jg=g^\sharp$ (as it has isomorphism between 2 hom-sets).
+
+    \textbf{(Essetially Surjective):} For objects $(TA, \mu_A)$, there is an object $B$ in $\textbf{C}_T$ with an isomorphism $KJB\to(TA, \mu_A)$. Note that $KJB=K(FB)=(GFA,e_{GFB})=(TA,\mu_B)$, so that we can just set an object $B$ to $A$ with the isomorphism being identity. 
+
+\end{proof}
+
