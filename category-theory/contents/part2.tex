@@ -65,13 +65,13 @@ Given a set $X$ and $Y$ and functions $f,g:X\to Y$ if $f(x)=g(x)$ for all $x\in 
 	In $\textbf{Set}$, given the axiom \ref{axiom:funct-effect}, we can show that object $a$ is terminal object iff it is a singleton set, we will need additional axioms 
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
 	To show that a singleton set is a terminal object, we note that if there are 2 function from any set $X$ to a singleton set $\{a\}$ i.e $f,g:X\to\{a\}$, then we see that for any objects $x\in X$ $f(x)=g(x)=a$, and so $f=g$. This means that there is an unique arrow going to a singleton set.
 	
 	On the other hand, terminal object is a singleton set because, there is only one arrow from a terminal object to terminal object (by definition).
 \end{proof}
-\end{dem}
+
 	
 	
 It is clear from proposition \ref{prop:iso-obj-in} and \ref{prop:iso-obj-out} that two initial or terminal objects are isomorphic to each others. Nonetheless, we can also proof this fact directly from the definition of it. Let's state the proposition and the proof.
@@ -80,7 +80,7 @@ It is clear from proposition \ref{prop:iso-obj-in} and \ref{prop:iso-obj-out} th
 	A terminal (initial) object are unique up to isomorphism. In other words, given 2 objects $a$ and $a'$ both having a property of terminal (initial) object, then $a\cong a'$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
 	We will provide the proof for terminal object only, but the proof for initial object is similar. We note that by definition, there is an unique arrow from $f : a\to a'$ and $g: a'\to a$:
 	\begin{itemize}
@@ -89,7 +89,7 @@ It is clear from proposition \ref{prop:iso-obj-in} and \ref{prop:iso-obj-out} th
 	\end{itemize}
 	Thus $f$ and $g$ are inverse of each other and $f$ is an isomorphism, as needed.
 \end{proof}
-\end{dem}
+
 
 Before we move on to other construction that are more complex than initial/terminal object, we want to point out that in category theory, instead of explicitly describe the object (set with only one element), we defines the particular relation of this particular object instead (\textit{unique} arrow \textit{from} every object to this object). The universal construction follows from this way of working. 
 
@@ -131,7 +131,7 @@ Now, we can recover the cartesian product from the categorical product on $\text
 	Categortical product between $A$ and $B$ in $\textbf{Set}$ is the Cartesian product $A\times B$, and Cartesian product $A\times B$ is the categorical product.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
 	Let's start with the first statement first. We can set the object $x$ with a terminal object $1$ (see the figure below). Recall that map from a terminal object selects an element of the target. 
 	
@@ -158,7 +158,7 @@ Now, we can recover the cartesian product from the categorical product on $\text
 	\end{itemize}
 
 \end{proof}
-\end{dem}
+
 
 We will also show the power of this kind of definition i.e unique arrow from any object to categorical product, by proving that the product over terminal object, we got:
 
@@ -166,7 +166,7 @@ We will also show the power of this kind of definition i.e unique arrow from any
 	Given object $a$ in category $\textbf{C}$ that has terminal object $1$, we can show that $a\times 1\cong a$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
 	We consider the following diagram:
 
@@ -209,7 +209,7 @@ We will also show the power of this kind of definition i.e unique arrow from any
 
 	Please note that by definition of terminal object, $p_2=!_{a\times1}$ and it is unique (hence the $a\times1\to1$ on the right edge of LHS diagram is correct). Since the definition of product holds that there is a unique pair of arrows, we can see that $h\circ p_1=\operatorname{id}_{a\times1}$
 \end{proof}
-\end{dem}
+
 
 and we can also prove the commutativity of a categorical product. 
 
@@ -217,7 +217,7 @@ and we can also prove the commutativity of a categorical product.
 	Given object $a$ and $b$ in category $\textbf{C}$, we can show that $a\times b\cong b\times a$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
 	We consider the following diagrams:
 	
@@ -266,7 +266,7 @@ and we can also prove the commutativity of a categorical product.
 	On the RHS, we have the obvious commutative diagram, but please note that by definition of categorical product (the universal construction), given a pair $(p_1',p_2')$, we have the \textit{unique} correspondance to the map $\operatorname{id}_{b\times a}$. Thus, $h'\circ h=\operatorname{id}_{b\times a}$ by the uniquenes. The proof that $h\circ h'=\operatorname{id}_{a\times b}$ follows in similar manners.
 
 \end{proof}
-\end{dem}
+
 
 Furthermore, we can show that categorical product is associative.
 
@@ -274,7 +274,7 @@ Furthermore, we can show that categorical product is associative.
 	Given object $a,b$ and $c$ in category $\textbf{C}$, we can show that $a\times(b\times c)\cong(a\times b)\times c$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
 	Let's start by defining the (canonical and unique) map $\alpha:a\times(b\times c)\to(a\times b)\times c$. This can be done by the following commutative diagram and univeral properties
 	\begin{equation*}
@@ -357,7 +357,7 @@ Furthermore, we can show that categorical product is associative.
 	\end{equation*}
 	By the universal property of $b\times c$, we have that $g \circ \alpha=p^{a,bc}_1$. This mean that the right side of the diagram on RHS commutes. On the left side of RHS triangle, the triangle commutes because $p^{ab}_0\circ p^{ab,c}_0\circ\alpha = p^{ab}_0\circ h = p^{a,bc}_0$ and recall that $p^{ab}_0\circ p^{ab,c}_0 = p^{a,bc}_0\circ\beta$. Thus, by univeral properties $\beta\circ\alpha=\operatorname{id}_{a\times(b\times c)}$. Finally, The other cases of $\alpha\circ\beta=\operatorname{id}_{(a\times b)\times c}$ can be proved in simialr manners.
 \end{proof}
-\end{dem}
+
 
 We can see here that the categorical product actually \textit{looks like} a product on the natural number. Finally, we can consider the \textit{functoriality} of the product, in which the ``lifting'' of the morphism can be performed. (we will discuss the actual notion of functor in later section)
 

@@ -188,14 +188,14 @@ Given a type $A$ in context $\Gamma$, then we can weaken $A$ itself to obtain $A
     \end{equation*}
     where $x'$ doesn't occurs in context $\Gamma,x:A,\Delta$
 \end{lemma}
-\begin{dem}
+
 \begin{proof}
     Note that we have to do weakening rule is because we have to make sure that the context matches before performing the substitution
     \begin{equation*}
         \cfrac{\cfrac{\Gamma\vdash A\type }{\Gamma, x':A\vdash x':A}\ \delta \qquad \cfrac{\Gamma\vdash A\type \qquad \Gamma,x:A,\Delta\vdash\mathcal{J}}{\Gamma,x':A,x:A,\Delta\vdash\mathcal{J}}\ W}{\Gamma,x':A,\Delta[x'/x]\vdash\mathcal{J}[x'/x]}\ S
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \begin{lemma}{\textbf{(Interchanging Variables)}}
     If we have 2 types $A$ and $B$ in context $\Gamma$ and make a judgement in context $\Gamma,x:A,y:B,\Delta$ then we make that same judgement in context $\Gamma,y:B,x:A,\Delta$
@@ -203,14 +203,14 @@ Given a type $A$ in context $\Gamma$, then we can weaken $A$ itself to obtain $A
         \cfrac{\Gamma\vdash B\type  \qquad \Gamma,x:A,y:B,\Delta\vdash\mathcal{J}}{\Gamma,y:B,x:A,\Delta\vdash\mathcal{J}}
     \end{equation*}
 \end{lemma}
-\begin{dem}
+
 \begin{proof}
     The trick is that the substitution two times can leads to the ``deletion'' of the elements (this is how we delete $y':B$ at the end, by replacing it again with $y$):
     \begin{equation*}
         \cfrac{\cfrac{\cfrac{\Gamma\vdash B\type }{\Gamma,y:B\vdash y:B}\ \delta}{\Gamma,y:B,x:A\vdash y:B} \ W \qquad\cfrac{\cfrac{\Gamma,x:A,y:B,\Delta\vdash\mathcal{J}}{\Gamma\vdash B\type \qquad\Gamma,x:A,y':B,\Delta[y'/y]\vdash\mathcal{J}[y'/y]}\ y'/y}{\Gamma,y:B,x:A,y':B,\Delta[y'/y]\vdash\mathcal{J}[y'/y]} \ W}{\Gamma,y:B,x:A,\Delta\vdash\mathcal{J}} \ S
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \begin{lemma}{\textbf{(Element Conversion Rule)}}
     \label{lemma:element-conv-rule}
@@ -220,7 +220,7 @@ Given a type $A$ in context $\Gamma$, then we can weaken $A$ itself to obtain $A
     \end{equation*}
     On the RHS, we also have the congruence rule for element conversion.
 \end{lemma}
-\begin{dem}
+
 \begin{proof}
     For the first part:
     \begin{equation*}
@@ -231,7 +231,7 @@ Given a type $A$ in context $\Gamma$, then we can weaken $A$ itself to obtain $A
         \cfrac{\cfrac{}{\Gamma\vdash a\equiv b:A}\qquad \cfrac{\cfrac{\Gamma\vdash A\equiv A'\type}{\Gamma\vdash A'\equiv A\type}\qquad\cfrac{\Gamma\vdash A'\type}{\Gamma, x:A'\vdash x:A'}\ \delta}{\Gamma,x:A\vdash x:A'}}{\Gamma\vdash a\equiv b:A'}
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 
 \subsection{Dependent Function Types}
@@ -354,7 +354,7 @@ And so we have that function composition is associative and that the identity fu
     \end{equation*}
 \end{lemma}
 
-\begin{dem}
+
 \begin{proof}
     The idea: both $\big((h\circ g)\circ f\big)(x)$ and $\big( h\circ(g\circ f) \big)(x)$ evaluate to be $h(g(f(x)))$ and therefore $(h\circ g)\circ f$ and $h\circ(g\circ f)$ must be judgmentally equal.
     \begin{equation*}
@@ -362,7 +362,7 @@ And so we have that function composition is associative and that the identity fu
     \end{equation*}
     Note that the last two steps were just the untangling of the definition of composition between functions.
 \end{proof}
-\end{dem}
+
 
 \begin{lemma}
     Composition of functions satisfy the left and right unit law i.e we can derive as:
@@ -370,7 +370,7 @@ And so we have that function composition is associative and that the identity fu
         \cfrac{\Gamma\vdash f:A\rightarrow B}{\Gamma\vdash\operatorname{id}_B\circ f\equiv f:A\rightarrow B} \qquad\qquad \cfrac{\Gamma\vdash f:A\rightarrow B}{\Gamma\vdash f\circ \operatorname{id}_A\equiv f:A\rightarrow B}
     \end{equation*}
 \end{lemma}
-\begin{dem}
+
 \begin{proof}
     It suffices to derive that $\operatorname{id}_B(f(x))\equiv f(x)$ in context $\Gamma,x:A$ 
     \begin{equation*}
@@ -381,7 +381,7 @@ And so we have that function composition is associative and that the identity fu
         \cfrac{\cfrac{\cfrac{\vdots}{\Gamma,x:A\vdash\operatorname{id}_B(f(x))\equiv f(x):B}}{\Gamma\vdash\lambda x.\operatorname{id}_B(f(x))\equiv\lambda x.f(x):A\to B}\ \lambda\text{-eq}\qquad\cfrac{\Gamma\vdash f:A\to B}{\Gamma\vdash\lambda x.f(x)\equiv f:A\to B}\ \eta}{\Gamma:\operatorname{id}_B\circ f\equiv f:A\rightarrow B}
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \begin{lemma}
     \label{lemma:equal-function-eval-equal}
@@ -390,14 +390,14 @@ And so we have that function composition is associative and that the identity fu
         \cfrac{\Gamma\vdash f:\Pi_{(x:A)}B(x)\qquad \Gamma\vdash g:\Pi_{(x:A)}B(x)\qquad \Gamma, x:A\vdash f(x)\equiv g(x):B(x)}{\Gamma\vdash f\equiv g:\Pi_{(x:A)}B(x)}
     \end{equation*}
 \end{lemma}
-\begin{dem}
+
 \begin{proof}
     We have that:
     \begin{equation*}
         \cfrac{\cfrac{\cfrac{\Gamma\vdash f:\Pi_{(x:A)}B(x)}{\Gamma\vdash \lambda x.f(x)\equiv f:\Pi_{(x:A)}B(x)}\ \eta\qquad\cfrac{\Gamma, x:A\vdash f(x)\equiv g(x):B(x)}{\Gamma\vdash \lambda x.f(x)\equiv \lambda x.g(x):\Pi_{(x:A)}B(x)}\ \lambda\text{-eq}}{\Gamma\vdash f\equiv\lambda x.g(x):\Pi_{(x:A)}B(x)}\qquad\cfrac{\Gamma\vdash g:\Pi_{(x:A)}B(x)}{\Gamma\vdash \lambda x.g(x)\equiv g:\Pi_{(x:A)}B(x)}\ \eta}{\Gamma\vdash f\equiv g:\Pi_{(x:A)}B(x)}
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Constant Function)}}
     \label{def:const-funct}
@@ -414,7 +414,7 @@ And so we have that function composition is associative and that the identity fu
         \cfrac{\Gamma\vdash f:A\to B}{\Gamma, z:C\vdash \operatorname{const}_z\circ f\equiv\operatorname{const}_z:A\to C} \qquad \cfrac{\Gamma\vdash A\type \qquad \Gamma\vdash g:B\to C}{\Gamma, y:B\vdash g\circ \operatorname{const}_y\equiv\operatorname{const}_{g(y)}:A\to C}
     \end{equation*}
 \end{lemma}
-\begin{dem}
+
 \begin{proof}{\textbf{(First Part):}}
     First, we are trying to perform the evaluation of the lambda function:
     \begin{equation*}
@@ -432,8 +432,8 @@ And so we have that function composition is associative and that the identity fu
         \cfrac{\cfrac{\vdots}{\Gamma,z:C\vdash\lambda x.\operatorname{const}_z(f(x))\equiv\lambda x.z:A\to C}\qquad\cfrac{\Gamma\vdash A\type}{\Gamma, z:C\vdash\operatorname{const}_z\equiv\lambda x.z:A\to C}}{\Gamma, z:C\vdash\operatorname{const}_z\circ f\equiv\operatorname{const}_z:A\to C}
     \end{equation*}
 \end{proof}
-\end{dem}
-\begin{dem}
+
+
 \begin{proof}{\textbf{(Second Part):}}
     We have that:
     \begin{equation*}
@@ -448,7 +448,7 @@ And so we have that function composition is associative and that the identity fu
         \cfrac{\cfrac{\vdots}{\Gamma, y:B\vdash\lambda x.g(\operatorname{const}_y(x))\equiv\lambda x.g(y):A\to C}\qquad\cfrac{\vdots}{\Gamma, y:B\vdash\operatorname{const}_{g(y)}\equiv\lambda x.g(y):A\to C}}{\Gamma, y:B\vdash (g\circ\operatorname{const}_y)\equiv \operatorname{const}_{g(y)}:C}
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Swap Function)}}
     \label{def:swap-funct}
@@ -474,7 +474,7 @@ And so we have that function composition is associative and that the identity fu
         }{\Gamma\vdash\sigma\circ\sigma\equiv\operatorname{id}:\big( \Pi_{(x:A)}\Pi_{(y:B)}C(x, y) \big)\to\big( \Pi_{(x:A)}\Pi_{(y:B)}C(x, y) \big)}
     \end{equation*}
 \end{lemma}
-\begin{dem}
+
 \begin{proof}
     Let's start with getting the lambda formulation of $\operatorname{id}$ as we repeated apply the $\eta$ rule (we will also stop using the type annotation because it is too long):
     \begin{equation*}
@@ -502,7 +502,7 @@ And so we have that function composition is associative and that the identity fu
     \end{equation*}
     Note that the RHS we have created the $\sigma\circ\sigma$ from the composition of swap functions. Thus we have the equality as needed.
 \end{proof}
-\end{dem}
+
 
 \subsection{Natural Number}
 

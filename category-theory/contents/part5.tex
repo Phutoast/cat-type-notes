@@ -93,7 +93,7 @@ By the immediate application of Yoneda lemma, we have that:
     Limit and co-limit are unqiue up to isomorphism (if they exists).
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     Assume that there are 2 limit of diagram $F$ i.e $\lim F_1$ and $\lim F_2$ i.e:
     \begin{equation*}
@@ -107,7 +107,7 @@ By the immediate application of Yoneda lemma, we have that:
     \end{equation*}
     Then we see that there is a natural isomorphism between $\operatorname{Hom}_\textbf{C}(-,\lim F_1)\Rightarrow\operatorname{Hom}_\textbf{C}(-,\lim F_2)$ by the corollary \ref{coro:iso-hom-functor-iso-represent} we have that $\lim F_1\cong\lim F_2$
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Complete Category)}}
     A catagory $\textbf{C}$ is called \textit{complete} if every diagram in $\textbf{C}$ has limit. Similary, it is \textit{co-complete} if every diagram in $\textbf{C}$ has a colimit.
@@ -147,7 +147,7 @@ Given the complete category, one can explicitly construct the limits. Let's cons
     where $i:S\rightarrow P$ is the inclusion, is a limit over the diagram $D$.
 \end{lemma}
 
-\begin{dem}
+
 \begin{proof}
     To show that $S$ is a limit, we need to show that there is a natural isomorphism between the functor: $\operatorname{Hom}_\textbf{Set}(-,S)\Rightarrow \operatorname{Cone}(-,D)$. Considering its component, given a set $A$, we have $\operatorname{Hom}_\textbf{Set}(A,S)\to \operatorname{Cone}(A,D)$. Let's show that it is a bijection.
 
@@ -160,7 +160,7 @@ Given the complete category, one can explicitly construct the limits. Let's cons
     
     Finally, the naturality condition are authomatically satisfied since the component of $\alpha$ at $I$ is equal to $\pi_I\circ f$. 
 \end{proof}
-\end{dem}
+
 
 Therefore, this leads to the following theorem:
 
@@ -218,7 +218,7 @@ Note also that the functor in general doesn't preserve the property of mono or e
     Given a functor $F:\textbf{C}\rightarrow\textbf{C}{^\prime}$ that preserves the limit of diagram $D:\textbf{J}\rightarrow\textbf{C}$, and functor $G$ be functor that is naturally isomorphic to $F$, then $G$ also preserve limit of diagram $D$.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     We let $\alpha:F\Rightarrow G$ be the natural isomorphism between $F$ and $G$. We want to show that $\lim GD\cong G(\lim D)$. We will also denote the isomorphism $f:\lim F(\lim D)\xrightarrow{\cong}FD$. 
     
@@ -254,7 +254,7 @@ Note also that the functor in general doesn't preserve the property of mono or e
     \end{equation*}
     We can see that $k$ and $k'$ are invere of each other, thus $k$ is an isomorphism. Finally, since there is an isomorphism from $\alpha_{\lim D}:F\lim D\to G\lim D$, from lemma \ref{lemma:morph-from-isos}, we can find a isomorphism $h:G\lim D\to \lim GD$, as shown in RHS diagram.
 \end{proof}
-\end{dem}
+
 
 
 \begin{proposition}
@@ -262,7 +262,7 @@ Note also that the functor in general doesn't preserve the property of mono or e
     \checkproof Check the proof again, or simplify them.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     We want to show that $F\lim D\cong \lim FD$. Let's start with the obvious map between $F\lim D\to \lim FD$, which follows from the universal property of $\lim FD$ (as shown in the LHS diagram)
     \begin{equation*}
@@ -329,13 +329,13 @@ Note also that the functor in general doesn't preserve the property of mono or e
     \end{equation*}
     Note that the diagram above all arrows commutes. Thus we have that $f\circ(Fh\circ g^{-1})=\operatorname{id}_{\lim FD}$. And the other direction can be proven in similar manners. Thus, we have shown that $f$ is an isomorphism.
 \end{proof}
-\end{dem}
+
 
 \begin{theorem}
     \label{thm:rep-functor-continuous}
     Representable functors are continuous
 \end{theorem}
-\begin{dem}
+
 \begin{proof}
     We note that the action are given to be $(Dm\circ-):\operatorname{Hom}_\textbf{C}(X,DI)\to\operatorname{Hom}_\textbf{C}(X,DI')$. Then, we can consider the following diagram (and we have used the notation from the construction of limit in a $\textbf{Set}$):
     \begin{equation*}
@@ -359,7 +359,7 @@ Note also that the functor in general doesn't preserve the property of mono or e
         \lim\big(\operatorname{Hom}_\textbf{C}(X,D-)\big) \cong \operatorname{Cone}(X,D)\cong \operatorname{Hom}_\textbf{C}(X, \lim D)
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \begin{corollary}
     Given representable pre-sheaf $P:\textbf{C}^\text{op}\rightarrow\textbf{Set}$, then $P$ turns co-limit to limit i.e with diagram $D:\textbf{J}\rightarrow\textbf{C}$ that has colimit, then limit of $P\circ D$ exists and: 
@@ -430,11 +430,11 @@ Then we have:
 \begin{proposition}
     Given the definiton of equalizer above, we can show that the universal map $m:\lim F\rightarrow A$ is necessary mono.
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     Given any function $a:Y\to\lim F$ and $b:Y\to\lim F$ for any object $Y$, by the universal property, for every $a$, there is a \textit{unique} $a\circ m:Y\to A$. Therefore, if $a\circ m=b\circ m$ then $a=b$. Thus $m$ is mono.
 \end{proof}
-\end{dem}
+
 
 This also gives us the dual statement:
 
@@ -556,7 +556,7 @@ We will now consider how the pullback preserves the isomorphism and identity, in
     gives us morphism $f_2:\lim D\to B$, which is isomorphism.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     We have to find the inverse of $f_2$ to show that it is isomorphic. Using the universal property, we can define a cone with a tip of $B$ and the map: $\operatorname{id}_B:B\to B$ and $f^{-1}_1\circ g_1:B\to A$ (as $f$ is invertible). Note that it is clear that the cone commutes i.e $f_1\circ f^{-1}_1\circ g_1=g_1\circ\operatorname{id}_B$. And so, there would be a unique map $f':B\to\lim D$, see red diagram:
     \begin{equation*}
@@ -596,7 +596,7 @@ We will now consider how the pullback preserves the isomorphism and identity, in
     \end{equation*}
     By the way we define, we have $f_2\circ f'=\operatorname{id}_B$. We then use the same trick to get RHS diagram, where we note that $f_1^{-1}\circ g_1\circ f_2=g_2$ (thus the diagram all commute) and so $f'\circ f_2=\operatorname{id}_{\lim D}$ as constructed from a cone whose edge are $g_2$ and $f_2$.
 \end{proof}
-\end{dem}
+
 
 \begin{proposition}
     \label{prop:identity-pullback}
@@ -626,7 +626,7 @@ We will now consider how the pullback preserves the isomorphism and identity, in
     \end{equation*}
     \textbf{Warning}, we are only required to show that the LHS diagram is a pullback, but we note that there can be another pullback given by the RHS diagram where $\lim D\ne B$ only $\lim D\cong B$ since $\operatorname{id}_A$ can be consider to be an isomorphism too.
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     Given any object $C$, we have the following diagram:
     \begin{equation*}
@@ -647,7 +647,7 @@ We will now consider how the pullback preserves the isomorphism and identity, in
     \end{equation*}
     The $C\to A$ can be derived from the commutativity of the cone, thus everyhing is specified by the map $C\to B$ uniquely, as needed.
 \end{proof}
-\end{dem}
+
 
 Now, we consider the 2 pullback diagram together, and show that there is no ambiguity in doing so. 
 
@@ -670,7 +670,7 @@ Now, we consider the 2 pullback diagram together, and show that there is no ambi
     \end{equation*}
     Then $(A, B, A', B')$ square is a pullback iff $(A, C, A', C')$ rectangle is a pullback.
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     $\boldsymbol{(\implies)}$ If $(A, B, A', B')$ is a pullback, then is if we consider arbitrary object $X$ in $\textbf{C}$ with the morphism $h:X\to A$, then we got 2 commutes diagrams:
     \begin{equation*}
@@ -755,7 +755,7 @@ Now, we consider the 2 pullback diagram together, and show that there is no ambi
     \end{equation*}
     We can show that the area highlighted in red commtues: $b\circ f\circ h = f'\circ a \circ h = f'\circ q_1$. Thus, $f\circ h$ also corresponds to a pair of arrows $(q_2, f'\circ q_1)$ just like $q$. Therefore, $f\circ h=q$ or the RHS diagram commutes. Thus, we have a unique pair of arrows $(q, q_1)$ given any $h:X\to A$ i.e a pullback of $(A, B, A', B')$, as needed.
 \end{proof}
-\end{dem}
+
 
 \begin{proposition}
     Consider the following pullback diagram 
@@ -774,7 +774,7 @@ Now, we consider the 2 pullback diagram together, and show that there is no ambi
     If $f$ is a monomorphism, then $f'$ is also a monomorphism.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     From remark \ref{remark:mono-pullback}, we want to proof that the left square of the LHS diagram is a pullback:
     \begin{equation*}
@@ -809,7 +809,7 @@ Now, we consider the 2 pullback diagram together, and show that there is no ambi
     
     If we have the {\color{rgb,255:red,214;green,92;blue,92} red arrow} to be an identity arrow, then the {\color{rgb,255:red,92;green,92;blue,214} blue square} is a pullback as $f$ is an monomorphism, while the {\color{rgb,255:red,81;green,129;blue,96} green square} is a pullback as shown in proposition \ref{prop:identity-pullback}. Thus by proposition above, the square $(A', A, A', B)$ is a pullback as needed.
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Kernel Pair)}}
     Given the morphism $f:X\rightarrow Y$, we have the pullback of:
@@ -831,7 +831,7 @@ Now, we consider the 2 pullback diagram together, and show that there is no ambi
 \begin{proposition}
     The morphism $f$ (as defined above) is mono iff those maps coincides and $X\times_YX\cong X$.
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     $\boldsymbol{(\implies):}$ If $f$ is mono, then the map $a,b:X\times_Y X\to X$ are the same because $f\circ a=f\circ b$ by the commutativity and by the definition of monomorphism. Let's consider the isomorphism, we have the following 2 commutative diagrams:
     \begin{equation*}
@@ -867,7 +867,7 @@ Now, we consider the 2 pullback diagram together, and show that there is no ambi
     \end{equation*}
     where in LHS diagram, the unique morphism $h$ derives from the cone of edge $(\operatorname{id}_X, \operatorname{id}_X)$ and $a\circ h=\operatorname{id}_X$. On the other hand, we can see that $h\circ a=\operatorname{id}_{X\times_Y X}$ due to universal property.
 \end{proof}
-\end{dem}
+
 
 This is where the name "kernel" comes from, where $f$ is trivial iff $f$ is mono. To see this in more details, with the example of category of $\textbf{Set}$, we have:
 
@@ -895,7 +895,7 @@ This is where the name "kernel" comes from, where $f$ is trivial iff $f$ is mono
     \end{multicols}
     Note that the right diagram shows the relationship between the kernel pairs.
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     \textbf{(Part 1):}
     \textit{(Reflexive):} $x\sim x$ because suppose we are given $1$ together with the cone edge of $x:1\to X$ picking the same element.  Note that the diagram as a whole has to commute i.e $m(x)=m(x)$ too (see the LHS diagram), then this induces the unique element $p:1\to X\times_YX$ such that $f(p)=x=g(p)$
@@ -937,7 +937,7 @@ This is where the name "kernel" comes from, where $f$ is trivial iff $f$ is mono
 
     \textbf{(Part 3):} This follows directly from the universal propery of a pullback where we consider the \textit{unique} arrow $p:1\to X\times_YX$ inducing the arrow $x,x':1\to X$. Note that the condition $m(x)=m(x')$ is guaranteed by the universal proeprty.
 \end{proof}
-\end{dem}
+
 
 \begin{proposition}
     Given a morphism $f:X\to Y$, which as a kernel pair, furthermore, assume that $f$ is a coequalizer of something (see RHS diagram). We can show that $f$ is also a coequalizer of its kernel pair. This is given in the following diagram:
@@ -962,7 +962,7 @@ This is where the name "kernel" comes from, where $f$ is trivial iff $f$ is mono
     \end{equation*}
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     First we note that $f\circ a= f\circ b$ by the commutativity of the pullback diagram, so $f$ \textit{could be} the candidate for the coequalizer of $a$ and $b$. We are interested in finding the unique arrow $a:Y\to A$ where we are given morphism $g:X\to A$. 
     \begin{equation*}
@@ -1010,4 +1010,4 @@ This is where the name "kernel" comes from, where $f$ is trivial iff $f$ is mono
     \end{equation*}
     with the same $g:X\to A$ and the unique arrow $a:Y\to A$, but created from the definition of coequalizer. Since $h$ is unique, given $c$ and $c'$, we thus shown that $f$ is the coequalizer of the kernel pair.
 \end{proof}
-\end{dem}
+

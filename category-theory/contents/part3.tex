@@ -30,17 +30,17 @@ Let's consider some properties of morphism within the opposite category:
     Given a category $\textbf{C}$ the morphism $f,g:X\rightarrow Y$ are equal iff its opposite in category $\textbf{C}^\text{op}$ are equal too i.e $f=g$ iff $f^\text{op}=g^\text{op}$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     $(\implies):$ This is obvious from the definition of the opposite morphism, as we can swap the signature of both functions $f$ and $g$. $(\impliedby):$ We can consider the following equality: $f = (f^\text{op})^\text{op} = (g^\text{op})^\text{op} = g$.
 \end{proof}
-\end{dem}
+
 
 \begin{corollary}
     A diagram in $\textbf{C}$ commutes iff the dual diagram in $\textbf{C}^\text{op}$ commutes. Given a category $\textbf{C}$, the morphism $f:X\rightarrow Y$ is invertible iff $f^{\text{op}}:Y\rightarrow X$ of the category $\textbf{C}^\text{op}$ is invertible i.e if $X$ and $Y$ are isomorphic in $\textbf{C}$, then they are isomorphic to $\textbf{C}^\text{op}$
 \end{corollary}
 
-\begin{dem}
+
 \begin{proof}
     \textbf{(Part 1):} Let's denote the composed function from the first path to be $f_1:X\rightarrow Y$ and the composed function from second path to be $f_2:X\rightarrow Y$. Then since the diagram commute, we have $f_1=f_2$. But by the proposition above, we have that $f_1^\text{op}=f_2^\text{op}$ that is the dual diagram also commutes. 
     
@@ -56,7 +56,7 @@ Let's consider some properties of morphism within the opposite category:
     \end{equation*}
     thus, we have proven that $f^\text{op}$ is invertible. The other direction follows from the similar proof. 
 \end{proof}
-\end{dem}
+
 
 \subsection{Types of Functions}
 
@@ -66,7 +66,7 @@ Since we already have talked about isomorphism, we have the following properties
     Given the category $\textbf{C}$ with some objects $X$ and $Y$. The inverse of isomorphism $f:X\rightarrow Y$ is unique i.e show that if $g:Y\rightarrow X$ and $g':Y\rightarrow X$ are the inverses, then $g=g'$. The composite of isomorphism is isomorphism.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     Let's provide the proof for each points. We have that:
     \begin{equation*}
@@ -81,7 +81,7 @@ Since we already have talked about isomorphism, we have the following properties
     \end{equation*}
     The other direction is similar, thus $(f^{-1}_1\circ f^{-1}_2)=(f_2\circ f_1)^{-1}$.
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Monomorphism)}}
     Given a category $\textbf{C}$, the morphism $m:X\rightarrow Y$ is called monomorphism if for any object $A$, with a pair of morphism $f,g:A\rightarrow X$, the following diagram commutes:
@@ -100,7 +100,7 @@ Since we already have talked about isomorphism, we have the following properties
 \begin{proposition}
     Every isomorphism of $\textbf{C}$ is monomorphism of $\textbf{C}$
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     Given the isomorphism $m:X\rightarrow Y$, and given any morphism $f,g:A\rightarrow X$, then we have:
     $$
@@ -111,7 +111,7 @@ Since we already have talked about isomorphism, we have the following properties
     \end{aligned}
     $$
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Left-Inverse/Retraction/Split-Monomorphism)}}
     Given a category $\textbf{C}$, the morphism $m:X\rightarrow Y$, the left-inverse or retraction of $m$ is a morphism $r:Y\rightarrow X$ such that $r\circ m=\operatorname{id}_X$ i.e the following diagram commutes:
@@ -140,7 +140,7 @@ Since we already have talked about isomorphism, we have the following properties
     \label{prop:mono-iff-injective}
     Given function $f:A\to B$, it is mono iff it is injective in $\textbf{Set}$
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     $(\implies):$ We can have the function $a:1\to A$ and $b:1\to A$ picking the element $a,b\in A$, then we have that $f(a)=f(b)$ implies that $a=b$ by it being mono, so $f$ is also injective.
 
@@ -153,7 +153,7 @@ Since we already have talked about isomorphism, we have the following properties
     \end{equation*}
     where $1$ is an arbitrary element of $A$. Note that the first condition is well-defined as if there is another $a'$ such that $f(a')=b$ then $f(a)=f(a')$ or $a=a'$. Thus, $f$ is in fact \textit{split} monomorphism, thus a monomorphism.
 \end{proof}
-\end{dem}
+
 
 As we have seen, if the monomorphism is a generalization of injectivity, then the epimorphism is the generalization of the surjectivity. We have the following notion.
 
@@ -174,11 +174,11 @@ As we have seen, if the monomorphism is a generalization of injectivity, then th
 \begin{proposition}
     We can show that $f:X\rightarrow Y$ is epi in $\textbf{C}$ iff $f^\text{op}:Y\rightarrow X$ is mono in $\textbf{C}^\text{op}$
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     $(\implies):$ Give any morphism $m,n:Y\to A$ since $f$ is epi, we have that if $m\circ f = n\circ f$ then $m=n$. By proposition above, we also have that: $(m\circ f)^\text{op}=(n\circ f)^\text{op}$ or $f^\text{op}\circ m^\text{op}=f^{\text{op}}\circ n^\text{op}$ then $m^\text{op}=n^{op}$ meaning that $f^\text{op}$ is mono. The other direction is proven in similar manners.
 \end{proof}
-\end{dem}
+
 
 \begin{proposition}
     Every isomorphism is an epimorphism.
@@ -213,13 +213,13 @@ And we have the following dual statements (can be proved using the statement in 
     \label{prop:epi-iff-surjective}
     Given a function $f:A\to B$, it is epi iff it is surjective in $\textbf{Set}$
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     $(\impliedby)$ Given any $a\in A$, by definition of surjective, we have that if $f(e(a))=g(e(a))$, for any $a\in A$, would implies that $f(b)=g(b)$ for all $b\in B$. That is because $e(A)=B$. 
 
     $(\implies)$ We will proof that if $e$ isn't surjective then $e$ isn't epi. That is there exists $b'\in B$ such that for all $a\in A$, $e(a)\ne b'$. It is easy to find the function $f$ and $g$ such that $f(b')\ne g(b')$ but $f(b)=g(b)$ for $b=e(a)$ for any $a\in A$. Then, $f(e(a))=g(e(a))$ for all $A$ but it doesn't implies that $f(b)=g(b)$ for all $b\in B$
 \end{proof}
-\end{dem}
+
 
 Finally, we have the following results of compositions of various special morphism.
 
@@ -233,7 +233,7 @@ Finally, we have the following results of compositions of various special morphi
         \item If $f$ is isomorphism, then $f$ is epi and mono
     \end{itemize}
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     Let's provide a proof for each of them: 
     and that $f\circ e = g\circ e$ implies $f=g$.
@@ -245,7 +245,7 @@ Finally, we have the following results of compositions of various special morphi
     \end{itemize}
     The last part follows from the fact that isomorphism is split mono and split epi, which implies that it is both mono and epi as needed.
 \end{proof}
-\end{dem}
+
 
 % \todo Add Free category.
 
@@ -415,11 +415,11 @@ We can see that natural transformation can be seen as morphism between functor, 
     Given 2 objects in the functor category $F$ and $G$ (between category $\textbf{C}$ and $\textbf{D}$), the natural isomorphism between them is isomorphic wrt the functor category.
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     To show that natural isomorphism, let's call it $\alpha:F\Rightarrow G$ is isomorphism, we will define its inverse to be $\alpha^{-1}:G\Rightarrow F$, where its component is an inverse of $\alpha_C$ (which exists because of $\alpha$ being isomorphism) i.e $\alpha^{-1}_C:GC\to FC$ where $\alpha_C\circ \alpha_C^{-1} = \operatorname{id}_{GC}$ and $\alpha_C^{-1}\circ \alpha_C = \operatorname{id}_{FC}$. Thus, by definition, we have that $\alpha^{-1}\circ\alpha=\operatorname{id}\alpha\circ\alpha^{-1}$, as needed.
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Diagram/Category of Diagrams)}}
     Given a category $\textbf{C}$ with small category $\textbf{I}$, the diagram in $\textbf{C}$ of shape $\textbf{I}$ is a functor $\textbf{I}\rightarrow\textbf{C}$. The category of $I$-shaped diagram in $\textbf{C}$ is a functor category $[\textbf{I},\textbf{C}]$.
@@ -494,7 +494,7 @@ Let's see that the horizontal composition makes sense.
         \beta\alpha = (\beta G)\circ(H\alpha) = (I\alpha)\circ(\beta F)
     \end{equation*}
 \end{proposition}
-\begin{dem}
+
 \begin{proof}
     Let's consider how both LHS and RHS acts on object $C$, which we have the following signatures: $\beta_{GC}\circ H\alpha_C : HFC\to HGC \to IGC$ and $I\alpha_C\circ \beta_{FC} : HFC\to IFC \to IGC$. When apply the naturality condition of $\beta$ on the morphism $\alpha_C:FC\to GC$, we have the following commutative diagram.
     \begin{equation*}
@@ -523,7 +523,7 @@ Let's see that the horizontal composition makes sense.
     \end{equation*}
     which is equivalent to see that $\beta_{GC}\circ H\alpha_C = I\alpha_C\circ \beta_{FC}$, as needed. On the RHS diagram, we have shown how one of the acts on $f:C\to C'$, and implies that is indeed satisfies the naturality condition over (following from naturality of each sub-square), see RHS diagram.
 \end{proof}
-\end{dem}
+
 
 \begin{proposition}{\textbf{(Interchange Law)}}
     Given the following diagram:
@@ -546,7 +546,7 @@ Let's see that the horizontal composition makes sense.
     This diagram isn't ambiguous in the sense that: $(\delta\gamma)\circ(\beta\alpha) = (\delta\circ\beta)(\gamma\circ\alpha)$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     Let's consider its component on $C$ on the LHS we have that both of them have signature $HFC\to IGC$. Following from proposition above, on how one define the horizontal composition and their equality:
     \begin{equation*}
@@ -598,7 +598,7 @@ Let's see that the horizontal composition makes sense.
     \end{tikzcd}
     \end{equation*}
 \end{proof}
-\end{dem}
+
 
 \subsection{Types of Category}
 
@@ -665,7 +665,7 @@ We can link the notion to the injectivity and surjectivity of the hom-set:
     Given fully faithful functor $F:\textbf{C}\rightarrow\textbf{D}$ with objects $C,C'$ of $\textbf{C}$ and isomorphism $\phi:FC\rightarrow FC'$ of $\textbf{D}$. There is an unique isomorphism $\widetilde{\phi}:C\rightarrow C'$ such that: $F\widetilde{\phi}=\phi$
 \end{proposition}
 
-\begin{dem}
+
 \begin{proof}
     \textbf{(Isomorphism):} By the fact that the functor is full, thus, there is an arrow $\widetilde{\phi}:C\to C'$ such that $F\widetilde{\phi}=\phi$. Since $\phi$ is isomorphism, there is an (unique) inverse $\phi^{-1}:FC'\to FC$, and by the fact that functor is full, there is $g:C'\to C$ such that $Fg=\phi^{-1}$. We note that:
     \begin{equation*}
@@ -675,7 +675,7 @@ We can link the notion to the injectivity and surjectivity of the hom-set:
 
     \textbf{(Unique):} Assume that there is another isomorphism $f:C\to C'$ such that $Ff=\phi$, then we have $Ff=F\widetilde{\phi}$. By the fact that $F$ is faithful $f=\widetilde{\phi}$ i.e it is unique.
 \end{proof}
-\end{dem}
+
 
 \begin{definition}{\textbf{(Equivalence of Categories)}}
     Given a category $\textbf{C}$ and $\textbf{D}$, the \textit{equivalence of category} between both category consists of a pair $F:\textbf{C}\rightarrow\textbf{D}$ and $G:\textbf{D}\rightarrow\textbf{C}$ and natural isomorphism as: $\eta:G\circ F\Rightarrow\operatorname{id}_C$ and $\varepsilon:F\circ G\Rightarrow\operatorname{id}_D$. We call $G$ the pseudo-inverse of $F$ and vice versa.
@@ -702,18 +702,18 @@ To proof important theorem below, we need the following useful lemma:
     commutes, and this morphism is given by: $\psi\circ f\circ \phi^{-1}$.
 \end{lemma}
 
-\begin{dem}
+
 \begin{proof}
     We note that such morphism exists, by reversing the arrow of $\phi$, giving us $g:X'\to Y'$ equal to $\psi\circ f\circ \phi^{-1}$. Now, we are left to show that it is unique, assume that there is another morphism $g':X'\to Y'$, then by commutativity: $g'\circ\phi = \psi \circ f$ or $g'= \psi\circ f\circ \phi^{-1} = g$.
 \end{proof}
-\end{dem}
+
 
 \begin{theorem}
     \label{thm:full-faithful-essentially-surj-equiv}
     The functor $F:\textbf{C}\rightarrow\textbf{D}$ is fully faithful and essentially surjective iff it defines an equivalence of category. 
 \end{theorem}
 
-\begin{dem}
+
 \begin{proof}
     $\boldsymbol{(\implies)}:$ We have to find the functor $G:\boldsymbol{D}\to\boldsymbol{C}$. We will have to see how it interacts with object and morphism in $\boldsymbol{D}$. Given $g:D\to D'$, since $F$ is essentially surjective, there is an object $C$ and $C'$ with isomorphisms $\varepsilon_{D}:FC\to D$ and $\varepsilon_{D'}:FC'\to D'$. And from lemma above, there is a unique morphism $h:FC\to FC'$:
 
@@ -834,4 +834,4 @@ To proof important theorem below, we need the following useful lemma:
 
     \textit{(Essentially Surjective):} Using the component of $\varepsilon$, we can have the object $GD$ such that $FGC\xrightarrow{\cong} D$, for any object $D$ in $\textbf{D}$.
 \end{proof}
-\end{dem}
+

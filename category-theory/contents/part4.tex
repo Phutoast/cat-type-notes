@@ -29,7 +29,7 @@ The motivation for Yoneda lemma can be stated as follows:
     \checkproof Check the opposite direction again.
 \end{lemma}
 
-\begin{dem}
+
 \begin{proof}
 
     Observe that, the use of $\operatorname{id}_X$ as the ``identification'' can also be seen, in a more concrete manner, in the proof of proposition \ref{prop:iso-obj-in}.
@@ -138,7 +138,7 @@ The motivation for Yoneda lemma can be stated as follows:
 
     where we use the vertical composition, which doesn't require any opposite category, and of course, like remark \ref{remark:presheaf-opposite}, we have $\operatorname{Hom}_{[\textbf{C}^\text{op}, \textbf{Set}]}\Big( \operatorname{Hom}_\textbf{C}(-, X), F \Big)[\psi]=(\psi\circ-)$, being vertical composition. That is, for any $\alpha:\operatorname{Hom}_\textbf{C}(-, X)\Rightarrow F$ on both 2 paths on the diagram, we have: $$(\psi_X \circ \operatorname{yo}_F)(\alpha) = \psi_X(\alpha_X(\operatorname{id}_X))\quad\text{ and }\quad \operatorname{yo}_G(\psi\circ \alpha) = (\psi\circ \alpha)_X(\operatorname{id}_X) = \psi_X(\alpha_X(\operatorname{id}_X))$$Thus: $\psi_X \circ \operatorname{yo}_F=\operatorname{yo}_G\circ(\psi\circ -)$, as needed.
 \end{proof}
-\end{dem}
+
 
 
 \begin{theorem}{\textbf{(Yoneda Embedding)}}
@@ -148,11 +148,11 @@ The motivation for Yoneda lemma can be stated as follows:
     $$
 \end{theorem}
 
-\begin{dem}
+
 \begin{proof}
     With the Yoneda lemma above, we can set $F:\operatorname{Hom}_{\textbf{C}^\text{op}}(-, Y)$, and the proof is complete.
 \end{proof}
-\end{dem}
+
 
 We also have the following dual result
 
@@ -174,7 +174,7 @@ We have the following corollary on how Yoneda lemma perform, which will give us 
     \end{itemize}
 \end{corollary}
 
-\begin{dem}
+
 \begin{proof}
     $\boldsymbol{(\implies)}:$ Let $f:X\to Y$ be the isomorphism between $X$ and $Y$, then by Yoneda embedding there is $\alpha:\operatorname{Hom}_{\textbf{C}}(-, X)\Rightarrow \operatorname{Hom}_{\textbf{C}}(-, Y)$, so that $\alpha_X(\operatorname{id}_X)=f$. Let's show that $\alpha$ is naturally isomorphic. 
 
@@ -190,7 +190,7 @@ We have the following corollary on how Yoneda lemma perform, which will give us 
     and this also works in opposite direction, so $f$ is an isomorphism. Similar proof also works on opposite direction.
 
 \end{proof}
-\end{dem}
+
 
 Finally, we can then us this corollary to formally define the universal properties (which will be used to define all the construction that we have seen so far i.e product, internal-hom, pull-back, etc.) as:
 
